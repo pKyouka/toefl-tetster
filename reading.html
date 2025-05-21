@@ -139,10 +139,39 @@
     <footer>
         <p>© 2023 TOEFL Tester | Practice Reading Skills</p>
     </footer>
-    
     <script>
+        // Timer functionality
+        let timeLeft = 20 * 60; // 20 minutes in seconds
+        const timerDisplay = document.createElement('div');
+        timerDisplay.id = 'timer';
+        timerDisplay.style.textAlign = 'center';
+        timerDisplay.style.fontSize = '1.2rem';
+        timerDisplay.style.fontWeight = 'bold';
+        timerDisplay.style.margin = '20px 0';
+        document.querySelector('header').appendChild(timerDisplay);
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up! Submitting your answers now.");
+                document.getElementById("reading-quiz").dispatchEvent(new Event('submit'));
+            }
+            timeLeft--;
+        }
+        
+        // Initialize timer
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+        
         document.getElementById("reading-quiz").addEventListener("submit", function(event) {
             event.preventDefault();
+            
+            // Clear timer when submitting
+            clearInterval(timerInterval);
             
             const answers = {
                 q1: "b",
@@ -181,10 +210,17 @@
             // Store results in localStorage to access them on the result page
             localStorage.setItem('quizScore', score);
             localStorage.setItem('quizFeedback', feedback);
+            localStorage.setItem('timeUsed', 20*60 - timeLeft); // Store time used
             
             // Redirect to result.html
             window.location.href = 'result.html';
         });
+        
+        // Disable right-click
+            document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+            });
     </script>
 </body>
 </html>

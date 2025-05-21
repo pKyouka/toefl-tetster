@@ -202,6 +202,11 @@
         document.getElementById('details-performance').textContent = perfLabel(details,2);
         document.getElementById('inference-performance').textContent = perfLabel(inference,1);
 
+            document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+            });
+
         // Get user answers from quiz page if available
         // (reading.html should save userAnswers as JSON in localStorage)
         // Example: localStorage.setItem('userAnswers', JSON.stringify({q1:'b',q2:'c',...}))

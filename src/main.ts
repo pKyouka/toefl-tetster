@@ -32,4 +32,5 @@ window.addEventListener("DOMContentLoaded", () => {
   readingBtn.type = "button";
   readingBtn.addEventListener("click", goToReading);
   document.body.appendChild(readingBtn);
+  
 });
