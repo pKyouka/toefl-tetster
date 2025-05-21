@@ -1,101 +1,16 @@
-# Astronomy
+# Tauri + Vue + TypeScript
 
-An open source application built using the latest features in Astro v4 with shadcn/ui.
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-![blog](public/og.jpg)
+## Recommended IDE Setup
 
-> **Warning**
-> This app is a work in progress. I'm building this in public. You can follow the progress on Twitter [@miickasmt](https://twitter.com/miickasmt).
-> See the roadmap below.
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
-## About this project
+## Type Support For `.vue` Imports in TS
 
-This project as an experiment to see how a modern app (with features like authentication, subscriptions, API routes, Markdown, Content Collections ...etc) would work in Astro v4 and shadcn/ui.
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
 
-> **Note**
-> I would like to inform you that for the time being, my example app built with Astro.js is still under development and **cannot yet be considered a starter template**.
+1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
+2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
-## Project Structure
-
-```
-├── public/
-│   └── fonts/
-├── src/
-│   ├── components/
-│   ├── config/
-│   ├── content/
-│   ├── hooks/
-│   ├── icons/
-│   ├── layouts/
-│   ├── lib/
-│   ├── pages/
-│   ├── styles/
-│   └── types/
-├── astro.config.mjs
-├── README.md
-├── package.json
-├── tailwind.config.cjs
-└── tsconfig.json
-```
-
-## Features
-
-- Config files
-- Views Transitions
-- Routing and Layouts
-- React components & hooks
-- UI Components built using **shadcn/ui**
-- Documentation and blog using **MDX** and **Content Collections**
-- Styled using **Tailwind CSS**
-- Validations using **Zod**
-- Written in **TypeScript**
-- 100/100 Lighthouse performance
-- Minimal styling (make it your own!)
-- RSS Feed support
-- Sitemap support
-- Data Fetching
-- API Endpoint
-
-_Not implemented yet :_
-
-- SEO component
-- Subscriptions using **Lemon Squeezy** ?
-
-## Roadmap
-
-- [x] ~Dark mode~
-- [x] ~Add Markdown & MDX support~
-- [x] ~Sheet mobile nav~
-- [x] ~Build **changelog pages**~
-- [x] ~Build **waitlist with React Hook Form**~
-- [x] ~Build **newsletter with Simple Form**~
-- [x] ~Build **animes pages** (graphql)~
-- [ ] Build **blog with Astro DB** (work on it)
-- [ ] Build **ecommerce pages** (work on it)
-- [ ] Build **auth/dashboard pages**
-- [ ] Add search support for blog
-- [ ] Add OG image for blog and others
-- [ ] Add SEO component & metadata
-- [ ] Subscriptions using Stripe (or Lemon Squeezy?)
-
-## Running Locally
-
-1. Install dependencies using pnpm:
-
-```sh
-pnpm install
-```
-
-2. Start the development server:
-
-```sh
-pnpm run dev
-```
-
-## Credit
-
-This theme is based off of the example app [Taxonomy](https://tx.shadcn.com/) of shadcn.
-
-## License
-
-Licensed under the [MIT license](https://github.com/mickasmt/astro-nomy/blob/main/LICENSE.md).
+You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
