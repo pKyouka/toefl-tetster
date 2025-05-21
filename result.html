@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL Reading Test Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .result-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .score {
+            font-size: 48px;
+            color: #27ae60;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h1>TOEFL Reading Test Results</h1>
+        <div class="score" id="score"></div>
+        <div class="details">
+            <h2>Performance Summary</h2>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Score</th>
+                    <th>Performance</th>
+                </tr>
+                <tr>
+                    <td>Comprehension</td>
+                    <td id="comprehension-score"></td>
+                    <td id="comprehension-performance"></td>
+                </tr>
+                <tr>
+                    <td>Details</td>
+                    <td id="details-score"></td>
+                    <td id="details-performance"></td>
+                </tr>
+                <tr>
+                    <td>Inference</td>
+                    <td id="inference-score"></td>
+                    <td id="inference-performance"></td>
+                </tr>
+            </table>
+            <h2>Question Analysis</h2>
+            <table>
+                <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td>1. Neolithic Revolution period</td>
+                    <td id="ans1"></td>
+                    <td>B</td>
+                    <td id="res1"></td>
+                </tr>
+                <tr>
+                    <td>2. Reason for permanent settlement</td>
+                    <td id="ans2"></td>
+                    <td>C</td>
+                    <td id="res2"></td>
+                </tr>
+                <tr>
+                    <td>3. EXCEPT region for early agriculture</td>
+                    <td id="ans3"></td>
+                    <td>B</td>
+                    <td id="res3"></td>
+                </tr>
+                <tr>
+                    <td>4. Crop in Fertile Crescent</td>
+                    <td id="ans4"></td>
+                    <td>C</td>
+                    <td id="res4"></td>
+                </tr>
+                <tr>
+                    <td>5. Effect of agriculture</td>
+                    <td id="ans5"></td>
+                    <td>B</td>
+                    <td id="res5"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Back to Home</button>
+            <button class="btn btn-secondary" onclick="window.print()">Print Results</button>
+        </div>
+    </div>
+    <script>
+        // Correct answers
+        const correctAnswers = {
+            q1: "b",
+            q2: "c",
+            q3: "b",
+            q4: "c",
+            q5: "b"
+        };
+
+        // Option labels
+        const optionLabels = {
+            q1: { a: "A", b: "B", c: "C", d: "D" },
+            q2: { a: "A", b: "B", c: "C", d: "D" },
+            q3: { a: "A", b: "B", c: "C", d: "D" },
+            q4: { a: "A", b: "B", c: "C", d: "D" },
+            q5: { a: "A", b: "B", c: "C", d: "D" }
+        };
+
+        // Get user answers from localStorage (simulate if not present)
+        let userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+        let score = localStorage.getItem('quizScore');
+        if (!userAnswers) {
+            // Fallback: try to reconstruct from score (for demo)
+            userAnswers = {};
+            for (let i = 1; i <= 5; i++) userAnswers['q'+i] = "-";
+        }
+        if (!score) score = 0;
+
+        // Show score
+        document.getElementById('score').textContent = score + "/5";
+
+        // Fill question analysis
+        for (let i = 1; i <= 5; i++) {
+            const q = 'q'+i;
+            const userAns = userAnswers[q] ? userAnswers[q].toUpperCase() : "-";
+            const correctAns = correctAnswers[q].toUpperCase();
+            document.getElementById('ans'+i).textContent = userAns;
+            document.getElementById('res'+i).textContent = (userAns === correctAns) ? "✓" : "✗";
+        }
+
+        // Performance summary (simple logic)
+        // Q1, Q2: Comprehension; Q3: Inference; Q4, Q5: Details
+        let comprehension = 0, details = 0, inference = 0;
+        if (userAnswers.q1 && userAnswers.q1 === correctAnswers.q1) comprehension++;
+        if (userAnswers.q2 && userAnswers.q2 === correctAnswers.q2) comprehension++;
+        if (userAnswers.q3 && userAnswers.q3 === correctAnswers.q3) inference++;
+        if (userAnswers.q4 && userAnswers.q4 === correctAnswers.q4) details++;
+        if (userAnswers.q5 && userAnswers.q5 === correctAnswers.q5) details++;
+
+        document.getElementById('comprehension-score').textContent = comprehension + "/2";
+        document.getElementById('details-score').textContent = details + "/2";
+        document.getElementById('inference-score').textContent = inference + "/1";
+
+        function perfLabel(val, max) {
+            if (val === max) return "Excellent";
+            if (val >= Math.ceil(max/2)) return "Good";
+            return "Needs Improvement";
+        }
+        document.getElementById('comprehension-performance').textContent = perfLabel(comprehension,2);
+        document.getElementById('details-performance').textContent = perfLabel(details,2);
+        document.getElementById('inference-performance').textContent = perfLabel(inference,1);
+
+        // Get user answers from quiz page if available
+        // (reading.html should save userAnswers as JSON in localStorage)
+        // Example: localStorage.setItem('userAnswers', JSON.stringify({q1:'b',q2:'c',...}))
+    </script>
+</body>
+</html>

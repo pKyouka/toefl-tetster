@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL Reading Practice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .reading-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .passage {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .options label {
+            display: block;
+            margin: 5px 0;
+        }
+        
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TOEFL Reading Practice Test</h1>
+        <p>Read the passage and answer the questions below.</p>
+    </header>
+    
+    <div class="reading-section">
+        <div class="passage">
+            <h2>The Development of Agriculture</h2>
+            <p>The birth of agriculture was a pivotal moment in human history that allowed our ancestors to move from a lifestyle of hunting and gathering to a more settled existence. This transition, which took place independently in several parts of the world between 10,000 and 8,000 BCE, is known as the Neolithic Revolution.</p>
+            <p>Before agriculture, humans lived as nomads, following animal migrations and gathering seasonal plants for sustenance. The development of agriculture meant that humans could settle in one place and grow their own food. This led to the first permanent settlements and, eventually, to civilization as we know it.</p>
+            <p>Early agriculture was developed in several regions around the world, including the Fertile Crescent (spanning parts of modern-day Iraq, Syria, Lebanon, Israel, Palestine, Jordan, and Egypt), China, Mesoamerica, the Andes, and the eastern United States. The crops that were domesticated varied by region, with wheat and barley being popular in the Fertile Crescent, rice in China, and maize (corn) in the Americas.</p>
+            <p>The development of agriculture had far-reaching effects on human society. It led to an increased and more reliable food supply, which in turn led to population growth. As populations grew, settlements became more complex, leading to the development of cities, social hierarchies, and specialized labor. These developments laid the groundwork for all subsequent human civilizations.</p>
+        </div>
+        
+        <form id="reading-quiz">
+            <div class="question-container">
+                <div class="question">1. According to the passage, the Neolithic Revolution took place:</div>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> a) Between 15,000 and 12,000 BCE</label>
+                    <label><input type="radio" name="q1" value="b"> b) Between 10,000 and 8,000 BCE</label>
+                    <label><input type="radio" name="q1" value="c"> c) Between 5,000 and 3,000 BCE</label>
+                    <label><input type="radio" name="q1" value="d"> d) Between 2,000 BCE and 0 CE</label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">2. What allowed humans to settle permanently in one place?</div>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> a) The extinction of large animals</label>
+                    <label><input type="radio" name="q2" value="b"> b) The development of cities</label>
+                    <label><input type="radio" name="q2" value="c"> c) The development of agriculture</label>
+                    <label><input type="radio" name="q2" value="d"> d) The end of the Ice Age</label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">3. The passage mentions all of the following as regions where early agriculture developed EXCEPT:</div>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> a) The Fertile Crescent</label>
+                    <label><input type="radio" name="q3" value="b"> b) Australia</label>
+                    <label><input type="radio" name="q3" value="c"> c) China</label>
+                    <label><input type="radio" name="q3" value="d"> d) Mesoamerica</label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">4. According to the passage, which crop was commonly domesticated in the Fertile Crescent?</div>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> a) Rice</label>
+                    <label><input type="radio" name="q4" value="b"> b) Maize</label>
+                    <label><input type="radio" name="q4" value="c"> c) Wheat</label>
+                    <label><input type="radio" name="q4" value="d"> d) Potatoes</label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question">5. The passage suggests that the development of agriculture led to:</div>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> a) A decrease in human population</label>
+                    <label><input type="radio" name="q5" value="b"> b) The development of social hierarchies</label>
+                    <label><input type="radio" name="q5" value="c"> c) A more nomadic lifestyle</label>
+                    <label><input type="radio" name="q5" value="d"> d) The end of human civilization</label>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit Answers</button>
+        </form>
+    </div>
+    
+    <footer>
+        <p>© 2023 TOEFL Tester | Practice Reading Skills</p>
+    </footer>
+    
+    <script>
+        document.getElementById("reading-quiz").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const answers = {
+                q1: "b",
+                q2: "c",
+                q3: "b",
+                q4: "c",
+                q5: "b"
+            };
+            
+            let score = 0;
+            let feedback = "Results:\n";
+            
+            for (let i = 1; i <= 5; i++) {
+                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === answers[`q${i}`]) {
+                        score++;
+                        feedback += `Question ${i}: Correct\n`;
+                    } else {
+                        feedback += `Question ${i}: Incorrect\n`;
+                    }
+                } else {
+                    feedback += `Question ${i}: No answer selected\n`;
+                }
+            }
+            
+            feedback += `\nYour score: ${score}/5`;
+            
+            let userAnswers = {};
+            for (let i = 1; i <= 5; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                userAnswers['q'+i] = selected ? selected.value : "-";
+            }
+            localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+            
+            // Store results in localStorage to access them on the result page
+            localStorage.setItem('quizScore', score);
+            localStorage.setItem('quizFeedback', feedback);
+            
+            // Redirect to result.html
+            window.location.href = 'result.html';
+        });
+    </script>
+</body>
+</html>
