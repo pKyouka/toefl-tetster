@@ -32,5 +32,12 @@ window.addEventListener("DOMContentLoaded", () => {
   readingBtn.type = "button";
   readingBtn.addEventListener("click", goToReading);
   document.body.appendChild(readingBtn);
-  
+
+  const speakingBtn = document.createElement("button");
+  speakingBtn.textContent = "Go to Speaking";
+  speakingBtn.type = "button";
+  speakingBtn.addEventListener("click", () => {
+    window.location.href = "speaking.html";
+  });
+  document.body.appendChild(speakingBtn);
 });

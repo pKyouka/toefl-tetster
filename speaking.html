@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL Speaking Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .task {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .task-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        .task-description {
+            margin-bottom: 15px;
+        }
+        .timer {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            color: #e74c3c;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .recorder-status {
+            text-align: center;
+            font-style: italic;
+            margin: 10px 0;
+            color: #7f8c8d;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TOEFL Speaking Test</h1>
+
+        <div id="task1" class="task">
+            <div class="task-title">Task 1: Independent Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will express your opinion on a familiar topic. You will have 15 seconds to prepare and 45 seconds to speak.</p>
+                <p><strong>Question:</strong> Describe a teacher who has influenced you and explain why this person had such an influence on you.</p>
+            </div>
+            <div class="timer" id="timer1">00:00</div>
+            <div class="recorder-status" id="recorder-status1">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(1)">Start Preparation</button>
+                <button onclick="startRecording(1)" disabled id="record-btn1">Start Speaking</button>
+                <button onclick="stopRecording(1)" disabled id="stop-btn1">Stop</button>
+                <button onclick="playRecording(1)" disabled id="play-btn1">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task2" class="task">
+            <div class="task-title">Task 2: Integrated Speaking Task (Reading, Listening, Speaking)</div>
+            <div class="task-description">
+                <p>In this task, you will read a short passage, listen to a conversation on the same topic, and then speak in response to a question. You will have 30 seconds to prepare and 60 seconds to speak.</p>
+                
+                <p><strong>Reading Passage:</strong></p>
+                <p>The university has announced plans to renovate the student center. The renovation will include expanding the dining area, adding more study spaces, and upgrading the technology throughout the building. The project is scheduled to begin next semester and will take approximately six months to complete. During this time, temporary facilities will be set up in the gymnasium.</p>
+                
+                <p><strong>After reading and listening, you will answer the following question:</strong></p>
+                <p>The man expresses his opinion about the university's plan for renovating the student center. State his opinion and explain the reasons he gives for holding that opinion.</p>
+            </div>
+            <div class="timer" id="timer2">00:00</div>
+            <div class="recorder-status" id="recorder-status2">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(2)">Start Preparation</button>
+                <button onclick="startRecording(2)" disabled id="record-btn2">Start Speaking</button>
+                <button onclick="stopRecording(2)" disabled id="stop-btn2">Stop</button>
+                <button onclick="playRecording(2)" disabled id="play-btn2">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task3" class="task">
+            <div class="task-title">Task 3: Integrated Speaking Task (Listening, Speaking)</div>
+            <div class="task-description">
+                <p>In this task, you will listen to part of an academic lecture and then speak in response to a question about it. You will have 30 seconds to prepare and 60 seconds to speak.</p>
+                <p><strong>After listening to the lecture, you will answer the following question:</strong></p>
+                <p>Using examples from the lecture, explain the concept of confirmation bias and its effects on decision making.</p>
+            </div>
+            <div class="timer" id="timer3">00:00</div>
+            <div class="recorder-status" id="recorder-status3">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(3)">Start Preparation</button>
+                <button onclick="startRecording(3)" disabled id="record-btn3">Start Speaking</button>
+                <button onclick="stopRecording(3)" disabled id="stop-btn3">Stop</button>
+                <button onclick="playRecording(3)" disabled id="play-btn3">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task4" class="task">
+            <div class="task-title">Task 4: Integrated Speaking Task (Listening, Speaking)</div>
+            <div class="task-description">
+                <p>In this task, you will listen to part of a conversation and then speak in response to a question about it. You will have 30 seconds to prepare and 60 seconds to speak.</p>
+                <p><strong>After listening to the conversation, you will answer the following question:</strong></p>
+                <p>The students discuss two possible solutions to the woman's problem. Describe the problem and explain which solution you think is better and why.</p>
+            </div>
+            <div class="timer" id="timer4">00:00</div>
+            <div class="recorder-status" id="recorder-status4">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(4)">Start Preparation</button>
+                <button onclick="startRecording(4)" disabled id="record-btn4">Start Speaking</button>
+                <button onclick="stopRecording(4)" disabled id="stop-btn4">Stop</button>
+                <button onclick="playRecording(4)" disabled id="play-btn4">Play Recording</button>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="index.html"><button>Back to Home</button></a>
+        </div>
+    </div>
+
+    <script>
+        let timers = {};
+        let audioRecorder = null;
+        let audioChunks = {};
+        let audioBlobs = {};
+
+        // Timer functions
+        function startTimer(taskId, seconds) {
+            const timerElement = document.getElementById(`timer${taskId}`);
+            let remainingSeconds = seconds;
+            
+            clearInterval(timers[taskId]);
+            
+            timers[taskId] = setInterval(() => {
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+                
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (remainingSeconds <= 0) {
+                    clearInterval(timers[taskId]);
+                    if (document.getElementById(`record-btn${taskId}`).disabled && 
+                        !document.getElementById(`stop-btn${taskId}`).disabled) {
+                        stopRecording(taskId);
+                    }
+                }
+                
+                remainingSeconds--;
+            }, 1000);
+        }
+
+        function startPreparation(taskId) {
+            const preparationTime = (taskId === 1) ? 15 : 30;
+            document.getElementById(`recorder-status${taskId}`).textContent = "Preparation time...";
+            document.getElementById(`record-btn${taskId}`).disabled = false;
+            
+            startTimer(taskId, preparationTime);
+            
+            // After preparation time, enable recording
+            setTimeout(() => {
+                document.getElementById(`recorder-status${taskId}`).textContent = "Preparation time over. Ready to speak.";
+            }, preparationTime * 1000);
+        }
+
+        // Recording functions
+        async function startRecording(taskId) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioRecorder = new MediaRecorder(stream);
+                audioChunks[taskId] = [];
+                
+                audioRecorder.addEventListener("dataavailable", event => {
+                    audioChunks[taskId].push(event.data);
+                });
+                
+                audioRecorder.addEventListener("stop", () => {
+                    audioBlobs[taskId] = new Blob(audioChunks[taskId], { type: 'audio/webm' });
+                    document.getElementById(`play-btn${taskId}`).disabled = false;
+                    document.getElementById(`recorder-status${taskId}`).textContent = "Recording saved.";
+                });
+                
+                audioRecorder.start();
+                document.getElementById(`recorder-status${taskId}`).textContent = "Recording...";
+                document.getElementById(`record-btn${taskId}`).disabled = true;
+                document.getElementById(`stop-btn${taskId}`).disabled = false;
+                
+                // Start speaking timer
+                const speakingTime = (taskId === 1) ? 45 : 60;
+                startTimer(taskId, speakingTime);
+                
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+                document.getElementById(`recorder-status${taskId}`).textContent = "Error accessing microphone. Please check permissions.";
+            }
+        }
+
+        function stopRecording(taskId) {
+            if (audioRecorder && audioRecorder.state !== "inactive") {
+                audioRecorder.stop();
+                audioRecorder.stream.getTracks().forEach(track => track.stop());
+                document.getElementById(`stop-btn${taskId}`).disabled = true;
+                clearInterval(timers[taskId]);
+            }
+        }
+
+        function playRecording(taskId) {
+            if (audioBlobs[taskId]) {
+                const audioURL = URL.createObjectURL(audioBlobs[taskId]);
+                const audio = new Audio(audioURL);
+                audio.play();
+            }
+        }
+    </script>
+</body>
+</html></div>
