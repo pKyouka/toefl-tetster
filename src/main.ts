@@ -40,4 +40,21 @@ window.addEventListener("DOMContentLoaded", () => {
     window.location.href = "speaking.html";
   });
   document.body.appendChild(speakingBtn);
+
+  const ieltsReadingBtn = document.getElementById("ielts-reading-btn");
+  if (ieltsReadingBtn) {
+    ieltsReadingBtn.addEventListener("click", goToReading);
+  }
+
+  const ieltsSpeakingBtn = document.getElementById("ielts-speaking-btn");
+  if (ieltsSpeakingBtn) {
+    ieltsSpeakingBtn.addEventListener("click", () => {
+      window.location.href = "speaking.html";
+    });
+  }
+  // const listeningBtn = document.createElement("button");
+  // readingBtn.textContent = "Go to Reading";
+  // readingBtn.type = "button";
+  // readingBtn.addEventListener("click", goToReading);
+  // document.body.appendChild(readingBtn);
 });

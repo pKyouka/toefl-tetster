@@ -1,232 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Reading Practice</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .reading-section {
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .passage {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-        
-        .question-container {
-            margin-bottom: 25px;
-        }
-        
-        .question {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .options label {
-            display: block;
-            margin: 5px 0;
-        }
-        
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #666;
-            font-size: 14px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .main-container {
+        display: flex;
+        flex: 1;
+        gap: 20px;
+        position: relative;
+      }
+
+      .question-nav-container {
+        width: 220px;
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+      }
+
+      .question-nav {
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .question-nav h3 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .question-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+
+      .question-number {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .question-number.answered {
+        background-color: #e0e0e0;
+      }
+
+      .question-number.current {
+        border: 2px solid #4caf50;
+        font-weight: bold;
+      }
+
+      #timer-container {
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .reading-content {
+        flex: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 160px);
+      }
+
+      .reading-section {
+        margin-bottom: 30px;
+        padding: 25px 30px; /* Ditambah padding lebih besar */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Tambah shadow untuk depth */
+      }
+
+      .passage {
+        margin-bottom: 25px; /* Ditambah margin bottom */
+        text-align: justify;
+        line-height: 1.7; /* Tingkatkan line height untuk readability */
+      }
+      .passage h2,
+      .passage h3 {
+        margin-top: 0;
+        padding-top: 15px; /* Tambah padding atas untuk heading */
+        color: #2c3e50; /* Warna lebih gelap untuk heading */
+      }
+
+      .passage h2 {
+        border-bottom: 2px solid #eee; /* Garis bawah untuk section heading */
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      .passage p {
+        margin-bottom: 15px; /* Spasi antar paragraf */
+      }
+      .question-container {
+        margin-bottom: 25px;
+        display: none;
+      }
+
+      .question-container.active {
+        display: block;
+      }
+
+      .question {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .options label {
+        display: block;
+        margin: 8px 0;
+        cursor: pointer;
+      }
+
+      .options input {
+        margin-right: 8px;
+      }
+
+      .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .navigation-buttons button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #prevBtn {
+        background-color: #f1f1f1;
+      }
+
+      #nextBtn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      #submitBtn {
+        background-color: #2196f3;
+        color: white;
+        display: none;
+      }
+
+      /* Modal Konfirmasi */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 8px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .modal-buttons button {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #confirmYes {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      #confirmNo {
+        background-color: #f44336;
+        color: white;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        color: #666;
+        font-size: 14px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>TOEFL Reading Practice Test</h1>
-        <p>Read the passage and answer the questions below.</p>
+      <h1>TOEFL Reading Practice Test</h1>
+      <p>Read the passage and answer the questions below.</p>
     </header>
-    
-    <div class="reading-section">
-        <div class="passage">
+
+    <div class="main-container">
+      <!-- Left column - Question navigation and timer -->
+      <div class="question-nav-container">
+        <div class="question-nav">
+          <h3>Questions</h3>
+          <div class="question-numbers" id="questionNumbers"></div>
+        </div>
+
+        <div id="timer-container">
+          <div id="timer">Time Remaining: 20:00</div>
+        </div>
+      </div>
+
+      <!-- Right column - Reading content -->
+      <div class="reading-content">
+        <div class="reading-section">
+          <div class="passage">
             <h2>Section II: Reading</h2>
-            <p>In the reading test, you will read a variety of texts and answer several different types of reading
-            comprehension questions. The entire reading test will last 75 minutes. There are three parts and
-            directions are given for each part. You are encouraged to answer as many questions as possible
-            within the time allowed. You must mark your answers on the separate answer sheet. Do not write
-            your answers in your test book.</p>
-        </div>
+            <p>
+              In the reading test, you will read a variety of texts and answer
+              several different types of reading comprehension questions. The
+              entire reading test will last 75 minutes. There are three parts
+              and directions are given for each part. You are encouraged to
+              answer as many questions as possible within the time allowed. You
+              must mark your answers on the separate answer sheet. Do not write
+              your answers in your test book.
+            </p>
+          </div>
 
-        <div class="passage">
+          <div class="passage">
             <h3>Part 5: Incomplete Sentences</h3>
-            <p>Directions: A word or phrase is missing in each of the following sentences. Four answer choices 
-            are given below each sentence. Then, mark the letter A, B, C or D on your answer sheet.</p>
-        </div>
-        <form id="reading-quiz">
-            <div class="question-container">
-                <div class="question">1. The company has experienced … growth over the past year.</div>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="a"> a) significant</label>
-                    <label><input type="radio" name="q1" value="b"> b) signification</label>
-                    <label><input type="radio" name="q1" value="c"> c) significance</label>
-                    <label><input type="radio" name="q1" value="d"> d) significantly</label>
-                </div>
+            <p>
+              Directions: A word or phrase is missing in each of the following
+              sentences. Four answer choices are given below each sentence.
+              Then, mark the letter A, B, C or D on your answer sheet.
+            </p>
+          </div>
+
+          <form id="reading-quiz">
+            <div
+              class="question-container active"
+              data-page="1"
+              data-question="1"
+            >
+              <div class="question">
+                1. The company has experienced … growth over the past year.
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q1" value="a" /> a)
+                  significant</label
+                >
+                <label
+                  ><input type="radio" name="q1" value="b" /> b)
+                  signification</label
+                >
+                <label
+                  ><input type="radio" name="q1" value="c" /> c)
+                  significance</label
+                >
+                <label
+                  ><input type="radio" name="q1" value="d" /> d)
+                  significantly</label
+                >
+              </div>
             </div>
 
-            <div class="question-container">
-                <div class="question">2. The marketing department is planning a … campaign to promote the new product.</div>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="a"> a) advertising</label>
-                    <label><input type="radio" name="q2" value="b"> b) advertiser</label>
-                    <label><input type="radio" name="q2" value="c"> c) advertised</label>
-                    <label><input type="radio" name="q2" value="d"> d) advertise</label>
-                </div>
+            <div class="question-container" data-page="1" data-question="2">
+              <div class="question">
+                2. The marketing department is planning a … campaign to promote
+                the new product.
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q2" value="a" /> a)
+                  advertising</label
+                >
+                <label
+                  ><input type="radio" name="q2" value="b" /> b)
+                  advertiser</label
+                >
+                <label
+                  ><input type="radio" name="q2" value="c" /> c)
+                  advertised</label
+                >
+                <label
+                  ><input type="radio" name="q2" value="d" /> d)
+                  advertise</label
+                >
+              </div>
             </div>
-            
-            <div class="question-container">
-                <div class="question">3. The passage mentions all of the following as regions where early agriculture developed EXCEPT:</div>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="a"> a) The Fertile Crescent</label>
-                    <label><input type="radio" name="q3" value="b"> b) Australia</label>
-                    <label><input type="radio" name="q3" value="c"> c) China</label>
-                    <label><input type="radio" name="q3" value="d"> d) Mesoamerica</label>
-                </div>
+
+            <div class="question-container" data-page="1" data-question="3">
+              <div class="question">
+                3. The passage mentions all of the following as regions where
+                early agriculture developed EXCEPT:
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q3" value="a" /> a) The Fertile
+                  Crescent</label
+                >
+                <label
+                  ><input type="radio" name="q3" value="b" /> b)
+                  Australia</label
+                >
+                <label
+                  ><input type="radio" name="q3" value="c" /> c) China</label
+                >
+                <label
+                  ><input type="radio" name="q3" value="d" /> d)
+                  Mesoamerica</label
+                >
+              </div>
             </div>
-            
-            <div class="question-container">
-                <div class="question">4. According to the passage, which crop was commonly domesticated in the Fertile Crescent?</div>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="a"> a) Rice</label>
-                    <label><input type="radio" name="q4" value="b"> b) Maize</label>
-                    <label><input type="radio" name="q4" value="c"> c) Wheat</label>
-                    <label><input type="radio" name="q4" value="d"> d) Potatoes</label>
-                </div>
+
+            <div class="question-container" data-page="1" data-question="4">
+              <div class="question">
+                4. According to the passage, which crop was commonly
+                domesticated in the Fertile Crescent?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q4" value="a" /> a) Rice</label
+                >
+                <label
+                  ><input type="radio" name="q4" value="b" /> b) Maize</label
+                >
+                <label
+                  ><input type="radio" name="q4" value="c" /> c) Wheat</label
+                >
+                <label
+                  ><input type="radio" name="q4" value="d" /> d) Potatoes</label
+                >
+              </div>
             </div>
-            
-            <div class="question-container">
-                <div class="question">5. The passage suggests that the development of agriculture led to:</div>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="a"> a) A decrease in human population</label>
-                    <label><input type="radio" name="q5" value="b"> b) The development of social hierarchies</label>
-                    <label><input type="radio" name="q5" value="c"> c) A more nomadic lifestyle</label>
-                    <label><input type="radio" name="q5" value="d"> d) The end of human civilization</label>
-                </div>
+
+            <div class="question-container" data-page="1" data-question="5">
+              <div class="question">
+                5. The passage suggests that the development of agriculture led
+                to:
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q5" value="a" /> a) A decrease in
+                  human population</label
+                >
+                <label
+                  ><input type="radio" name="q5" value="b" /> b) The development
+                  of social hierarchies</label
+                >
+                <label
+                  ><input type="radio" name="q5" value="c" /> c) A more nomadic
+                  lifestyle</label
+                >
+                <label
+                  ><input type="radio" name="q5" value="d" /> d) The end of
+                  human civilization</label
+                >
+              </div>
             </div>
-            
-            <button type="submit" class="submit-btn">Submit Answers</button>
-        </form>
+            <div class="question-container" data-page="2" data-question="6">
+              <div class="question">
+                6. Which of the following is NOT mentioned as a benefit of
+                agriculture in the passage?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q6" value="a" /> a) Increased food
+                  supply</label
+                >
+                <label
+                  ><input type="radio" name="q6" value="b" /> b) Development of
+                  cities</label
+                >
+                <label
+                  ><input type="radio" name="q6" value="c" /> c) Improved
+                  technology</label
+                >
+                <label
+                  ><input type="radio" name="q6" value="d" /> d) More leisure
+                  time</label
+                >
+              </div>
+            </div>
+
+            <div class="question-container" data-page="2" data-question="7">
+              <div class="question">
+                7. What does the passage imply about hunter-gatherer societies?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q7" value="a" /> a) They were more
+                  advanced than agricultural societies</label
+                >
+                <label
+                  ><input type="radio" name="q7" value="b" /> b) They had larger
+                  populations</label
+                >
+                <label
+                  ><input type="radio" name="q7" value="c" /> c) They moved from
+                  place to place</label
+                >
+                <label
+                  ><input type="radio" name="q7" value="d" /> d) They built
+                  permanent homes</label
+                >
+              </div>
+            </div>
+
+            <div class="question-container" data-page="2" data-question="8">
+              <div class="question">
+                8. Which of the following words can best replace the word
+                "domesticated" in paragraph 2?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q8" value="a" /> a) Planted</label
+                >
+                <label
+                  ><input type="radio" name="q8" value="b" /> b)
+                  Cultivated</label
+                >
+                <label
+                  ><input type="radio" name="q8" value="c" /> c)
+                  Harvested</label
+                >
+                <label
+                  ><input type="radio" name="q8" value="d" /> d) Gathered</label
+                >
+              </div>
+            </div>
+
+            <div class="question-container" data-page="2" data-question="9">
+              <div class="question">
+                9. What is the main idea of the passage?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q9" value="a" /> a) The history of
+                  modern humans</label
+                >
+                <label
+                  ><input type="radio" name="q9" value="b" /> b) The origins of
+                  agriculture</label
+                >
+                <label
+                  ><input type="radio" name="q9" value="c" /> c) The development
+                  of cities</label
+                >
+                <label
+                  ><input type="radio" name="q9" value="d" /> d) The impact of
+                  climate change</label
+                >
+              </div>
+            </div>
+
+            <div class="question-container" data-page="2" data-question="10">
+              <div class="question">
+                10. According to the passage, what was one effect of agriculture
+                on human society?
+              </div>
+              <div class="options">
+                <label
+                  ><input type="radio" name="q10" value="a" /> a) People began
+                  to live shorter lives</label
+                >
+                <label
+                  ><input type="radio" name="q10" value="b" /> b) People started
+                  traveling more frequently</label
+                >
+                <label
+                  ><input type="radio" name="q10" value="c" /> c) People became
+                  more dependent on nature</label
+                >
+                <label
+                  ><input type="radio" name="q10" value="d" /> d) People formed
+                  governments</label
+                >
+              </div>
+            </div>
+
+            <div class="navigation-buttons">
+              <button type="button" id="prevBtn">Previous</button>
+              <button type="button" id="nextBtn">Next</button>
+              <button type="submit" class="submit-btn" id="submitBtn">
+                Submit Answers
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    
+
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h3>Are you sure it's finished?</h3>
+        <p>You won't be able to change your answers after submitting.</p>
+        <div class="modal-buttons">
+          <button id="confirmYes">Yes, Submit</button>
+          <button id="confirmNo">No, Continue</button>
+        </div>
+      </div>
+    </div>
+
     <footer>
-        <p>© 2023 TOEFL Tester | Practice Reading Skills</p>
+      <p>© 2023 TOEFL Tester | Practice Reading Skills</p>
     </footer>
+
     <script>
-        // Timer functionality
-        let timeLeft = 20 * 60; // 20 minutes in seconds
-        const timerDisplay = document.createElement('div');
-        timerDisplay.id = 'timer';
-        timerDisplay.style.textAlign = 'center';
-        timerDisplay.style.fontSize = '1.2rem';
-        timerDisplay.style.fontWeight = 'bold';
-        timerDisplay.style.margin = '20px 0';
-        document.querySelector('header').appendChild(timerDisplay);
-        
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                alert("Time's up! Submitting your answers now.");
-                document.getElementById("reading-quiz").dispatchEvent(new Event('submit'));
-            }
-            timeLeft--;
+      // Timer
+      let timeLeft = 20 * 60;
+      const timerDisplay = document.getElementById("timer");
+
+      function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `Time Remaining: ${minutes}:${
+          seconds < 10 ? "0" : ""
+        }${seconds}`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("Time's up!");
+          document
+            .getElementById("reading-quiz")
+            .dispatchEvent(new Event("submit"));
         }
-        
-        // Initialize timer
-        updateTimer();
-        const timerInterval = setInterval(updateTimer, 1000);
-        
-        document.getElementById("reading-quiz").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            // Clear timer when submitting
-            clearInterval(timerInterval);
-            
-            const answers = {
-                q1: "b",
-                q2: "c",
-                q3: "b",
-                q4: "c",
-                q5: "b"
-            };
-            
-            let score = 0;
-            let feedback = "Results:\n";
-            
-            for (let i = 1; i <= 5; i++) {
-                const selectedAnswer = document.querySelector(`input[name="q${i}"]:checked`);
-                if (selectedAnswer) {
-                    if (selectedAnswer.value === answers[`q${i}`]) {
-                        score++;
-                        feedback += `Question ${i}: Correct\n`;
-                    } else {
-                        feedback += `Question ${i}: Incorrect\n`;
-                    }
-                } else {
-                    feedback += `Question ${i}: No answer selected\n`;
-                }
-            }
-            
-            feedback += `\nYour score: ${score}/5`;
-            
-            let userAnswers = {};
-            for (let i = 1; i <= 5; i++) {
-                const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                userAnswers['q'+i] = selected ? selected.value : "-";
-            }
-            localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
-            
-            // Store results in localStorage to access them on the result page
-            localStorage.setItem('quizScore', score);
-            localStorage.setItem('quizFeedback', feedback);
-            localStorage.setItem('timeUsed', 20*60 - timeLeft); // Store time used
-            
-            // Redirect to result.html
-            window.location.href = 'result.html';
+        timeLeft--;
+      }
+
+      const timerInterval = setInterval(updateTimer, 1000);
+
+      // Initialize question numbers
+      const questionNumbersContainer =
+        document.getElementById("questionNumbers");
+      const totalQuestions = 10;
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        const numberBtn = document.createElement("div");
+        numberBtn.className = "question-number";
+        numberBtn.textContent = i;
+        numberBtn.dataset.question = i;
+        numberBtn.addEventListener("click", () => {
+          navigateToQuestion(i);
         });
-        
-        // Disable right-click
-            document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-            });
+        questionNumbersContainer.appendChild(numberBtn);
+      }
+
+      // Track answered questions
+      const answeredQuestions = new Set();
+
+      // Add event listeners to all radio buttons
+      document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+        radio.addEventListener("change", function () {
+          const questionNum = this.name.substring(1);
+          answeredQuestions.add(parseInt(questionNum));
+          updateQuestionNumbers();
+        });
+      });
+
+      function updateQuestionNumbers() {
+        document.querySelectorAll(".question-number").forEach((el) => {
+          const questionNum = parseInt(el.dataset.question);
+          el.classList.toggle("answered", answeredQuestions.has(questionNum));
+          el.classList.toggle("current", currentQuestion === questionNum);
+        });
+      }
+
+      // Pagination logic
+      let currentPage = 1;
+      let currentQuestion = 1;
+
+      function showPage(pageNumber) {
+        currentPage = pageNumber;
+        const allQuestions = document.querySelectorAll(".question-container");
+        allQuestions.forEach((q) => q.classList.remove("active"));
+
+        document
+          .querySelectorAll(`.question-container[data-page="${pageNumber}"]`)
+          .forEach((q) => q.classList.add("active"));
+
+        const firstQuestionOnPage = document.querySelector(
+          `.question-container[data-page="${pageNumber}"]`
+        );
+        if (firstQuestionOnPage) {
+          currentQuestion = parseInt(firstQuestionOnPage.dataset.question);
+          updateQuestionNumbers();
+        }
+      }
+
+      function navigateToQuestion(questionNumber) {
+        currentQuestion = questionNumber;
+        const questionElement = document.querySelector(
+          `.question-container[data-question="${questionNumber}"]`
+        );
+        if (questionElement) {
+          document
+            .querySelectorAll(".question-container")
+            .forEach((q) => q.classList.remove("active"));
+          questionElement.classList.add("active");
+          currentPage = parseInt(questionElement.dataset.page);
+          updateQuestionNumbers();
+          toggleSubmitButton();
+
+          // Scroll to the question
+          questionElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          showPage(currentPage);
+          toggleSubmitButton();
+        }
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        const totalPages = 2;
+        if (currentPage < totalPages) {
+          currentPage++;
+          showPage(currentPage);
+          toggleSubmitButton();
+        }
+      });
+
+      function toggleSubmitButton() {
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.style.display = currentPage === 2 ? "inline-block" : "none";
+      }
+
+      // Initialize
+      showPage(currentPage);
+      updateQuestionNumbers();
+      toggleSubmitButton();
+
+      // Modal Confirmation
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          document.getElementById("confirmModal").style.display = "flex";
+        });
+
+      document
+        .getElementById("confirmYes")
+        .addEventListener("click", function () {
+          document.getElementById("confirmModal").style.display = "none";
+          clearInterval(timerInterval);
+
+          const correctAnswers = {
+            q1: "a",
+            q2: "a",
+            q3: "b",
+            q4: "c",
+            q5: "b",
+            q6: "d",
+            q7: "c",
+            q8: "b",
+            q9: "b",
+            q10: "d",
+          };
+
+          let score = 0;
+          let feedback = "Results:\n";
+
+          for (let i = 1; i <= 10; i++) {
+            const selected = document.querySelector(
+              `input[name="q${i}"]:checked`
+            );
+            if (selected && selected.value === correctAnswers[`q${i}`]) {
+              score++;
+              feedback += `Question ${i}: Correct\n`;
+            } else {
+              feedback += `Question ${i}: Incorrect\n`;
+            }
+          }
+
+          feedback += `\nYour score: ${score}/10`;
+
+          localStorage.setItem("quizScore", score);
+          localStorage.setItem("quizFeedback", feedback);
+          localStorage.setItem("timeUsed", 20 * 60 - timeLeft);
+
+          window.location.href = "result.html";
+        });
+
+      document
+        .getElementById("confirmNo")
+        .addEventListener("click", function () {
+          document.getElementById("confirmModal").style.display = "none";
+        });
+
+      // Update toggleSubmitButton untuk hanya muncul di question 10
+      function toggleSubmitButton() {
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.style.display =
+          currentQuestion === 10 ? "inline-block" : "none";
+      }
+
+      // Submit Logic
+      document
+        .getElementById("reading-quiz")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          clearInterval(timerInterval);
+
+          const correctAnswers = {
+            q1: "a",
+            q2: "a",
+            q3: "b",
+            q4: "c",
+            q5: "b",
+            q6: "d",
+            q7: "c",
+            q8: "b",
+            q9: "b",
+            q10: "d",
+          };
+
+          let score = 0;
+          let feedback = "Results:\n";
+
+          for (let i = 1; i <= 10; i++) {
+            const selected = document.querySelector(
+              `input[name="q${i}"]:checked`
+            );
+            if (selected && selected.value === correctAnswers[`q${i}`]) {
+              score++;
+              feedback += `Question ${i}: Correct\n`;
+            } else {
+              feedback += `Question ${i}: Incorrect\n`;
+            }
+          }
+
+          feedback += `\nYour score: ${score}/10`;
+
+          localStorage.setItem("quizScore", score);
+          localStorage.setItem("quizFeedback", feedback);
+          localStorage.setItem("timeUsed", 20 * 60 - timeLeft);
+
+          window.location.href = "result.html";
+        });
+
+      // Disable right-click
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
     </script>
-</body>
+  </body>
 </html>
