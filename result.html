@@ -1,215 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Reading Test Results</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .result-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .score {
-            font-size: 48px;
-            color: #27ae60;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .details {
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .btn {
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .result-container {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+      }
+      .score {
+        font-size: 48px;
+        color: #27ae60;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .details {
+        margin-top: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .buttons {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .btn {
+        padding: 10px 20px;
+        margin: 0 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .btn-primary {
+        background-color: #3498db;
+        color: white;
+      }
+      .btn-secondary {
+        background-color: #95a5a6;
+        color: white;
+      }
+      thead th {
+        color: black !important;
+        background-color: white !important;
+      }
+      /* Baris hasil yang salah */
+      tr.incorrect {
+        background-color: #ffe6e6; /* Merah muda lembut */
+        color: #8b0000; /* Warna teks gelap */
+      }
+
+      /* Untuk kolom jawaban salah */
+      tr.incorrect td {
+        background-color: #ffe6e6;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="result-container">
-        <h1>TOEFL Reading Test Results</h1>
-        <div class="score" id="score"></div>
-        <div class="details">
-            <h2>Performance Summary</h2>
-            <table>
-                <tr>
-                    <th>Category</th>
-                    <th>Score</th>
-                    <th>Performance</th>
-                </tr>
-                <tr>
-                    <td>Comprehension</td>
-                    <td id="comprehension-score"></td>
-                    <td id="comprehension-performance"></td>
-                </tr>
-                <tr>
-                    <td>Details</td>
-                    <td id="details-score"></td>
-                    <td id="details-performance"></td>
-                </tr>
-                <tr>
-                    <td>Inference</td>
-                    <td id="inference-score"></td>
-                    <td id="inference-performance"></td>
-                </tr>
-            </table>
-            <h2>Question Analysis</h2>
-            <table>
-                <tr>
-                    <th>Question</th>
-                    <th>Your Answer</th>
-                    <th>Correct Answer</th>
-                    <th>Result</th>
-                </tr>
-                <tr>
-                    <td>1. Neolithic Revolution period</td>
-                    <td id="ans1"></td>
-                    <td>B</td>
-                    <td id="res1"></td>
-                </tr>
-                <tr>
-                    <td>2. Reason for permanent settlement</td>
-                    <td id="ans2"></td>
-                    <td>C</td>
-                    <td id="res2"></td>
-                </tr>
-                <tr>
-                    <td>3. EXCEPT region for early agriculture</td>
-                    <td id="ans3"></td>
-                    <td>B</td>
-                    <td id="res3"></td>
-                </tr>
-                <tr>
-                    <td>4. Crop in Fertile Crescent</td>
-                    <td id="ans4"></td>
-                    <td>C</td>
-                    <td id="res4"></td>
-                </tr>
-                <tr>
-                    <td>5. Effect of agriculture</td>
-                    <td id="ans5"></td>
-                    <td>B</td>
-                    <td id="res5"></td>
-                </tr>
-            </table>
-        </div>
-        <div class="buttons">
-            <button class="btn btn-primary" onclick="window.location.href='index.html'">Back to Home</button>
-            <button class="btn btn-secondary" onclick="window.print()">Print Results</button>
-        </div>
+      <h1>TOEFL Reading Test Results</h1>
+      <div class="score" id="score"></div>
+      <div class="details">
+        <h2>Performance Summary</h2>
+        <table>
+          <tr>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Performance</th>
+          </tr>
+          <tr>
+            <td>Comprehension</td>
+            <td id="comprehension-score"></td>
+            <td id="comprehension-performance"></td>
+          </tr>
+          <tr>
+            <td>Details</td>
+            <td id="details-score"></td>
+            <td id="details-performance"></td>
+          </tr>
+          <tr>
+            <td>Inference</td>
+            <td id="inference-score"></td>
+            <td id="inference-performance"></td>
+          </tr>
+        </table>
+        <h2>Question Analysis</h2>
+        <table id="question-analysis-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Your Answer</th>
+              <th>Correct Answer</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody id="question-analysis-table">
+            <!-- Ini akan diisi secara dinamis -->
+            <tr row-1>
+              <td>
+                1. The company has experienced … growth over the past year.
+              </td>
+              <td id="ans1"></td>
+              <td>A</td>
+              <td id="res1"></td>
+            </tr>
+            <tr row-2>
+              <td>
+                2. The marketing department is planning a … campaign to promote
+                the new product.
+              </td>
+              <td id="ans2"></td>
+              <td>A</td>
+              <td id="res2"></td>
+            </tr>
+            <tr row-3>
+              <td>
+                3. The passage mentions all of the following as regions where
+                early agriculture developed EXCEPT:
+              </td>
+              <td id="ans3"></td>
+              <td>B</td>
+              <td id="res3"></td>
+            </tr>
+            <tr row-4>
+              <td>
+                4. According to the passage, which crop was commonly
+                domesticated in the Fertile Crescent?
+              </td>
+              <td id="ans4"></td>
+              <td>C</td>
+              <td id="res4"></td>
+            </tr>
+            <tr row-5>
+              <td>
+                5. The passage suggests that the development of agriculture led
+                to:
+              </td>
+              <td id="ans5"></td>
+              <td>B</td>
+              <td id="res5"></td>
+            </tr>
+            <tr row-6>
+              <td>
+                6. Which of the following is NOT mentioned as a benefit of
+                agriculture in the passage?
+              </td>
+              <td id="ans6"></td>
+              <td>D</td>
+              <td id="res6"></td>
+            </tr>
+            <tr row-7>
+              <td>
+                7. What does the passage imply about hunter-gatherer societies?
+              </td>
+              <td id="ans7"></td>
+              <td>C</td>
+              <td id="res7"></td>
+            </tr>
+            <tr row-8>
+              <td>
+                8. Which of the following words can best replace the word
+                'domesticated' in paragraph 2?
+              </td>
+              <td id="ans8"></td>
+              <td>B</td>
+              <td id="res8"></td>
+            </tr>
+            <tr row-9>
+              <td>9. What is the main idea of the passage?</td>
+              <td id="ans9"></td>
+              <td>B</td>
+              <td id="res9"></td>
+            </tr>
+            <tr row-10>
+              <td>
+                10. According to the passage, what was one effect of agriculture
+                on human society?
+              </td>
+              <td id="ans10"></td>
+              <td>D</td>
+              <td id="res10"></td>
+            </tr>
+            <tr row-11>
+              <td>
+                11. According to the passage, what was one effect of agriculture
+                on human society?
+              </td>
+              <td id="ans11"></td>
+              <td>D</td>
+              <td id="res11"></td>
+            </tr>
+            <tr row-12>
+              <td>
+                12. According to the passage, what was one effect of agriculture
+                on human society?
+              </td>
+              <td id="ans12"></td>
+              <td>D</td>
+              <td id="res12"></td>
+            </tr>
+            <tr row-13>
+              <td>
+                13. According to the passage, what was one effect of agriculture
+                on human society?
+              </td>
+              <td id="ans13"></td>
+              <td>D</td>
+              <td id="res13"></td>
+            </tr>
+            <tr row-14>
+              <td>
+                14. Which of the following is NOT mentioned as a benefit of
+                agriculture in the passage?
+              </td>
+              <td id="ans14"></td>
+              <td>D</td>
+              <td id="res14"></td>
+            </tr>
+            <tr row-15>
+              <td>
+                15. What does the passage imply about hunter-gatherer societies?
+              </td>
+              <td id="ans15"></td>
+              <td>C</td>
+              <td id="res15"></td>
+            </tr>
+            <tr row-16>
+              <td>
+                16. Which of the following words can best replace the word
+                'domesticated' in paragraph 2?
+              </td>
+              <td id="ans16"></td>
+              <td>B</td>
+              <td id="res16"></td>
+            </tr>
+            <tr row-17>
+              <td>17. What is the main idea of the passage?</td>
+              <td id="ans17"></td>
+              <td>B</td>
+              <td id="res17"></td>
+            </tr>
+            <tr row-18>
+              <td>18. What is the main idea of the passage?</td>
+              <td id="ans18"></td>
+              <td>C</td>
+              <td id="res18"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="buttons">
+        <button
+          class="btn btn-primary"
+          onclick="window.location.href='index.html'"
+        >
+          Back to Home
+        </button>
+        <button class="btn btn-secondary" onclick="window.print()">
+          Print Results
+        </button>
+      </div>
     </div>
     <script>
-        // Correct answers
-        const correctAnswers = {
-            q1: "b",
-            q2: "c",
-            q3: "b",
-            q4: "c",
-            q5: "b"
-        };
+      // Ambil data dari localStorage
+      const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+      const questionDetails =
+        JSON.parse(localStorage.getItem("questionDetails")) || {};
+      for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
+        const key = `q${i}`;
+        const detail = questionDetails[key];
+        if (!detail) continue;
+        document.getElementById(`ans${i}`).textContent =
+          detail.yourAnswer || "-";
+        document.getElementById(`res${i}`).textContent = detail.result || "-";
 
-        // Option labels
-        const optionLabels = {
-            q1: { a: "A", b: "B", c: "C", d: "D" },
-            q2: { a: "A", b: "B", c: "C", d: "D" },
-            q3: { a: "A", b: "B", c: "C", d: "D" },
-            q4: { a: "A", b: "B", c: "C", d: "D" },
-            q5: { a: "A", b: "B", c: "C", d: "D" }
-        };
-
-        // Get user answers from localStorage (simulate if not present)
-        let userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
-        let score = localStorage.getItem('quizScore');
-        if (!userAnswers) {
-            // Fallback: try to reconstruct from score (for demo)
-            userAnswers = {};
-            for (let i = 1; i <= 5; i++) userAnswers['q'+i] = "-";
+        const row = document.querySelector(
+          `#question-analysis-table tr:nth-child(${i})`
+        );
+        if (row && detail.result === "✗") {
+          row.classList.add("incorrect");
         }
-        if (!score) score = 0;
+      }
+      const categories = JSON.parse(localStorage.getItem("categories")) || {
+        comprehension: { correct: 0, total: 0 },
+        details: { correct: 0, total: 0 },
+        inference: { correct: 0, total: 0 },
+      };
+      const score = parseInt(localStorage.getItem("quizScore")) || 0;
+      const totalQuestions =
+        parseInt(localStorage.getItem("totalQuestions")) || 0;
 
-        // Show score
-        document.getElementById('score').textContent = score + "/5";
+      // Tampilkan skor
+      document.getElementById(
+        "score"
+      ).textContent = `${score}/${totalQuestions}`;
 
-        // Fill question analysis
-        for (let i = 1; i <= 5; i++) {
-            const q = 'q'+i;
-            const userAns = userAnswers[q] ? userAnswers[q].toUpperCase() : "-";
-            const correctAns = correctAnswers[q].toUpperCase();
-            document.getElementById('ans'+i).textContent = userAns;
-            document.getElementById('res'+i).textContent = (userAns === correctAns) ? "✓" : "✗";
-        }
+      // Tampilkan performance summary
+      function getPerformanceLabel(correct, total) {
+        const percent = correct / total;
+        if (percent >= 0.8) return "Excellent";
+        else if (percent >= 0.5) return "Good";
+        else return "Needs Improvement";
+      }
 
-        // Performance summary (simple logic)
-        // Q1, Q2: Comprehension; Q3: Inference; Q4, Q5: Details
-        let comprehension = 0, details = 0, inference = 0;
-        if (userAnswers.q1 && userAnswers.q1 === correctAnswers.q1) comprehension++;
-        if (userAnswers.q2 && userAnswers.q2 === correctAnswers.q2) comprehension++;
-        if (userAnswers.q3 && userAnswers.q3 === correctAnswers.q3) inference++;
-        if (userAnswers.q4 && userAnswers.q4 === correctAnswers.q4) details++;
-        if (userAnswers.q5 && userAnswers.q5 === correctAnswers.q5) details++;
+      document.getElementById(
+        "comprehension-score"
+      ).textContent = `${categories.comprehension.correct}/${categories.comprehension.total}`;
+      document.getElementById("comprehension-performance").textContent =
+        getPerformanceLabel(
+          categories.comprehension.correct,
+          categories.comprehension.total
+        );
 
-        document.getElementById('comprehension-score').textContent = comprehension + "/2";
-        document.getElementById('details-score').textContent = details + "/2";
-        document.getElementById('inference-score').textContent = inference + "/1";
+      document.getElementById(
+        "details-score"
+      ).textContent = `${categories.details.correct}/${categories.details.total}`;
+      document.getElementById("details-performance").textContent =
+        getPerformanceLabel(
+          categories.details.correct,
+          categories.details.total
+        );
 
-        function perfLabel(val, max) {
-            if (val === max) return "Excellent";
-            if (val >= Math.ceil(max/2)) return "Good";
-            return "Needs Improvement";
-        }
-        document.getElementById('comprehension-performance').textContent = perfLabel(comprehension,2);
-        document.getElementById('details-performance').textContent = perfLabel(details,2);
-        document.getElementById('inference-performance').textContent = perfLabel(inference,1);
+      document.getElementById(
+        "inference-score"
+      ).textContent = `${categories.inference.correct}/${categories.inference.total}`;
+      document.getElementById("inference-performance").textContent =
+        getPerformanceLabel(
+          categories.inference.correct,
+          categories.inference.total
+        );
 
-            document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-            });
+      // Tampilkan analisis soal
+      const tableBody = document.querySelectorAll(
+        "#question-analysis-table tbody tr"
+      );
 
-        // Get user answers from quiz page if available
-        // (reading.html should save userAnswers as JSON in localStorage)
-        // Example: localStorage.setItem('userAnswers', JSON.stringify({q1:'b',q2:'c',...}))
+      for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
+        const key = `q${i}`;
+        const row = tableBody[i - 1];
+        if (!row) continue;
+
+        const detail = questionDetails[key];
+        row.children[1].textContent = detail.yourAnswer || "-";
+        row.children[2].textContent = detail.correctAnswer || "-";
+        row.children[3].textContent = detail.result || "-";
+      }
+
+      // Blokir klik kanan
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        return false;
+      });
     </script>
-</body>
+  </body>
 </html>

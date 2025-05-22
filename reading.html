@@ -82,6 +82,24 @@
         border-radius: 5px;
         text-align: center;
         font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      #submitBtnContainer {
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      #submitBtn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #2196f3;
+        color: white;
+        cursor: pointer;
+        width: 100%;
       }
 
       .reading-content {
@@ -92,33 +110,33 @@
 
       .reading-section {
         margin-bottom: 30px;
-        padding: 25px 30px; /* Ditambah padding lebih besar */
+        padding: 25px 30px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Tambah shadow untuk depth */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       .passage {
-        margin-bottom: 25px; /* Ditambah margin bottom */
+        margin-bottom: 25px;
         text-align: justify;
-        line-height: 1.7; /* Tingkatkan line height untuk readability */
+        line-height: 1.7;
       }
       .passage h2,
       .passage h3 {
         margin-top: 0;
-        padding-top: 15px; /* Tambah padding atas untuk heading */
-        color: #2c3e50; /* Warna lebih gelap untuk heading */
+        padding-top: 15px;
+        color: #2c3e50;
       }
 
       .passage h2 {
-        border-bottom: 2px solid #eee; /* Garis bawah untuk section heading */
+        border-bottom: 2px solid #eee;
         padding-bottom: 10px;
         margin-bottom: 20px;
       }
 
       .passage p {
-        margin-bottom: 15px; /* Spasi antar paragraf */
+        margin-bottom: 15px;
       }
       .question-container {
         margin-bottom: 25px;
@@ -161,15 +179,14 @@
         background-color: #f1f1f1;
       }
 
+      #prevBtn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
       #nextBtn {
         background-color: #4caf50;
         color: white;
-      }
-
-      #submitBtn {
-        background-color: #2196f3;
-        color: white;
-        display: none;
       }
 
       /* Modal Konfirmasi */
@@ -244,6 +261,12 @@
         <div id="timer-container">
           <div id="timer">Time Remaining: 20:00</div>
         </div>
+
+        <div id="submitBtnContainer">
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Submit Answers
+          </button>
+        </div>
       </div>
 
       <!-- Right column - Reading content -->
@@ -272,253 +295,12 @@
           </div>
 
           <form id="reading-quiz">
-            <div
-              class="question-container active"
-              data-page="1"
-              data-question="1"
-            >
-              <div class="question">
-                1. The company has experienced … growth over the past year.
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q1" value="a" /> a)
-                  significant</label
-                >
-                <label
-                  ><input type="radio" name="q1" value="b" /> b)
-                  signification</label
-                >
-                <label
-                  ><input type="radio" name="q1" value="c" /> c)
-                  significance</label
-                >
-                <label
-                  ><input type="radio" name="q1" value="d" /> d)
-                  significantly</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="1" data-question="2">
-              <div class="question">
-                2. The marketing department is planning a … campaign to promote
-                the new product.
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q2" value="a" /> a)
-                  advertising</label
-                >
-                <label
-                  ><input type="radio" name="q2" value="b" /> b)
-                  advertiser</label
-                >
-                <label
-                  ><input type="radio" name="q2" value="c" /> c)
-                  advertised</label
-                >
-                <label
-                  ><input type="radio" name="q2" value="d" /> d)
-                  advertise</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="1" data-question="3">
-              <div class="question">
-                3. The passage mentions all of the following as regions where
-                early agriculture developed EXCEPT:
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q3" value="a" /> a) The Fertile
-                  Crescent</label
-                >
-                <label
-                  ><input type="radio" name="q3" value="b" /> b)
-                  Australia</label
-                >
-                <label
-                  ><input type="radio" name="q3" value="c" /> c) China</label
-                >
-                <label
-                  ><input type="radio" name="q3" value="d" /> d)
-                  Mesoamerica</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="1" data-question="4">
-              <div class="question">
-                4. According to the passage, which crop was commonly
-                domesticated in the Fertile Crescent?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q4" value="a" /> a) Rice</label
-                >
-                <label
-                  ><input type="radio" name="q4" value="b" /> b) Maize</label
-                >
-                <label
-                  ><input type="radio" name="q4" value="c" /> c) Wheat</label
-                >
-                <label
-                  ><input type="radio" name="q4" value="d" /> d) Potatoes</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="1" data-question="5">
-              <div class="question">
-                5. The passage suggests that the development of agriculture led
-                to:
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q5" value="a" /> a) A decrease in
-                  human population</label
-                >
-                <label
-                  ><input type="radio" name="q5" value="b" /> b) The development
-                  of social hierarchies</label
-                >
-                <label
-                  ><input type="radio" name="q5" value="c" /> c) A more nomadic
-                  lifestyle</label
-                >
-                <label
-                  ><input type="radio" name="q5" value="d" /> d) The end of
-                  human civilization</label
-                >
-              </div>
-            </div>
-            <div class="question-container" data-page="2" data-question="6">
-              <div class="question">
-                6. Which of the following is NOT mentioned as a benefit of
-                agriculture in the passage?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q6" value="a" /> a) Increased food
-                  supply</label
-                >
-                <label
-                  ><input type="radio" name="q6" value="b" /> b) Development of
-                  cities</label
-                >
-                <label
-                  ><input type="radio" name="q6" value="c" /> c) Improved
-                  technology</label
-                >
-                <label
-                  ><input type="radio" name="q6" value="d" /> d) More leisure
-                  time</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="2" data-question="7">
-              <div class="question">
-                7. What does the passage imply about hunter-gatherer societies?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q7" value="a" /> a) They were more
-                  advanced than agricultural societies</label
-                >
-                <label
-                  ><input type="radio" name="q7" value="b" /> b) They had larger
-                  populations</label
-                >
-                <label
-                  ><input type="radio" name="q7" value="c" /> c) They moved from
-                  place to place</label
-                >
-                <label
-                  ><input type="radio" name="q7" value="d" /> d) They built
-                  permanent homes</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="2" data-question="8">
-              <div class="question">
-                8. Which of the following words can best replace the word
-                "domesticated" in paragraph 2?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q8" value="a" /> a) Planted</label
-                >
-                <label
-                  ><input type="radio" name="q8" value="b" /> b)
-                  Cultivated</label
-                >
-                <label
-                  ><input type="radio" name="q8" value="c" /> c)
-                  Harvested</label
-                >
-                <label
-                  ><input type="radio" name="q8" value="d" /> d) Gathered</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="2" data-question="9">
-              <div class="question">
-                9. What is the main idea of the passage?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q9" value="a" /> a) The history of
-                  modern humans</label
-                >
-                <label
-                  ><input type="radio" name="q9" value="b" /> b) The origins of
-                  agriculture</label
-                >
-                <label
-                  ><input type="radio" name="q9" value="c" /> c) The development
-                  of cities</label
-                >
-                <label
-                  ><input type="radio" name="q9" value="d" /> d) The impact of
-                  climate change</label
-                >
-              </div>
-            </div>
-
-            <div class="question-container" data-page="2" data-question="10">
-              <div class="question">
-                10. According to the passage, what was one effect of agriculture
-                on human society?
-              </div>
-              <div class="options">
-                <label
-                  ><input type="radio" name="q10" value="a" /> a) People began
-                  to live shorter lives</label
-                >
-                <label
-                  ><input type="radio" name="q10" value="b" /> b) People started
-                  traveling more frequently</label
-                >
-                <label
-                  ><input type="radio" name="q10" value="c" /> c) People became
-                  more dependent on nature</label
-                >
-                <label
-                  ><input type="radio" name="q10" value="d" /> d) People formed
-                  governments</label
-                >
-              </div>
-            </div>
+            <!-- Soal dibuat di script nya -->
 
             <div class="navigation-buttons">
-              <button type="button" id="prevBtn">Previous</button>
+              <button type="button" id="prevBtn" disabled>Previous</button>
               <button type="button" id="nextBtn">Next</button>
-              <button type="submit" class="submit-btn" id="submitBtn">
+              <button type="button" id="submitPageBtn" style="display: none">
                 Submit Answers
               </button>
             </div>
@@ -543,6 +325,201 @@
     </footer>
 
     <script>
+      // Data pertanyaan
+      const questionsPerPage = 5;
+      const questions = [
+        {
+          question:
+            "1. The company has experienced … growth over the past year.",
+          options: [
+            "a) significant",
+            "b) signification",
+            "c) significance",
+            "d) significantly",
+          ],
+          correctAnswer: "a",
+        },
+        {
+          question:
+            "2. The marketing department is planning a … campaign to promote the new product.",
+          options: [
+            "a) advertising",
+            "b) advertiser",
+            "c) advertised",
+            "d) advertise",
+          ],
+          correctAnswer: "a",
+        },
+        {
+          question:
+            "3. The passage mentions all of the following as regions where early agriculture developed EXCEPT:",
+          options: [
+            "a) The Fertile Crescent",
+            "b) Australia",
+            "c) China",
+            "d) Mesoamerica",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question:
+            "4. According to the passage, which crop was commonly domesticated in the Fertile Crescent?",
+          options: ["a) Rice", "b) Maize", "c) Wheat", "d) Potatoes"],
+          correctAnswer: "c",
+        },
+        {
+          question:
+            "5. The passage suggests that the development of agriculture led to:",
+          options: [
+            "a) A decrease in human population",
+            "b) The development of social hierarchies",
+            "c) A more nomadic lifestyle",
+            "d) The end of human civilization",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question:
+            "6. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
+          options: [
+            "a) Increased food supply",
+            "b) Development of cities",
+            "c) Improved technology",
+            "d) More leisure time",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "7. What does the passage imply about hunter-gatherer societies?",
+          options: [
+            "a) They were more advanced than agricultural societies",
+            "b) They had larger populations",
+            "c) They moved from place to place",
+            "d) They built permanent homes",
+          ],
+          correctAnswer: "c",
+        },
+        {
+          question:
+            "8. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
+          options: [
+            "a) Planted",
+            "b) Cultivated",
+            "c) Harvested",
+            "d) Gathered",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question: "9. What is the main idea of the passage?",
+          options: [
+            "a) The history of modern humans",
+            "b) The origins of agriculture",
+            "c) The development of cities",
+            "d) The impact of climate change",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question:
+            "10. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "a) People began to live shorter lives",
+            "b) People started traveling more frequently",
+            "c) People became more dependent on nature",
+            "d) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "11. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "a) People began to live shorter lives",
+            "b) People started traveling more frequently",
+            "c) People became more dependent on nature",
+            "d) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "12. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "a) People began to live shorter lives",
+            "b) People started traveling more frequently",
+            "c) People became more dependent on nature",
+            "d) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "13. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "a) People began to live shorter lives",
+            "b) People started traveling more frequently",
+            "c) People became more dependent on nature",
+            "d) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "14. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
+          options: [
+            "a) Increased food supply",
+            "b) Development of cities",
+            "c) Improved technology",
+            "d) More leisure time",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "15. What does the passage imply about hunter-gatherer societies?",
+          options: [
+            "a) They were more advanced than agricultural societies",
+            "b) They had larger populations",
+            "c) They moved from place to place",
+            "d) They built permanent homes",
+          ],
+          correctAnswer: "c",
+        },
+        {
+          question:
+            "16. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
+          options: [
+            "a) Planted",
+            "b) Cultivated",
+            "c) Harvested",
+            "d) Gathered",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question: "17. What is the main idea of the passage?",
+          options: [
+            "a) The history of modern humans",
+            "b) The origins of agriculture",
+            "c) The development of cities",
+            "d) The impact of climate change",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question: "18. What is the main idea of the passage?",
+          options: [
+            "a) The history of modern humans",
+            "b) The origins of agriculture",
+            "c) The development of cities",
+            "d) The impact of climate change",
+          ],
+          correctAnswer: "c",
+        },
+      ];
+
       // Timer
       let timeLeft = 20 * 60;
       const timerDisplay = document.getElementById("timer");
@@ -556,121 +533,200 @@
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           alert("Time's up!");
-          document
-            .getElementById("reading-quiz")
-            .dispatchEvent(new Event("submit"));
+          submitQuiz();
         }
         timeLeft--;
       }
 
       const timerInterval = setInterval(updateTimer, 1000);
 
+      // Fungsi untuk membuat elemen pertanyaan
+      function createQuestionElements() {
+        const quizForm = document.getElementById("reading-quiz");
+        const navigationButtons = quizForm.querySelector(".navigation-buttons");
+
+        // Hapus semua pertanyaan yang ada (jika ada)
+        const existingQuestions = quizForm.querySelectorAll(
+          ".question-container"
+        );
+        existingQuestions.forEach((q) => q.remove());
+
+        questions.forEach((q, index) => {
+          const questionNum = index + 1;
+          const pageNum = Math.ceil(questionNum / questionsPerPage);
+
+          const questionContainer = document.createElement("div");
+          questionContainer.className = "question-container";
+          questionContainer.dataset.page = pageNum;
+          questionContainer.dataset.question = questionNum;
+          questionContainer.style.display = "none";
+
+          const questionDiv = document.createElement("div");
+          questionDiv.className = "question";
+          questionDiv.textContent = q.question;
+
+          const optionsDiv = document.createElement("div");
+          optionsDiv.className = "options";
+
+          q.options.forEach((option, optIndex) => {
+            const optionLetter = String.fromCharCode(97 + optIndex); // a, b, c, d
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = `q${questionNum}`;
+            input.value = optionLetter;
+
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(` ${option}`));
+            optionsDiv.appendChild(label);
+          });
+
+          questionContainer.appendChild(questionDiv);
+          questionContainer.appendChild(optionsDiv);
+          quizForm.insertBefore(questionContainer, navigationButtons);
+        });
+
+        // Tampilkan halaman pertama
+        showPage(1);
+      }
+
       // Initialize question numbers
       const questionNumbersContainer =
         document.getElementById("questionNumbers");
-      const totalQuestions = 10;
+      const totalQuestions = questions.length;
 
-      for (let i = 1; i <= totalQuestions; i++) {
-        const numberBtn = document.createElement("div");
-        numberBtn.className = "question-number";
-        numberBtn.textContent = i;
-        numberBtn.dataset.question = i;
-        numberBtn.addEventListener("click", () => {
-          navigateToQuestion(i);
-        });
-        questionNumbersContainer.appendChild(numberBtn);
+      function initializeQuestionNumbers() {
+        questionNumbersContainer.innerHTML = "";
+
+        for (let i = 1; i <= totalQuestions; i++) {
+          const numberBtn = document.createElement("div");
+          numberBtn.className = "question-number";
+          numberBtn.textContent = i;
+          numberBtn.dataset.question = i;
+          numberBtn.addEventListener("click", () => {
+            const pageNum = Math.ceil(i / questionsPerPage);
+            showPage(pageNum);
+            // Scroll to the specific question
+            const questionElement = document.querySelector(
+              `.question-container[data-question="${i}"]`
+            );
+            if (questionElement) {
+              questionElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+          questionNumbersContainer.appendChild(numberBtn);
+        }
       }
 
       // Track answered questions
       const answeredQuestions = new Set();
 
       // Add event listeners to all radio buttons
-      document.querySelectorAll('input[type="radio"]').forEach((radio) => {
-        radio.addEventListener("change", function () {
-          const questionNum = this.name.substring(1);
-          answeredQuestions.add(parseInt(questionNum));
-          updateQuestionNumbers();
+      function setupRadioButtonListeners() {
+        document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+          radio.addEventListener("change", function () {
+            const questionNum = this.name.substring(1);
+            answeredQuestions.add(parseInt(questionNum));
+            updateQuestionNumbers();
+
+            // Simpan jawaban ke localStorage
+            const userAnswers =
+              JSON.parse(localStorage.getItem("userAnswers")) || {};
+            userAnswers[`q${questionNum}`] = this.value;
+            localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+          });
         });
-      });
+      }
 
       function updateQuestionNumbers() {
         document.querySelectorAll(".question-number").forEach((el) => {
           const questionNum = parseInt(el.dataset.question);
           el.classList.toggle("answered", answeredQuestions.has(questionNum));
-          el.classList.toggle("current", currentQuestion === questionNum);
+          // Highlight current page questions
+          const currentPageQuestions = Array.from(
+            { length: questionsPerPage },
+            (_, i) => (currentPage - 1) * questionsPerPage + i + 1
+          );
+          el.classList.toggle(
+            "current",
+            currentPageQuestions.includes(questionNum)
+          );
         });
       }
 
       // Pagination logic
       let currentPage = 1;
-      let currentQuestion = 1;
+      const totalPages = Math.ceil(totalQuestions / questionsPerPage);
 
       function showPage(pageNumber) {
         currentPage = pageNumber;
         const allQuestions = document.querySelectorAll(".question-container");
-        allQuestions.forEach((q) => q.classList.remove("active"));
+        allQuestions.forEach((q) => (q.style.display = "none"));
 
+        // Show all questions for current page
         document
           .querySelectorAll(`.question-container[data-page="${pageNumber}"]`)
-          .forEach((q) => q.classList.add("active"));
+          .forEach((q) => (q.style.display = "block"));
 
-        const firstQuestionOnPage = document.querySelector(
-          `.question-container[data-page="${pageNumber}"]`
+        updateQuestionNumbers();
+        updateNavigationButtons();
+
+        // Scroll to top of questions
+        const firstQuestion = document.querySelector(
+          `.question-container[data-page="${pageNumber}"][data-question="${
+            (pageNumber - 1) * questionsPerPage + 1
+          }"]`
         );
-        if (firstQuestionOnPage) {
-          currentQuestion = parseInt(firstQuestionOnPage.dataset.question);
-          updateQuestionNumbers();
-        }
-      }
-
-      function navigateToQuestion(questionNumber) {
-        currentQuestion = questionNumber;
-        const questionElement = document.querySelector(
-          `.question-container[data-question="${questionNumber}"]`
-        );
-        if (questionElement) {
-          document
-            .querySelectorAll(".question-container")
-            .forEach((q) => q.classList.remove("active"));
-          questionElement.classList.add("active");
-          currentPage = parseInt(questionElement.dataset.page);
-          updateQuestionNumbers();
-          toggleSubmitButton();
-
-          // Scroll to the question
-          questionElement.scrollIntoView({
+        if (firstQuestion) {
+          firstQuestion.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
         }
       }
 
+      function updateNavigationButtons() {
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitPageBtn = document.getElementById("submitPageBtn");
+
+        // Update Previous button
+        prevBtn.disabled = currentPage === 1;
+
+        // Update Next/Submit buttons
+        if (currentPage === totalPages) {
+          nextBtn.style.display = "none";
+          submitPageBtn.style.display = "inline-block";
+        } else {
+          nextBtn.style.display = "inline-block";
+          submitPageBtn.style.display = "none";
+        }
+      }
+
       document.getElementById("prevBtn").addEventListener("click", () => {
         if (currentPage > 1) {
-          currentPage--;
-          showPage(currentPage);
-          toggleSubmitButton();
+          showPage(currentPage - 1);
         }
       });
 
       document.getElementById("nextBtn").addEventListener("click", () => {
-        const totalPages = 2;
         if (currentPage < totalPages) {
-          currentPage++;
-          showPage(currentPage);
-          toggleSubmitButton();
+          showPage(currentPage + 1);
         }
       });
 
-      function toggleSubmitButton() {
-        const submitBtn = document.getElementById("submitBtn");
-        submitBtn.style.display = currentPage === 2 ? "inline-block" : "none";
-      }
+      document.getElementById("submitPageBtn").addEventListener("click", () => {
+        document.getElementById("confirmModal").style.display = "flex";
+      });
 
       // Initialize
-      showPage(currentPage);
-      updateQuestionNumbers();
-      toggleSubmitButton();
+      createQuestionElements();
+      initializeQuestionNumbers();
+      setupRadioButtonListeners();
+      updateNavigationButtons();
 
       // Modal Confirmation
       document
@@ -683,44 +739,7 @@
       document
         .getElementById("confirmYes")
         .addEventListener("click", function () {
-          document.getElementById("confirmModal").style.display = "none";
-          clearInterval(timerInterval);
-
-          const correctAnswers = {
-            q1: "a",
-            q2: "a",
-            q3: "b",
-            q4: "c",
-            q5: "b",
-            q6: "d",
-            q7: "c",
-            q8: "b",
-            q9: "b",
-            q10: "d",
-          };
-
-          let score = 0;
-          let feedback = "Results:\n";
-
-          for (let i = 1; i <= 10; i++) {
-            const selected = document.querySelector(
-              `input[name="q${i}"]:checked`
-            );
-            if (selected && selected.value === correctAnswers[`q${i}`]) {
-              score++;
-              feedback += `Question ${i}: Correct\n`;
-            } else {
-              feedback += `Question ${i}: Incorrect\n`;
-            }
-          }
-
-          feedback += `\nYour score: ${score}/10`;
-
-          localStorage.setItem("quizScore", score);
-          localStorage.setItem("quizFeedback", feedback);
-          localStorage.setItem("timeUsed", 20 * 60 - timeLeft);
-
-          window.location.href = "result.html";
+          submitQuiz();
         });
 
       document
@@ -729,61 +748,117 @@
           document.getElementById("confirmModal").style.display = "none";
         });
 
-      // Update toggleSubmitButton untuk hanya muncul di question 10
-      function toggleSubmitButton() {
-        const submitBtn = document.getElementById("submitBtn");
-        submitBtn.style.display =
-          currentQuestion === 10 ? "inline-block" : "none";
+      // Submit Logic
+      function submitQuiz() {
+        document.getElementById("confirmModal").style.display = "none";
+        clearInterval(timerInterval);
+
+        let score = 0;
+        const feedback = [];
+        const questionDetails = {};
+        const userAnswers = {};
+        const categories = {
+          comprehension: { correct: 0, total: 2 },
+          details: { correct: 0, total: 5 },
+          inference: { correct: 0, total: 3 },
+        };
+
+        // Definisi kategori soal
+        const questionCategories = {
+          q1: "comprehension",
+          q2: "comprehension",
+          q3: "inference",
+          q4: "details",
+          q5: "details",
+          q6: "details",
+          q7: "inference",
+          q8: "details",
+          q9: "comprehension",
+          q10: "inference",
+          q11: "comprehension",
+          q12: "comprehension",
+          q13: "inference",
+          q14: "details",
+          q15: "details",
+          q16: "details",
+          q17: "inference",
+        };
+
+        questions.forEach((q, index) => {
+          const questionNum = index + 1;
+          const questionKey = `q${questionNum}`;
+          const selected = document.querySelector(
+            `input[name="q${questionNum}"]:checked`
+          );
+          const userAnswer = selected ? selected.value : null;
+
+          userAnswers[questionKey] = userAnswer;
+          const isCorrect = selected && selected.value === q.correctAnswer;
+
+          if (isCorrect) {
+            score++;
+            feedback.push({ question: questionNum, result: "✓" });
+          } else {
+            feedback.push({
+              question: questionNum,
+              result: "✗",
+              correct: q.correctAnswer.toUpperCase(),
+            });
+          }
+
+          // Update kategori
+          const category = questionCategories[questionKey];
+          if (category) {
+            if (isCorrect) categories[category].correct += 1;
+          }
+
+          questionDetails[questionKey] = {
+            yourAnswer: userAnswer ? userAnswer.toUpperCase() : "-",
+            correctAnswer: q.correctAnswer.toUpperCase(),
+            result: isCorrect ? "✓" : "✗",
+          };
+        });
+
+        localStorage.setItem("quizScore", score);
+        localStorage.setItem("totalQuestions", questions.length);
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+        localStorage.setItem(
+          "questionDetails",
+          JSON.stringify(questionDetails)
+        );
+        localStorage.setItem("categories", JSON.stringify(categories));
+
+        window.location.href = "result.html";
       }
 
-      // Submit Logic
       document
         .getElementById("reading-quiz")
         .addEventListener("submit", function (event) {
           event.preventDefault();
-          clearInterval(timerInterval);
-
-          const correctAnswers = {
-            q1: "a",
-            q2: "a",
-            q3: "b",
-            q4: "c",
-            q5: "b",
-            q6: "d",
-            q7: "c",
-            q8: "b",
-            q9: "b",
-            q10: "d",
-          };
-
-          let score = 0;
-          let feedback = "Results:\n";
-
-          for (let i = 1; i <= 10; i++) {
-            const selected = document.querySelector(
-              `input[name="q${i}"]:checked`
-            );
-            if (selected && selected.value === correctAnswers[`q${i}`]) {
-              score++;
-              feedback += `Question ${i}: Correct\n`;
-            } else {
-              feedback += `Question ${i}: Incorrect\n`;
-            }
-          }
-
-          feedback += `\nYour score: ${score}/10`;
-
-          localStorage.setItem("quizScore", score);
-          localStorage.setItem("quizFeedback", feedback);
-          localStorage.setItem("timeUsed", 20 * 60 - timeLeft);
-
-          window.location.href = "result.html";
+          submitQuiz();
         });
 
       // Disable right-click
       document.addEventListener("contextmenu", (e) => {
         e.preventDefault();
       });
+
+      // Load saved answers
+      // window.addEventListener("DOMContentLoaded", () => {
+      //   const savedAnswers =
+      //     JSON.parse(localStorage.getItem("userAnswers")) || {};
+      //   Object.entries(savedAnswers).forEach(([questionName, answerValue]) => {
+      //     const radio = document.querySelector(
+      //       `input[name="${questionName}"][value="${answerValue}"]`
+      //     );
+      //     if (radio) {
+      //       radio.checked = true;
+      //       const questionNum = parseInt(questionName.substring(1));
+      //       answeredQuestions.add(questionNum);
+      //       updateQuestionNumbers();
+      //     }
+      //   });
+      // });
     </script>
   </body>
 </html>
