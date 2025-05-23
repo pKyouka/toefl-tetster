@@ -116,160 +116,282 @@
               <th>Result</th>
             </tr>
           </thead>
-          <tbody id="question-analysis-table">
-            <!-- Ini akan diisi secara dinamis -->
-            <tr row-1>
-              <td>
-                1. The company has experienced … growth over the past year.
-              </td>
-              <td id="ans1"></td>
-              <td>A</td>
-              <td id="res1"></td>
-            </tr>
-            <tr row-2>
-              <td>
-                2. The marketing department is planning a … campaign to promote
-                the new product.
-              </td>
-              <td id="ans2"></td>
-              <td>A</td>
-              <td id="res2"></td>
-            </tr>
-            <tr row-3>
-              <td>
-                3. The passage mentions all of the following as regions where
-                early agriculture developed EXCEPT:
-              </td>
-              <td id="ans3"></td>
-              <td>B</td>
-              <td id="res3"></td>
-            </tr>
-            <tr row-4>
-              <td>
-                4. According to the passage, which crop was commonly
-                domesticated in the Fertile Crescent?
-              </td>
-              <td id="ans4"></td>
-              <td>C</td>
-              <td id="res4"></td>
-            </tr>
-            <tr row-5>
-              <td>
-                5. The passage suggests that the development of agriculture led
-                to:
-              </td>
-              <td id="ans5"></td>
-              <td>B</td>
-              <td id="res5"></td>
-            </tr>
-            <tr row-6>
-              <td>
-                6. Which of the following is NOT mentioned as a benefit of
-                agriculture in the passage?
-              </td>
-              <td id="ans6"></td>
-              <td>D</td>
-              <td id="res6"></td>
-            </tr>
-            <tr row-7>
-              <td>
-                7. What does the passage imply about hunter-gatherer societies?
-              </td>
-              <td id="ans7"></td>
-              <td>C</td>
-              <td id="res7"></td>
-            </tr>
-            <tr row-8>
-              <td>
-                8. Which of the following words can best replace the word
-                'domesticated' in paragraph 2?
-              </td>
-              <td id="ans8"></td>
-              <td>B</td>
-              <td id="res8"></td>
-            </tr>
-            <tr row-9>
-              <td>9. What is the main idea of the passage?</td>
-              <td id="ans9"></td>
-              <td>B</td>
-              <td id="res9"></td>
-            </tr>
-            <tr row-10>
-              <td>
-                10. According to the passage, what was one effect of agriculture
-                on human society?
-              </td>
-              <td id="ans10"></td>
-              <td>D</td>
-              <td id="res10"></td>
-            </tr>
-            <tr row-11>
-              <td>
-                11. According to the passage, what was one effect of agriculture
-                on human society?
-              </td>
-              <td id="ans11"></td>
-              <td>D</td>
-              <td id="res11"></td>
-            </tr>
-            <tr row-12>
-              <td>
-                12. According to the passage, what was one effect of agriculture
-                on human society?
-              </td>
-              <td id="ans12"></td>
-              <td>D</td>
-              <td id="res12"></td>
-            </tr>
-            <tr row-13>
-              <td>
-                13. According to the passage, what was one effect of agriculture
-                on human society?
-              </td>
-              <td id="ans13"></td>
-              <td>D</td>
-              <td id="res13"></td>
-            </tr>
-            <tr row-14>
-              <td>
-                14. Which of the following is NOT mentioned as a benefit of
-                agriculture in the passage?
-              </td>
-              <td id="ans14"></td>
-              <td>D</td>
-              <td id="res14"></td>
-            </tr>
-            <tr row-15>
-              <td>
-                15. What does the passage imply about hunter-gatherer societies?
-              </td>
-              <td id="ans15"></td>
-              <td>C</td>
-              <td id="res15"></td>
-            </tr>
-            <tr row-16>
-              <td>
-                16. Which of the following words can best replace the word
-                'domesticated' in paragraph 2?
-              </td>
-              <td id="ans16"></td>
-              <td>B</td>
-              <td id="res16"></td>
-            </tr>
-            <tr row-17>
-              <td>17. What is the main idea of the passage?</td>
-              <td id="ans17"></td>
-              <td>B</td>
-              <td id="res17"></td>
-            </tr>
-            <tr row-18>
-              <td>18. What is the main idea of the passage?</td>
-              <td id="ans18"></td>
-              <td>C</td>
-              <td id="res18"></td>
-            </tr>
+          <tbody id="question-analysis-tbody">
+            <!-- Table will be populated dynamically from JSON -->
           </tbody>
         </table>
+
+        <script>
+          // Questions data in JSON format
+            const questionsData = [
+            {
+              id: 1,
+              text: "1. Kata sifat yang sesuai adalah Significant.",
+              correctAnswer: "A",
+              explanation: "Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth)."
+            },
+            {
+              id: 2,
+              text: "2. Kalimat tersebut membahas tentang rencana kampanye iklan sehingga jawaban yang tepat adalah Advertising.",
+              correctAnswer: "A",
+              explanation: "Dalam konteks pemasaran, 'advertising campaign' adalah frasa yang tepat untuk menggambarkan kampanye iklan."
+            },
+            {
+              id: 3,
+              text: "3. Kalimat tersebut ingin menunjukan kepemilikan laporan pada tahun tersebut sehingga jawaban yang tepat adalah Year's.",
+              correctAnswer: "D",
+              explanation: "Bentuk posesif dengan apostrophe (Year's) digunakan untuk menunjukkan kepemilikan laporan pada tahun tersebut."
+            },
+            {
+              id: 4,
+              text: "4. Kalimat tersebut berbicara tentang tujuan utama perusahaan sehingga jawaban yang paling tepat adalah Goal.",
+              correctAnswer: "B",
+              explanation: "Kata 'goal' yang berarti 'tujuan' adalah yang paling tepat untuk mendeskripsikan tujuan utama perusahaan."
+            },
+            {
+              id: 5,
+              text: "5. Setelah to yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang paling tepat adalah Improve.",
+              correctAnswer: "A",
+              explanation: "Setelah 'to', bentuk kata kerja yang digunakan adalah infinitive (bentuk dasar) seperti 'improve'."
+            },
+            {
+              id: 6,
+              text: "6. Kata yang tepat untuk mengisi kalimat rumpang di atas adalah Than.",
+              correctAnswer: "D",
+              explanation: "Kata 'than' digunakan dalam perbandingan, sesuai dengan konteks kalimat rumpang tersebut."
+            },
+            {
+              id: 7,
+              text: "7. Kata yang tepat untuk mengisi bagian rumpang adalah kata kerja dengan bentuk -ing sehingga jawaban yang sesuai adalah Receiving.",
+              correctAnswer: "A",
+              explanation: "Bentuk gerund (kata kerja + -ing) 'receiving' digunakan sebagai subjek atau setelah preposisi tertentu."
+            },
+            {
+              id: 8,
+              text: "8. Kalimat tersebut mengacu pada tindakan memberlakukan peraturan sehingga jawaban yang paling sesuai adalah Implementation.",
+              correctAnswer: "B",
+              explanation: "Implementation adalah kata yang tepat untuk menggambarkan tindakan menerapkan atau memberlakukan peraturan."
+            },
+            {
+              id: 9,
+              text: "9. Kata ganti relatif yang tepat di sini adalah Which.",
+              correctAnswer: "A",
+              explanation: "Which adalah kata ganti relatif yang tepat untuk merujuk pada benda atau konsep yang telah disebutkan sebelumnya."
+            },
+            {
+              id: 10,
+              text: "10. Kata yang diperlukan untuk melengkapi kalimat di atas adalah kata benda tunggal sehingga jawaban yang tepat adalah Plan.",
+              correctAnswer: "D",
+              explanation: "Plan adalah kata benda tunggal yang sesuai dengan konteks kalimat."
+            },
+            {
+              id: 11,
+              text: "11. Kata yang diperlukan untuk melengkapi kalimat di atas adalah Ensure.",
+              correctAnswer: "D",
+              explanation: "Kata 'ensure' diperlukan untuk melengkapi kalimat dengan makna yang tepat."
+            },
+            {
+              id: 12,
+              text: "12. Preposisi yang tepat untuk melengkapi kalimat di atas adalah Of.",
+              correctAnswer: "A",
+              explanation: "Preposisi 'of' adalah preposisi yang tepat untuk konteks kalimat tersebut."
+            },
+            {
+              id: 13,
+              text: "13. Pola kalimat pasif digunakan pada kalimat tersebut dengan rumus dasarnya adalah Subject + to be + V3 sehingga jawaban yang tepat adalah Is needed.",
+              correctAnswer: "A",
+              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'is needed' adalah bentuk pasif yang tepat."
+            },
+            {
+              id: 14,
+              text: "14. Setelah modal verb (should) yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang tepat adalah Consult.",
+              correctAnswer: "D",
+              explanation: "Setelah modal verb seperti 'should', bentuk kata kerja yang digunakan adalah bentuk dasar (verb 1)."
+            },
+            {
+              id: 15,
+              text: "15. Frasa yang tepat adalah Interested in.",
+              correctAnswer: "B",
+              explanation: "Frasa 'interested in' adalah frasa yang tepat untuk konteks kalimat tersebut."
+            },
+            {
+              id: 16,
+              text: "16. Frasa yang tepat adalah During the last.",
+              correctAnswer: "C",
+              explanation: "Frasa 'during the last' adalah frasa yang tepat untuk menunjukkan periode waktu tertentu."
+            },
+            {
+              id: 17,
+              text: "17. Gerund (verb-ing) setelah preposisi sehingga jawaban yang paling tepat adalah Taking on.",
+              correctAnswer: "A",
+              explanation: "Setelah preposisi, kata kerja harus dalam bentuk gerund (verb + -ing)."
+            },
+            {
+              id: 18,
+              text: "18. Conjunction atau kata hubung yang tepat adalah Yet.",
+              correctAnswer: "D",
+              explanation: "Yet adalah conjunction yang menunjukkan kontras atau pertentangan."
+            },
+            {
+              id: 19,
+              text: "19. Bentuk kata kerja yang benar dalam future tense setelah will adalah kata kerja bentuk dasar sehingga jawaban yang paling tepat adalah Introduce.",
+              correctAnswer: "A",
+              explanation: "Dalam future tense dengan 'will', kata kerja harus dalam bentuk dasar (infinitive without 'to')."
+            },
+            {
+              id: 20,
+              text: "20. Kata untuk menyatakan alasan atas sesuatu dan diikuti oleh kata benda atau frasa kata benda adalah Due to.",
+              correctAnswer: "B",
+              explanation: "Due to digunakan untuk menyatakan alasan dan diikuti oleh kata benda atau frasa kata benda."
+            },
+            {
+              id: 21,
+              text: "21. Kalimat tersebut membutuhkan kata yang menawarkan pilihan di antara dua pilihan sehingga jawaban yang tepat adalah Or.",
+              correctAnswer: "A",
+              explanation: "Or adalah conjunction yang digunakan untuk menawarkan pilihan atau alternatif."
+            },
+            {
+              id: 22,
+              text: "22. Kata yang digunakan untuk menunjukkan alasan adalah Since.",
+              correctAnswer: "A",
+              explanation: "Since digunakan untuk menunjukkan alasan atau sebab."
+            },
+            {
+              id: 23,
+              text: "23. Untuk menunjukkan penyebab atau alasan menggunakan kata Because.",
+              correctAnswer: "B",
+              explanation: "Because adalah conjunction yang digunakan untuk menunjukkan sebab atau alasan."
+            },
+            {
+              id: 24,
+              text: "24. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Signed.",
+              correctAnswer: "D",
+              explanation: "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3)."
+            },
+            {
+              id: 25,
+              text: "25. Kalimat tersebut menggambarkan suatu tindakan kebiasaan dan diperlukan bentuk simple present tense sehingga jawaban yang tepat adalah Develops.",
+              correctAnswer: "A",
+              explanation: "Simple present tense digunakan untuk menggambarkan kebiasaan atau fakta umum."
+            },
+            {
+              id: 26,
+              text: "26. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Completed.",
+              correctAnswer: "B",
+              explanation: "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3)."
+            },
+            {
+              id: 27,
+              text: "27. Ini adalah kalimat majemuk yang membutuhkan kata hubung sehingga kata yang tepat untuk mengisi bagian tersebut adalah So.",
+              correctAnswer: "A",
+              explanation: "So digunakan sebagai conjunction untuk menunjukkan hasil atau akibat."
+            },
+            {
+              id: 28,
+              text: "28. Kata keterangan untuk mengisi bagian yang rumpang adalah Hard.",
+              correctAnswer: "D",
+              explanation: "Hard adalah adverb yang menjelaskan bagaimana suatu tindakan dilakukan."
+            },
+            {
+              id: 29,
+              text: "29. Kalimat tersebut membutuhkan kata sifat untuk kata benda \"desain\" sehingga kata yang tepat untuk mengisi bagian tersebut adalah Elegant.",
+              correctAnswer: "C",
+              explanation: "Elegant adalah kata sifat (adjective) yang tepat untuk mendeskripsikan desain."
+            },
+            {
+              id: 30,
+              text: "30. Tense yang digunakan adalah present perfect continuous tense dengan rumus Subject + has/have + been + V-ing sehingga jawaban yang paling tepat adalah Been working.",
+              correctAnswer: "C",
+              explanation: "Present perfect continuous tense menggunakan struktur has/have + been + verb-ing."
+            },
+            {
+              id: 31,
+              text: "31. Sebelumnya terdapat kata kerja apologized yang menggunakan Verb 2 sehingga kata kerja setelahnya yang disambungkan dengan kata hubung and harus menggunakan pola yang sama sehingga kata yang tepat untuk mengisi bagian tersebut adalah Published.",
+              correctAnswer: "C",
+              explanation: "Dalam klausa yang dihubungkan dengan 'and', bentuk kata kerja harus konsisten dengan kata kerja sebelumnya."
+            },
+            {
+              id: 32,
+              text: "32. Kasus pada soal ini adalah penggunaan noun phrase sehingga jawaban yang tepat adalah Valuable period.",
+              correctAnswer: "C",
+              explanation: "Valuable period adalah noun phrase yang terdiri dari adjective + noun."
+            },
+            {
+              id: 33,
+              text: "33. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Been offered.",
+              correctAnswer: "B",
+              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Been offered' adalah bentuk pasif yang tepat."
+            },
+            {
+              id: 34,
+              text: "34. Kata kerja yang diletakan setelah to infinitive menggunakan bentuk dasar (Verb 1) sehingga jawaban yang tepat adalah Sell.",
+              correctAnswer: "D",
+              explanation: "Setelah 'to' sebagai infinitive, kata kerja harus dalam bentuk dasar (verb 1)."
+            },
+            {
+              id: 35,
+              text: "35. Pola comparative yang paling tepat untuk mengisi bagian kosong dari kalimat di atas adalah As smooth as possible.",
+              correctAnswer: "D",
+              explanation: "Pola 'as + adjective + as possible' adalah bentuk komparatif yang menunjukkan kualitas maksimum yang mungkin."
+            },
+            {
+              id: 36,
+              text: "36. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Is turned off.",
+              correctAnswer: "A",
+              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Is turned off' adalah bentuk pasif yang tepat."
+            },
+            {
+              id: 37,
+              text: "37. Kata yang tepat untuk menjelaskan pembaruan perangkat lunak akan tersedia pada suatu saat sebelum periode dua minggu berakhir adalah Within.",
+              correctAnswer: "A",
+              explanation: "'Within' digunakan untuk menunjukkan batas waktu tertentu."
+            },
+            {
+              id: 38,
+              text: "38. Ini adalah kalimat kondisional yang merujuk ke masa depan sehingga jawaban yang paling tepat adalah Will be.",
+              correctAnswer: "B",
+              explanation: "Dalam kalimat kondisional tipe 1 yang merujuk ke masa depan, 'will be' digunakan pada klausa utama."
+            },
+            {
+              id: 39,
+              text: "39. Kata yang tepat untuk menjelaskan bahwa acara akan ditunda hingga cuaca membaik adalah Until.",
+              correctAnswer: "B",
+              explanation: "'Until' digunakan untuk menunjukkan waktu berlangsungnya suatu kondisi sampai kondisi lain terpenuhi."
+            },
+            {
+              id: 40,
+              text: "40. Kata benda yang tepat untuk melengkapi kalimat di atas adalah Experience.",
+              correctAnswer: "B",
+              explanation: "'Experience' adalah kata benda yang tepat dalam konteks kalimat tersebut."
+            }
+          ];
+
+          // Generate table rows dynamically
+          const tableBody = document.getElementById("question-analysis-tbody");
+          questionsData.forEach(question => {
+            const row = document.createElement("tr");
+            row.setAttribute("row-" + question.id, "");
+            
+            const questionCell = document.createElement("td");
+            questionCell.textContent = question.text;
+            
+            const yourAnswerCell = document.createElement("td");
+            yourAnswerCell.id = "ans" + question.id;
+            
+            const correctAnswerCell = document.createElement("td");
+            correctAnswerCell.textContent = question.correctAnswer;
+            
+            const resultCell = document.createElement("td");
+            resultCell.id = "res" + question.id;
+            
+            row.appendChild(questionCell);
+            row.appendChild(yourAnswerCell);
+            row.appendChild(correctAnswerCell);
+            row.appendChild(resultCell);
+            
+            tableBody.appendChild(row);
+          });
+        </script>
       </div>
       <div class="buttons">
         <button
@@ -354,13 +476,13 @@
         );
 
       // Tampilkan analisis soal
-      const tableBody = document.querySelectorAll(
+      const tableRows = document.querySelectorAll(
         "#question-analysis-table tbody tr"
       );
 
       for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
         const key = `q${i}`;
-        const row = tableBody[i - 1];
+        const row = tableRows[i - 1];
         if (!row) continue;
 
         const detail = questionDetails[key];
