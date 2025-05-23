@@ -297,12 +297,13 @@
         document.getElementById(`res${i}`).textContent = detail.result || "-";
 
         const row = document.querySelector(
-          `#question-analysis-table tr:nth-child(${i})`
+          `#question-analysis-table tbody tr[row-${i}]`
         );
         if (row && detail.result === "✗") {
           row.classList.add("incorrect");
         }
       }
+
       const categories = JSON.parse(localStorage.getItem("categories")) || {
         comprehension: { correct: 0, total: 0 },
         details: { correct: 0, total: 0 },
@@ -373,6 +374,14 @@
         e.preventDefault();
         return false;
       });
+      // Blokir inspect element
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
     </script>
   </body>
 </html>
