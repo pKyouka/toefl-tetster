@@ -148,6 +148,190 @@
             </div>
         </div>
 
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <button id="prev-page" onclick="changePage(-1)">Previous</button>
+            <div id="page-numbers">
+                <button class="page-number active" onclick="goToPage(1)">1</button>
+                <button class="page-number" onclick="goToPage(2)">2</button>
+                <button class="page-number" onclick="goToPage(3)">3</button>
+            </div>
+            <button id="next-page" onclick="changePage(1)">Next</button>
+        </div>
+
+        <!-- Additional tasks (hidden initially) -->
+        <div id="task5" class="task" style="display: none;">
+            <div class="task-title">Task 5: Independent Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will express your opinion on a familiar topic. You will have 15 seconds to prepare and 45 seconds to speak.</p>
+                <p><strong>Question:</strong> What is the most important quality a leader should have? Explain why you think this quality is essential.</p>
+            </div>
+            <div class="timer" id="timer5">00:00</div>
+            <div class="recorder-status" id="recorder-status5">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(5)">Start Preparation</button>
+                <button onclick="startRecording(5)" disabled id="record-btn5">Start Speaking</button>
+                <button onclick="stopRecording(5)" disabled id="stop-btn5">Stop</button>
+                <button onclick="playRecording(5)" disabled id="play-btn5">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task6" class="task" style="display: none;">
+            <div class="task-title">Task 6: Integrated Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will read a short passage, listen to a conversation on the same topic, and then speak in response to a question. You will have 30 seconds to prepare and 60 seconds to speak.</p>
+                <p><strong>Reading Passage:</strong></p>
+                <p>The university library has announced new extended hours. Starting next month, the library will remain open 24 hours during weekdays and close at midnight on weekends. This change is intended to accommodate students who need study spaces during late hours.</p>
+                <p><strong>After reading and listening, you will answer the following question:</strong></p>
+                <p>Summarize the woman's opinion about the library's new hours and explain the reasons she gives for her opinion.</p>
+            </div>
+            <div class="timer" id="timer6">00:00</div>
+            <div class="recorder-status" id="recorder-status6">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(6)">Start Preparation</button>
+                <button onclick="startRecording(6)" disabled id="record-btn6">Start Speaking</button>
+                <button onclick="stopRecording(6)" disabled id="stop-btn6">Stop</button>
+                <button onclick="playRecording(6)" disabled id="play-btn6">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task7" class="task" style="display: none;">
+            <div class="task-title">Task 7: Independent Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will express your opinion on a familiar topic. You will have 15 seconds to prepare and 45 seconds to speak.</p>
+                <p><strong>Question:</strong> Some people prefer to travel alone, while others prefer to travel with companions. Which do you prefer and why?</p>
+            </div>
+            <div class="timer" id="timer7">00:00</div>
+            <div class="recorder-status" id="recorder-status7">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(7)">Start Preparation</button>
+                <button onclick="startRecording(7)" disabled id="record-btn7">Start Speaking</button>
+                <button onclick="stopRecording(7)" disabled id="stop-btn7">Stop</button>
+                <button onclick="playRecording(7)" disabled id="play-btn7">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task8" class="task" style="display: none;">
+            <div class="task-title">Task 8: Integrated Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will listen to part of an academic lecture and then speak in response to a question about it. You will have 30 seconds to prepare and 60 seconds to speak.</p>
+                <p><strong>After listening to the lecture, you will answer the following question:</strong></p>
+                <p>Using examples from the lecture, explain the concept of sustainable urban planning and its benefits.</p>
+            </div>
+            <div class="timer" id="timer8">00:00</div>
+            <div class="recorder-status" id="recorder-status8">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(8)">Start Preparation</button>
+                <button onclick="startRecording(8)" disabled id="record-btn8">Start Speaking</button>
+                <button onclick="stopRecording(8)" disabled id="stop-btn8">Stop</button>
+                <button onclick="playRecording(8)" disabled id="play-btn8">Play Recording</button>
+            </div>
+        </div>
+
+        <div id="task9" class="task" style="display: none;">
+            <div class="task-title">Task 9: Independent Speaking Task</div>
+            <div class="task-description">
+                <p>In this task, you will express your opinion on a familiar topic. You will have 15 seconds to prepare and 45 seconds to speak.</p>
+                <p><strong>Question:</strong> Describe a meaningful achievement in your life and explain why it was significant to you.</p>
+            </div>
+            <div class="timer" id="timer9">00:00</div>
+            <div class="recorder-status" id="recorder-status9">Ready to record</div>
+            <div class="controls">
+                <button onclick="startPreparation(9)">Start Preparation</button>
+                <button onclick="startRecording(9)" disabled id="record-btn9">Start Speaking</button>
+                <button onclick="stopRecording(9)" disabled id="stop-btn9">Stop</button>
+                <button onclick="playRecording(9)" disabled id="play-btn9">Play Recording</button>
+            </div>
+        </div>
+
+        <script>
+            // Pagination functionality
+            const tasksPerPage = 4;
+            const totalTasks = 9;
+            const totalPages = Math.ceil(totalTasks / tasksPerPage);
+            let currentPage = 1;
+
+            function updatePageNumbers() {
+                const pageNumbersContainer = document.getElementById('page-numbers');
+                pageNumbersContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const button = document.createElement('button');
+                    button.classList.add('page-number');
+                    if (i === currentPage) button.classList.add('active');
+                    button.textContent = i;
+                    button.onclick = () => goToPage(i);
+                    pageNumbersContainer.appendChild(button);
+                }
+            }
+
+            function goToPage(page) {
+                if (page < 1 || page > totalPages) return;
+                
+                currentPage = page;
+                updatePageNumbers();
+                showTasksForCurrentPage();
+            }
+
+            function changePage(direction) {
+                goToPage(currentPage + direction);
+            }
+
+            function showTasksForCurrentPage() {
+                const startTask = (currentPage - 1) * tasksPerPage + 1;
+                const endTask = Math.min(startTask + tasksPerPage - 1, totalTasks);
+                
+                // Hide all tasks
+                for (let i = 1; i <= totalTasks; i++) {
+                    const task = document.getElementById(`task${i}`);
+                    if (task) task.style.display = 'none';
+                }
+                
+                // Show tasks for current page
+                for (let i = startTask; i <= endTask; i++) {
+                    const task = document.getElementById(`task${i}`);
+                    if (task) task.style.display = 'block';
+                }
+                
+                // Update navigation buttons
+                document.getElementById('prev-page').disabled = currentPage === 1;
+                document.getElementById('next-page').disabled = currentPage === totalPages;
+            }
+
+            // Initialize pagination on page load
+            window.onload = function() {
+                updatePageNumbers();
+                showTasksForCurrentPage();
+            };
+        </script>
+
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 20px 0;
+            }
+            
+            #page-numbers {
+                display: flex;
+                margin: 0 10px;
+            }
+            
+            .page-number {
+                margin: 0 5px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                font-weight: bold;
+            }
+            
+            .page-number.active {
+                background-color: #2980b9;
+                color: white;
+            }
+        </style>
+
         <div class="nav-buttons">
             <a href="index.html"><button>Back to Home</button></a>
         </div>
