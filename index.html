@@ -129,22 +129,16 @@
     </style>
   </head>
   <body>
-    <div
-      class="circle"
-      style="width: 150px; height: 150px; top: 10%; left: 5%"
-    ></div>
-    <div
-      class="circle"
-      style="width: 100px; height: 100px; top: 70%; left: 80%"
-    ></div>
-    <div
-      class="circle"
-      style="width: 200px; height: 200px; top: 30%; left: 60%"
-    ></div>
-    <div
-      class="circle"
-      style="width: 80px; height: 80px; top: 80%; left: 10%"
-    ></div>
+    <!-- More circles with increased opacity and visibility -->
+    <div class="circle" style="width: 150px; height: 150px; top: 10%; left: 5%; background: rgba(245, 127, 32, 0.2); animation: moveCircle1 18s infinite alternate-reverse ease-in-out;"></div>
+    <div class="circle" style="width: 100px; height: 100px; top: 70%; left: 80%; background: rgba(245, 127, 32, 0.25); animation: moveCircle2 12s infinite alternate ease-in-out; animation-delay: 1s;"></div>
+    <div class="circle" style="width: 200px; height: 200px; top: 30%; left: 60%; background: rgba(245, 127, 32, 0.18); animation: moveCircle3 15s infinite alternate-reverse ease-in-out; animation-delay: 2s;"></div>
+    <div class="circle" style="width: 80px; height: 80px; top: 80%; left: 10%; background: rgba(245, 127, 32, 0.22); animation: moveCircle4 20s infinite alternate ease-in-out; animation-delay: 0.5s;"></div>
+    <!-- Added additional circles -->
+    <div class="circle" style="width: 120px; height: 120px; top: 15%; left: 75%; background: rgba(245, 127, 32, 0.2); animation: moveCircle2 16s infinite alternate ease-in-out; animation-delay: 1.5s;"></div>
+    <div class="circle" style="width: 180px; height: 180px; top: 50%; left: 30%; background: rgba(245, 127, 32, 0.15); animation: moveCircle3 17s infinite alternate-reverse ease-in-out; animation-delay: 0.8s;"></div>
+    <div class="circle" style="width: 90px; height: 90px; top: 65%; left: 45%; background: rgba(245, 127, 32, 0.25); animation: moveCircle1 14s infinite alternate ease-in-out; animation-delay: 2.5s;"></div>
+    <div class="circle" style="width: 130px; height: 130px; top: 25%; left: 25%; background: rgba(245, 127, 32, 0.18); animation: moveCircle4 19s infinite alternate-reverse ease-in-out; animation-delay: 1.2s;"></div>
 
     <header class="header">
       <div class="d-flex align-items-center justify-content-center">
@@ -233,6 +227,36 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/src/main.ts" type="module" defer></script>
     <script>
+      // Prevent text selection
+      document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // Additional selection prevention for different browsers
+      document.onselectstart = function() { return false; };
+      document.body.style.webkitUserSelect = 'none';
+      document.body.style.msUserSelect = 'none';
+      document.body.style.mozUserSelect = 'none';
+      document.body.style.userSelect = 'none';
+
+      // Prevent copy
+      document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // Prevent cut
+      document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // Prevent drag operations
+      document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
       // Blokir klik kanan
       document.addEventListener("contextmenu", function (e) {
         e.preventDefault();
@@ -246,6 +270,42 @@
           return false;
         }
       });
+
+      // Add these animation keyframes to your style section
+      document.head.insertAdjacentHTML('beforeend', `
+        <style>
+          @keyframes moveCircle1 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
+            25% { transform: translate(50px, 100px) scale(1.2) rotate(90deg); opacity: 0.5; }
+            50% { transform: translate(150px, 50px) scale(0.8) rotate(180deg); opacity: 0.7; }
+            75% { transform: translate(100px, 200px) scale(1.1) rotate(270deg); opacity: 0.5; }
+            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
+          }
+          
+          @keyframes moveCircle2 {
+            0% { transform: translate(0, 0) scale(0.9) rotate(0deg); opacity: 0.4; }
+            33% { transform: translate(-80px, -100px) scale(1.3) rotate(120deg); opacity: 0.6; }
+            66% { transform: translate(-150px, -50px) scale(1) rotate(240deg); opacity: 0.4; }
+            100% { transform: translate(0, 0) scale(0.9) rotate(360deg); opacity: 0.4; }
+          }
+          
+          @keyframes moveCircle3 {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
+            40% { transform: translate(-120px, 80px) scale(0.7) rotate(144deg); opacity: 0.5; }
+            80% { transform: translate(80px, -120px) scale(1.1) rotate(288deg); opacity: 0.3; }
+            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
+          }
+          
+          @keyframes moveCircle4 {
+            0% { transform: translate(0, 0) scale(1.1) rotate(0deg); opacity: 0.4; }
+            20% { transform: translate(100px, -50px) scale(0.9) rotate(72deg); opacity: 0.6; }
+            40% { transform: translate(50px, -100px) scale(1.2) rotate(144deg); opacity: 0.5; }
+            60% { transform: translate(-50px, -80px) scale(0.8) rotate(216deg); opacity: 0.4; }
+            80% { transform: translate(-100px, 50px) scale(1.1) rotate(288deg); opacity: 0.5; }
+            100% { transform: translate(0, 0) scale(1.1) rotate(360deg); opacity: 0.4; }
+          }
+        </style>
+      `);
     </script>
   </body>
 </html>
