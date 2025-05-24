@@ -24,6 +24,10 @@ body {
   font-weight: normal;
 }
 
+.heading2 {
+  padding: 5px 0;
+}
+
 .container {
   max-width: 800px;
   margin: 2rem auto;

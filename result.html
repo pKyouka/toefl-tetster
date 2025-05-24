@@ -4,70 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Reading Test Results</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-      }
-      .result-container {
-        background-color: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      h1 {
-        color: #2c3e50;
-        text-align: center;
-      }
+      /* Custom styles that can't be handled by Bootstrap */
       .score {
         font-size: 48px;
         color: #27ae60;
-        text-align: center;
-        margin: 20px 0;
-      }
-      .details {
-        margin-top: 20px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-      }
-      th,
-      td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      .buttons {
-        text-align: center;
-        margin-top: 30px;
-      }
-      .btn {
-        padding: 10px 20px;
-        margin: 0 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-      .btn-primary {
-        background-color: #3498db;
-        color: white;
-      }
-      .btn-secondary {
-        background-color: #95a5a6;
-        color: white;
-      }
-      thead th {
-        color: black !important;
-        background-color: white !important;
       }
       tr.incorrect {
         background-color: #ffe6e6;
@@ -76,344 +22,416 @@
       tr.incorrect td {
         background-color: #ffe6e6;
       }
+      /* Disable right-click and inspect */
+      body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
     </style>
   </head>
-  <body>
-    <div class="result-container">
-      <h1>TOEFL Reading Test Results</h1>
-      <div class="score" id="score"></div>
-      <div class="details">
-        <h2>Performance Summary</h2>
-        <table>
-          <tr>
-            <th>Category</th>
-            <th>Score</th>
-            <th>Performance</th>
-          </tr>
-          <tr>
-            <td>Comprehension</td>
-            <td id="comprehension-score"></td>
-            <td id="comprehension-performance"></td>
-          </tr>
-          <tr>
-            <td>Details</td>
-            <td id="details-score"></td>
-            <td id="details-performance"></td>
-          </tr>
-          <tr>
-            <td>Inference</td>
-            <td id="inference-score"></td>
-            <td id="inference-performance"></td>
-          </tr>
-        </table>
-        <h2>Question Analysis</h2>
-        <table id="question-analysis-table">
-          <thead>
-            <tr>
-              <th>Question</th>
-              <th>Your Answer</th>
-              <th>Correct Answer</th>
-              <th>Result</th>
-            </tr>
-          </thead>
-          <tbody id="question-analysis-tbody">
-            <!-- Table will be populated dynamically from JSON -->
-          </tbody>
-        </table>
+  <body class="bg-light">
+    <div class="container my-5">
+      <div class="card shadow">
+        <div class="card-body p-4">
+          <h1 class="text-center text-primary mb-4">
+            TOEFL Reading Test Results
+          </h1>
 
-        <script>
-          // Questions data in JSON format
-            const questionsData = [
-            {
-              id: 1,
-              text: "1. Kata sifat yang sesuai adalah Significant.",
-              correctAnswer: "A",
-              explanation: "Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth)."
-            },
-            {
-              id: 2,
-              text: "2. Kalimat tersebut membahas tentang rencana kampanye iklan sehingga jawaban yang tepat adalah Advertising.",
-              correctAnswer: "A",
-              explanation: "Dalam konteks pemasaran, 'advertising campaign' adalah frasa yang tepat untuk menggambarkan kampanye iklan."
-            },
-            {
-              id: 3,
-              text: "3. Kalimat tersebut ingin menunjukan kepemilikan laporan pada tahun tersebut sehingga jawaban yang tepat adalah Year's.",
-              correctAnswer: "D",
-              explanation: "Bentuk posesif dengan apostrophe (Year's) digunakan untuk menunjukkan kepemilikan laporan pada tahun tersebut."
-            },
-            {
-              id: 4,
-              text: "4. Kalimat tersebut berbicara tentang tujuan utama perusahaan sehingga jawaban yang paling tepat adalah Goal.",
-              correctAnswer: "B",
-              explanation: "Kata 'goal' yang berarti 'tujuan' adalah yang paling tepat untuk mendeskripsikan tujuan utama perusahaan."
-            },
-            {
-              id: 5,
-              text: "5. Setelah to yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang paling tepat adalah Improve.",
-              correctAnswer: "A",
-              explanation: "Setelah 'to', bentuk kata kerja yang digunakan adalah infinitive (bentuk dasar) seperti 'improve'."
-            },
-            {
-              id: 6,
-              text: "6. Kata yang tepat untuk mengisi kalimat rumpang di atas adalah Than.",
-              correctAnswer: "D",
-              explanation: "Kata 'than' digunakan dalam perbandingan, sesuai dengan konteks kalimat rumpang tersebut."
-            },
-            {
-              id: 7,
-              text: "7. Kata yang tepat untuk mengisi bagian rumpang adalah kata kerja dengan bentuk -ing sehingga jawaban yang sesuai adalah Receiving.",
-              correctAnswer: "A",
-              explanation: "Bentuk gerund (kata kerja + -ing) 'receiving' digunakan sebagai subjek atau setelah preposisi tertentu."
-            },
-            {
-              id: 8,
-              text: "8. Kalimat tersebut mengacu pada tindakan memberlakukan peraturan sehingga jawaban yang paling sesuai adalah Implementation.",
-              correctAnswer: "B",
-              explanation: "Implementation adalah kata yang tepat untuk menggambarkan tindakan menerapkan atau memberlakukan peraturan."
-            },
-            {
-              id: 9,
-              text: "9. Kata ganti relatif yang tepat di sini adalah Which.",
-              correctAnswer: "A",
-              explanation: "Which adalah kata ganti relatif yang tepat untuk merujuk pada benda atau konsep yang telah disebutkan sebelumnya."
-            },
-            {
-              id: 10,
-              text: "10. Kata yang diperlukan untuk melengkapi kalimat di atas adalah kata benda tunggal sehingga jawaban yang tepat adalah Plan.",
-              correctAnswer: "D",
-              explanation: "Plan adalah kata benda tunggal yang sesuai dengan konteks kalimat."
-            },
-            {
-              id: 11,
-              text: "11. Kata yang diperlukan untuk melengkapi kalimat di atas adalah Ensure.",
-              correctAnswer: "D",
-              explanation: "Kata 'ensure' diperlukan untuk melengkapi kalimat dengan makna yang tepat."
-            },
-            {
-              id: 12,
-              text: "12. Preposisi yang tepat untuk melengkapi kalimat di atas adalah Of.",
-              correctAnswer: "A",
-              explanation: "Preposisi 'of' adalah preposisi yang tepat untuk konteks kalimat tersebut."
-            },
-            {
-              id: 13,
-              text: "13. Pola kalimat pasif digunakan pada kalimat tersebut dengan rumus dasarnya adalah Subject + to be + V3 sehingga jawaban yang tepat adalah Is needed.",
-              correctAnswer: "A",
-              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'is needed' adalah bentuk pasif yang tepat."
-            },
-            {
-              id: 14,
-              text: "14. Setelah modal verb (should) yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang tepat adalah Consult.",
-              correctAnswer: "D",
-              explanation: "Setelah modal verb seperti 'should', bentuk kata kerja yang digunakan adalah bentuk dasar (verb 1)."
-            },
-            {
-              id: 15,
-              text: "15. Frasa yang tepat adalah Interested in.",
-              correctAnswer: "B",
-              explanation: "Frasa 'interested in' adalah frasa yang tepat untuk konteks kalimat tersebut."
-            },
-            {
-              id: 16,
-              text: "16. Frasa yang tepat adalah During the last.",
-              correctAnswer: "C",
-              explanation: "Frasa 'during the last' adalah frasa yang tepat untuk menunjukkan periode waktu tertentu."
-            },
-            {
-              id: 17,
-              text: "17. Gerund (verb-ing) setelah preposisi sehingga jawaban yang paling tepat adalah Taking on.",
-              correctAnswer: "A",
-              explanation: "Setelah preposisi, kata kerja harus dalam bentuk gerund (verb + -ing)."
-            },
-            {
-              id: 18,
-              text: "18. Conjunction atau kata hubung yang tepat adalah Yet.",
-              correctAnswer: "D",
-              explanation: "Yet adalah conjunction yang menunjukkan kontras atau pertentangan."
-            },
-            {
-              id: 19,
-              text: "19. Bentuk kata kerja yang benar dalam future tense setelah will adalah kata kerja bentuk dasar sehingga jawaban yang paling tepat adalah Introduce.",
-              correctAnswer: "A",
-              explanation: "Dalam future tense dengan 'will', kata kerja harus dalam bentuk dasar (infinitive without 'to')."
-            },
-            {
-              id: 20,
-              text: "20. Kata untuk menyatakan alasan atas sesuatu dan diikuti oleh kata benda atau frasa kata benda adalah Due to.",
-              correctAnswer: "B",
-              explanation: "Due to digunakan untuk menyatakan alasan dan diikuti oleh kata benda atau frasa kata benda."
-            },
-            {
-              id: 21,
-              text: "21. Kalimat tersebut membutuhkan kata yang menawarkan pilihan di antara dua pilihan sehingga jawaban yang tepat adalah Or.",
-              correctAnswer: "A",
-              explanation: "Or adalah conjunction yang digunakan untuk menawarkan pilihan atau alternatif."
-            },
-            {
-              id: 22,
-              text: "22. Kata yang digunakan untuk menunjukkan alasan adalah Since.",
-              correctAnswer: "A",
-              explanation: "Since digunakan untuk menunjukkan alasan atau sebab."
-            },
-            {
-              id: 23,
-              text: "23. Untuk menunjukkan penyebab atau alasan menggunakan kata Because.",
-              correctAnswer: "B",
-              explanation: "Because adalah conjunction yang digunakan untuk menunjukkan sebab atau alasan."
-            },
-            {
-              id: 24,
-              text: "24. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Signed.",
-              correctAnswer: "D",
-              explanation: "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3)."
-            },
-            {
-              id: 25,
-              text: "25. Kalimat tersebut menggambarkan suatu tindakan kebiasaan dan diperlukan bentuk simple present tense sehingga jawaban yang tepat adalah Develops.",
-              correctAnswer: "A",
-              explanation: "Simple present tense digunakan untuk menggambarkan kebiasaan atau fakta umum."
-            },
-            {
-              id: 26,
-              text: "26. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Completed.",
-              correctAnswer: "B",
-              explanation: "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3)."
-            },
-            {
-              id: 27,
-              text: "27. Ini adalah kalimat majemuk yang membutuhkan kata hubung sehingga kata yang tepat untuk mengisi bagian tersebut adalah So.",
-              correctAnswer: "A",
-              explanation: "So digunakan sebagai conjunction untuk menunjukkan hasil atau akibat."
-            },
-            {
-              id: 28,
-              text: "28. Kata keterangan untuk mengisi bagian yang rumpang adalah Hard.",
-              correctAnswer: "D",
-              explanation: "Hard adalah adverb yang menjelaskan bagaimana suatu tindakan dilakukan."
-            },
-            {
-              id: 29,
-              text: "29. Kalimat tersebut membutuhkan kata sifat untuk kata benda \"desain\" sehingga kata yang tepat untuk mengisi bagian tersebut adalah Elegant.",
-              correctAnswer: "C",
-              explanation: "Elegant adalah kata sifat (adjective) yang tepat untuk mendeskripsikan desain."
-            },
-            {
-              id: 30,
-              text: "30. Tense yang digunakan adalah present perfect continuous tense dengan rumus Subject + has/have + been + V-ing sehingga jawaban yang paling tepat adalah Been working.",
-              correctAnswer: "C",
-              explanation: "Present perfect continuous tense menggunakan struktur has/have + been + verb-ing."
-            },
-            {
-              id: 31,
-              text: "31. Sebelumnya terdapat kata kerja apologized yang menggunakan Verb 2 sehingga kata kerja setelahnya yang disambungkan dengan kata hubung and harus menggunakan pola yang sama sehingga kata yang tepat untuk mengisi bagian tersebut adalah Published.",
-              correctAnswer: "C",
-              explanation: "Dalam klausa yang dihubungkan dengan 'and', bentuk kata kerja harus konsisten dengan kata kerja sebelumnya."
-            },
-            {
-              id: 32,
-              text: "32. Kasus pada soal ini adalah penggunaan noun phrase sehingga jawaban yang tepat adalah Valuable period.",
-              correctAnswer: "C",
-              explanation: "Valuable period adalah noun phrase yang terdiri dari adjective + noun."
-            },
-            {
-              id: 33,
-              text: "33. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Been offered.",
-              correctAnswer: "B",
-              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Been offered' adalah bentuk pasif yang tepat."
-            },
-            {
-              id: 34,
-              text: "34. Kata kerja yang diletakan setelah to infinitive menggunakan bentuk dasar (Verb 1) sehingga jawaban yang tepat adalah Sell.",
-              correctAnswer: "D",
-              explanation: "Setelah 'to' sebagai infinitive, kata kerja harus dalam bentuk dasar (verb 1)."
-            },
-            {
-              id: 35,
-              text: "35. Pola comparative yang paling tepat untuk mengisi bagian kosong dari kalimat di atas adalah As smooth as possible.",
-              correctAnswer: "D",
-              explanation: "Pola 'as + adjective + as possible' adalah bentuk komparatif yang menunjukkan kualitas maksimum yang mungkin."
-            },
-            {
-              id: 36,
-              text: "36. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Is turned off.",
-              correctAnswer: "A",
-              explanation: "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Is turned off' adalah bentuk pasif yang tepat."
-            },
-            {
-              id: 37,
-              text: "37. Kata yang tepat untuk menjelaskan pembaruan perangkat lunak akan tersedia pada suatu saat sebelum periode dua minggu berakhir adalah Within.",
-              correctAnswer: "A",
-              explanation: "'Within' digunakan untuk menunjukkan batas waktu tertentu."
-            },
-            {
-              id: 38,
-              text: "38. Ini adalah kalimat kondisional yang merujuk ke masa depan sehingga jawaban yang paling tepat adalah Will be.",
-              correctAnswer: "B",
-              explanation: "Dalam kalimat kondisional tipe 1 yang merujuk ke masa depan, 'will be' digunakan pada klausa utama."
-            },
-            {
-              id: 39,
-              text: "39. Kata yang tepat untuk menjelaskan bahwa acara akan ditunda hingga cuaca membaik adalah Until.",
-              correctAnswer: "B",
-              explanation: "'Until' digunakan untuk menunjukkan waktu berlangsungnya suatu kondisi sampai kondisi lain terpenuhi."
-            },
-            {
-              id: 40,
-              text: "40. Kata benda yang tepat untuk melengkapi kalimat di atas adalah Experience.",
-              correctAnswer: "B",
-              explanation: "'Experience' adalah kata benda yang tepat dalam konteks kalimat tersebut."
-            }
-          ];
+          <div class="text-center mb-5">
+            <div class="score" id="score"></div>
+          </div>
 
-          // Generate table rows dynamically
-          const tableBody = document.getElementById("question-analysis-tbody");
-          questionsData.forEach(question => {
-            const row = document.createElement("tr");
-            row.setAttribute("row-" + question.id, "");
-            
-            const questionCell = document.createElement("td");
-            questionCell.textContent = question.text;
-            
-            const yourAnswerCell = document.createElement("td");
-            yourAnswerCell.id = "ans" + question.id;
-            
-            const correctAnswerCell = document.createElement("td");
-            correctAnswerCell.textContent = question.correctAnswer;
-            
-            const resultCell = document.createElement("td");
-            resultCell.id = "res" + question.id;
-            
-            row.appendChild(questionCell);
-            row.appendChild(yourAnswerCell);
-            row.appendChild(correctAnswerCell);
-            row.appendChild(resultCell);
-            
-            tableBody.appendChild(row);
-          });
-        </script>
-      </div>
-      <div class="buttons">
-        <button
-          class="btn btn-primary"
-          onclick="window.location.href='index.html'"
-        >
-          Back to Home
-        </button>
-        <button class="btn btn-secondary" onclick="window.print()">
-          Print Results
-        </button>
+          <div class="mb-5">
+            <h2 class="mb-3">Performance Summary</h2>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="table-light">
+                  <tr>
+                    <th>Category</th>
+                    <th>Score</th>
+                    <th>Performance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Comprehension</td>
+                    <td id="comprehension-score"></td>
+                    <td id="comprehension-performance"></td>
+                  </tr>
+                  <tr>
+                    <td>Details</td>
+                    <td id="details-score"></td>
+                    <td id="details-performance"></td>
+                  </tr>
+                  <tr>
+                    <td>Inference</td>
+                    <td id="inference-score"></td>
+                    <td id="inference-performance"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="mb-3">Question Analysis</h2>
+            <div class="table-responsive">
+              <table class="table table-bordered" id="question-analysis-table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="question-analysis-tbody">
+                  <!-- Table will be populated dynamically from JSON -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center gap-3 mt-5">
+            <button
+              class="btn btn-primary"
+              onclick="window.location.href='index.html'"
+            >
+              Back to Home
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+              Print Results
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Questions data in JSON format -->
     <script>
+      const questionsData = [
+        {
+          id: 1,
+          text: "1. Kata sifat yang sesuai adalah Significant.",
+          correctAnswer: "A",
+          explanation:
+            "Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth).",
+        },
+        {
+          id: 2,
+          text: "2. Kalimat tersebut membahas tentang rencana kampanye iklan sehingga jawaban yang tepat adalah Advertising.",
+          correctAnswer: "A",
+          explanation:
+            "Dalam konteks pemasaran, 'advertising campaign' adalah frasa yang tepat untuk menggambarkan kampanye iklan.",
+        },
+        {
+          id: 3,
+          text: "3. Kalimat tersebut ingin menunjukan kepemilikan laporan pada tahun tersebut sehingga jawaban yang tepat adalah Year's.",
+          correctAnswer: "D",
+          explanation:
+            "Bentuk posesif dengan apostrophe (Year's) digunakan untuk menunjukkan kepemilikan laporan pada tahun tersebut.",
+        },
+        {
+          id: 4,
+          text: "4. Kalimat tersebut berbicara tentang tujuan utama perusahaan sehingga jawaban yang paling tepat adalah Goal.",
+          correctAnswer: "B",
+          explanation:
+            "Kata 'goal' yang berarti 'tujuan' adalah yang paling tepat untuk mendeskripsikan tujuan utama perusahaan.",
+        },
+        {
+          id: 5,
+          text: "5. Setelah to yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang paling tepat adalah Improve.",
+          correctAnswer: "A",
+          explanation:
+            "Setelah 'to', bentuk kata kerja yang digunakan adalah infinitive (bentuk dasar) seperti 'improve'.",
+        },
+        {
+          id: 6,
+          text: "6. Kata yang tepat untuk mengisi kalimat rumpang di atas adalah Than.",
+          correctAnswer: "D",
+          explanation:
+            "Kata 'than' digunakan dalam perbandingan, sesuai dengan konteks kalimat rumpang tersebut.",
+        },
+        {
+          id: 7,
+          text: "7. Kata yang tepat untuk mengisi bagian rumpang adalah kata kerja dengan bentuk -ing sehingga jawaban yang sesuai adalah Receiving.",
+          correctAnswer: "A",
+          explanation:
+            "Bentuk gerund (kata kerja + -ing) 'receiving' digunakan sebagai subjek atau setelah preposisi tertentu.",
+        },
+        {
+          id: 8,
+          text: "8. Kalimat tersebut mengacu pada tindakan memberlakukan peraturan sehingga jawaban yang paling sesuai adalah Implementation.",
+          correctAnswer: "B",
+          explanation:
+            "Implementation adalah kata yang tepat untuk menggambarkan tindakan menerapkan atau memberlakukan peraturan.",
+        },
+        {
+          id: 9,
+          text: "9. Kata ganti relatif yang tepat di sini adalah Which.",
+          correctAnswer: "A",
+          explanation:
+            "Which adalah kata ganti relatif yang tepat untuk merujuk pada benda atau konsep yang telah disebutkan sebelumnya.",
+        },
+        {
+          id: 10,
+          text: "10. Kata yang diperlukan untuk melengkapi kalimat di atas adalah kata benda tunggal sehingga jawaban yang tepat adalah Plan.",
+          correctAnswer: "D",
+          explanation:
+            "Plan adalah kata benda tunggal yang sesuai dengan konteks kalimat.",
+        },
+        {
+          id: 11,
+          text: "11. Kata yang diperlukan untuk melengkapi kalimat di atas adalah Ensure.",
+          correctAnswer: "D",
+          explanation:
+            "Kata 'ensure' diperlukan untuk melengkapi kalimat dengan makna yang tepat.",
+        },
+        {
+          id: 12,
+          text: "12. Preposisi yang tepat untuk melengkapi kalimat di atas adalah Of.",
+          correctAnswer: "A",
+          explanation:
+            "Preposisi 'of' adalah preposisi yang tepat untuk konteks kalimat tersebut.",
+        },
+        {
+          id: 13,
+          text: "13. Pola kalimat pasif digunakan pada kalimat tersebut dengan rumus dasarnya adalah Subject + to be + V3 sehingga jawaban yang tepat adalah Is needed.",
+          correctAnswer: "A",
+          explanation:
+            "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'is needed' adalah bentuk pasif yang tepat.",
+        },
+        {
+          id: 14,
+          text: "14. Setelah modal verb (should) yang digunakan adalah kata kerja bentuk dasar atau verb 1 sehingga jawaban yang tepat adalah Consult.",
+          correctAnswer: "D",
+          explanation:
+            "Setelah modal verb seperti 'should', bentuk kata kerja yang digunakan adalah bentuk dasar (verb 1).",
+        },
+        {
+          id: 15,
+          text: "15. Frasa yang tepat adalah Interested in.",
+          correctAnswer: "B",
+          explanation:
+            "Frasa 'interested in' adalah frasa yang tepat untuk konteks kalimat tersebut.",
+        },
+        {
+          id: 16,
+          text: "16. Frasa yang tepat adalah During the last.",
+          correctAnswer: "C",
+          explanation:
+            "Frasa 'during the last' adalah frasa yang tepat untuk menunjukkan periode waktu tertentu.",
+        },
+        {
+          id: 17,
+          text: "17. Gerund (verb-ing) setelah preposisi sehingga jawaban yang paling tepat adalah Taking on.",
+          correctAnswer: "A",
+          explanation:
+            "Setelah preposisi, kata kerja harus dalam bentuk gerund (verb + -ing).",
+        },
+        {
+          id: 18,
+          text: "18. Conjunction atau kata hubung yang tepat adalah Yet.",
+          correctAnswer: "D",
+          explanation:
+            "Yet adalah conjunction yang menunjukkan kontras atau pertentangan.",
+        },
+        {
+          id: 19,
+          text: "19. Bentuk kata kerja yang benar dalam future tense setelah will adalah kata kerja bentuk dasar sehingga jawaban yang paling tepat adalah Introduce.",
+          correctAnswer: "A",
+          explanation:
+            "Dalam future tense dengan 'will', kata kerja harus dalam bentuk dasar (infinitive without 'to').",
+        },
+        {
+          id: 20,
+          text: "20. Kata untuk menyatakan alasan atas sesuatu dan diikuti oleh kata benda atau frasa kata benda adalah Due to.",
+          correctAnswer: "B",
+          explanation:
+            "Due to digunakan untuk menyatakan alasan dan diikuti oleh kata benda atau frasa kata benda.",
+        },
+        {
+          id: 21,
+          text: "21. Kalimat tersebut membutuhkan kata yang menawarkan pilihan di antara dua pilihan sehingga jawaban yang tepat adalah Or.",
+          correctAnswer: "A",
+          explanation:
+            "Or adalah conjunction yang digunakan untuk menawarkan pilihan atau alternatif.",
+        },
+        {
+          id: 22,
+          text: "22. Kata yang digunakan untuk menunjukkan alasan adalah Since.",
+          correctAnswer: "A",
+          explanation: "Since digunakan untuk menunjukkan alasan atau sebab.",
+        },
+        {
+          id: 23,
+          text: "23. Untuk menunjukkan penyebab atau alasan menggunakan kata Because.",
+          correctAnswer: "B",
+          explanation:
+            "Because adalah conjunction yang digunakan untuk menunjukkan sebab atau alasan.",
+        },
+        {
+          id: 24,
+          text: "24. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Signed.",
+          correctAnswer: "D",
+          explanation:
+            "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3).",
+        },
+        {
+          id: 25,
+          text: "25. Kalimat tersebut menggambarkan suatu tindakan kebiasaan dan diperlukan bentuk simple present tense sehingga jawaban yang tepat adalah Develops.",
+          correctAnswer: "A",
+          explanation:
+            "Simple present tense digunakan untuk menggambarkan kebiasaan atau fakta umum.",
+        },
+        {
+          id: 26,
+          text: "26. Kalimat tersebut berbentuk kalimat pasif, sehingga kata yang tepat yaitu Completed.",
+          correctAnswer: "B",
+          explanation:
+            "Dalam kalimat pasif, kata kerja harus dalam bentuk past participle (verb 3).",
+        },
+        {
+          id: 27,
+          text: "27. Ini adalah kalimat majemuk yang membutuhkan kata hubung sehingga kata yang tepat untuk mengisi bagian tersebut adalah So.",
+          correctAnswer: "A",
+          explanation:
+            "So digunakan sebagai conjunction untuk menunjukkan hasil atau akibat.",
+        },
+        {
+          id: 28,
+          text: "28. Kata keterangan untuk mengisi bagian yang rumpang adalah Hard.",
+          correctAnswer: "D",
+          explanation:
+            "Hard adalah adverb yang menjelaskan bagaimana suatu tindakan dilakukan.",
+        },
+        {
+          id: 29,
+          text: '29. Kalimat tersebut membutuhkan kata sifat untuk kata benda "desain" sehingga kata yang tepat untuk mengisi bagian tersebut adalah Elegant.',
+          correctAnswer: "C",
+          explanation:
+            "Elegant adalah kata sifat (adjective) yang tepat untuk mendeskripsikan desain.",
+        },
+        {
+          id: 30,
+          text: "30. Tense yang digunakan adalah present perfect continuous tense dengan rumus Subject + has/have + been + V-ing sehingga jawaban yang paling tepat adalah Been working.",
+          correctAnswer: "C",
+          explanation:
+            "Present perfect continuous tense menggunakan struktur has/have + been + verb-ing.",
+        },
+        {
+          id: 31,
+          text: "31. Sebelumnya terdapat kata kerja apologized yang menggunakan Verb 2 sehingga kata kerja setelahnya yang disambungkan dengan kata hubung and harus menggunakan pola yang sama sehingga kata yang tepat untuk mengisi bagian tersebut adalah Published.",
+          correctAnswer: "C",
+          explanation:
+            "Dalam klausa yang dihubungkan dengan 'and', bentuk kata kerja harus konsisten dengan kata kerja sebelumnya.",
+        },
+        {
+          id: 32,
+          text: "32. Kasus pada soal ini adalah penggunaan noun phrase sehingga jawaban yang tepat adalah Valuable period.",
+          correctAnswer: "C",
+          explanation:
+            "Valuable period adalah noun phrase yang terdiri dari adjective + noun.",
+        },
+        {
+          id: 33,
+          text: "33. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Been offered.",
+          correctAnswer: "B",
+          explanation:
+            "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Been offered' adalah bentuk pasif yang tepat.",
+        },
+        {
+          id: 34,
+          text: "34. Kata kerja yang diletakan setelah to infinitive menggunakan bentuk dasar (Verb 1) sehingga jawaban yang tepat adalah Sell.",
+          correctAnswer: "D",
+          explanation:
+            "Setelah 'to' sebagai infinitive, kata kerja harus dalam bentuk dasar (verb 1).",
+        },
+        {
+          id: 35,
+          text: "35. Pola comparative yang paling tepat untuk mengisi bagian kosong dari kalimat di atas adalah As smooth as possible.",
+          correctAnswer: "D",
+          explanation:
+            "Pola 'as + adjective + as possible' adalah bentuk komparatif yang menunjukkan kualitas maksimum yang mungkin.",
+        },
+        {
+          id: 36,
+          text: "36. Kalimat di atas merupakan kalimat pasif. Rumus dasarnya adalah Subject + to be + V3 sehingga pilihan jawaban yang tepat adalah Is turned off.",
+          correctAnswer: "A",
+          explanation:
+            "Kalimat pasif menggunakan struktur Subject + to be + V3, di mana 'Is turned off' adalah bentuk pasif yang tepat.",
+        },
+        {
+          id: 37,
+          text: "37. Kata yang tepat untuk menjelaskan pembaruan perangkat lunak akan tersedia pada suatu saat sebelum periode dua minggu berakhir adalah Within.",
+          correctAnswer: "A",
+          explanation:
+            "'Within' digunakan untuk menunjukkan batas waktu tertentu.",
+        },
+        {
+          id: 38,
+          text: "38. Ini adalah kalimat kondisional yang merujuk ke masa depan sehingga jawaban yang paling tepat adalah Will be.",
+          correctAnswer: "B",
+          explanation:
+            "Dalam kalimat kondisional tipe 1 yang merujuk ke masa depan, 'will be' digunakan pada klausa utama.",
+        },
+        {
+          id: 39,
+          text: "39. Kata yang tepat untuk menjelaskan bahwa acara akan ditunda hingga cuaca membaik adalah Until.",
+          correctAnswer: "B",
+          explanation:
+            "'Until' digunakan untuk menunjukkan waktu berlangsungnya suatu kondisi sampai kondisi lain terpenuhi.",
+        },
+        {
+          id: 40,
+          text: "40. Kata benda yang tepat untuk melengkapi kalimat di atas adalah Experience.",
+          correctAnswer: "B",
+          explanation:
+            "'Experience' adalah kata benda yang tepat dalam konteks kalimat tersebut.",
+        },
+      ];
+
+      // Generate table rows dynamically
+      const tableBody = document.getElementById("question-analysis-tbody");
+      questionsData.forEach((question) => {
+        const row = document.createElement("tr");
+        row.setAttribute("row-" + question.id, "");
+
+        const questionCell = document.createElement("td");
+        questionCell.textContent = question.text;
+
+        const yourAnswerCell = document.createElement("td");
+        yourAnswerCell.id = "ans" + question.id;
+
+        const correctAnswerCell = document.createElement("td");
+        correctAnswerCell.textContent = question.correctAnswer;
+
+        const resultCell = document.createElement("td");
+        resultCell.id = "res" + question.id;
+
+        row.appendChild(questionCell);
+        row.appendChild(yourAnswerCell);
+        row.appendChild(correctAnswerCell);
+        row.appendChild(resultCell);
+
+        tableBody.appendChild(row);
+      });
+
       // Ambil data dari localStorage
       const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
       const questionDetails =
         JSON.parse(localStorage.getItem("questionDetails")) || {};
+
+      // Populate question analysis table
       for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
         const key = `q${i}`;
         const detail = questionDetails[key];
         if (!detail) continue;
+
         document.getElementById(`ans${i}`).textContent =
           detail.yourAnswer || "-";
         document.getElementById(`res${i}`).textContent = detail.result || "-";
@@ -475,27 +493,12 @@
           categories.inference.total
         );
 
-      // Tampilkan analisis soal
-      const tableRows = document.querySelectorAll(
-        "#question-analysis-table tbody tr"
-      );
-
-      for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
-        const key = `q${i}`;
-        const row = tableRows[i - 1];
-        if (!row) continue;
-
-        const detail = questionDetails[key];
-        row.children[1].textContent = detail.yourAnswer || "-";
-        row.children[2].textContent = detail.correctAnswer || "-";
-        row.children[3].textContent = detail.result || "-";
-      }
-
       // Blokir klik kanan
       document.addEventListener("contextmenu", function (e) {
         e.preventDefault();
         return false;
       });
+
       // Blokir inspect element
       document.addEventListener("keydown", function (e) {
         if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
@@ -503,7 +506,6 @@
           return false;
         }
       });
-
     </script>
   </body>
 </html>
