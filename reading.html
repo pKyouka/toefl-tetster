@@ -4,33 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Reading Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
       body {
         font-family: Arial, sans-serif;
         line-height: 1.6;
-        margin: 0;
-        padding: 20px;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-      }
-
-      header {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .main-container {
-        display: flex;
-        flex: 1;
-        gap: 20px;
-        position: relative;
       }
 
       .question-nav-container {
         width: 220px;
-        display: flex;
-        flex-direction: column;
         position: sticky;
         top: 20px;
         height: fit-content;
@@ -38,15 +23,9 @@
       }
 
       .question-nav {
-        padding: 15px;
         background-color: #f5f5f5;
         border-radius: 5px;
         margin-bottom: 10px;
-      }
-
-      .question-nav h3 {
-        margin-top: 0;
-        text-align: center;
       }
 
       .question-numbers {
@@ -77,29 +56,11 @@
       }
 
       #timer-container {
-        padding: 10px;
         background-color: #f5f5f5;
         border-radius: 5px;
         text-align: center;
         font-weight: bold;
         margin-bottom: 10px;
-      }
-
-      #submitBtnContainer {
-        padding: 10px;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        text-align: center;
-      }
-
-      #submitBtn {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        background-color: #2196f3;
-        color: white;
-        cursor: pointer;
-        width: 100%;
       }
 
       .reading-content {
@@ -109,8 +70,6 @@
       }
 
       .reading-section {
-        margin-bottom: 30px;
-        padding: 25px 30px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: white;
@@ -118,75 +77,30 @@
       }
 
       .passage {
-        margin-bottom: 25px;
         text-align: justify;
         line-height: 1.7;
-      }
-      .passage h2,
-      .passage h3 {
-        margin-top: 0;
-        padding-top: 15px;
-        color: #2c3e50;
       }
 
       .passage h2 {
         border-bottom: 2px solid #eee;
         padding-bottom: 10px;
         margin-bottom: 20px;
+        color: #2c3e50;
       }
 
-      .passage p {
-        margin-bottom: 15px;
+      .passage h3 {
+        color: #2c3e50;
       }
+
       .question-container {
         margin-bottom: 25px;
         display: none;
-      }
-
-      .question-container.active {
-        display: block;
-      }
-
-      .question {
-        font-weight: bold;
-        margin-bottom: 10px;
       }
 
       .options label {
         display: block;
         margin: 8px 0;
         cursor: pointer;
-      }
-
-      .options input {
-        margin-right: 8px;
-      }
-
-      .navigation-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-      }
-
-      .navigation-buttons button {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      #prevBtn {
-        background-color: #f1f1f1;
-      }
-
-      #prevBtn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      #nextBtn {
-        background-color: #4caf50;
-        color: white;
       }
 
       .modal {
@@ -210,100 +124,75 @@
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
-
-      .modal-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 20px;
-      }
-
-      .modal-buttons button {
-        padding: 8px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      #confirmYes {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      #confirmNo {
-        background-color: #f44336;
-        color: white;
-      }
-
-      footer {
-        text-align: center;
-        margin-top: 30px;
-        color: #666;
-        font-size: 14px;
-      }
     </style>
   </head>
   <body>
-    <header>
+    <header class="container text-center py-4">
       <h1>TOEFL Reading Practice Test</h1>
       <p>Read the passage and answer the questions below.</p>
     </header>
 
-    <div class="main-container">
-      <!-- kolom kiri -->
-      <div class="question-nav-container">
-        <div class="question-nav">
-          <h3>Questions</h3>
-          <div class="question-numbers" id="questionNumbers"></div>
-        </div>
+    <div class="container mb-4">
+      <div class="row">
+        <!-- Left column -->
+        <div class="col-md-3">
+          <div class="question-nav-container">
+            <div class="question-nav p-3 mb-3">
+              <h3 class="text-center m-0 mb-3">Questions</h3>
+              <div class="question-numbers" id="questionNumbers"></div>
+            </div>
 
-        <div id="timer-container">
-          <div id="timer">Time Remaining: 20:00</div>
-        </div>
+            <div id="timer-container" class="p-3 mb-3">
+              <div id="timer">Time Remaining: 20:00</div>
+            </div>
 
-        <div id="submitBtnContainer">
-          <button type="submit" class="submit-btn" id="submitBtn">
-            Submit Answers
-          </button>
-        </div>
-      </div>
-
-      <!-- kolom kanan - soal -->
-      <div class="reading-content">
-        <div class="reading-section">
-          <div class="passage">
-            <h2>Section II: Reading</h2>
-            <p>
-              In the reading test, you will read a variety of texts and answer
-              several different types of reading comprehension questions. The
-              entire reading test will last 75 minutes. There are three parts
-              and directions are given for each part. You are encouraged to
-              answer as many questions as possible within the time allowed. You
-              must mark your answers on the separate answer sheet. Do not write
-              your answers in your test book.
-            </p>
-          </div>
-
-          <div class="passage">
-            <h3>Part 5: Incomplete Sentences</h3>
-            <p>
-              Directions: A word or phrase is missing in each of the following
-              sentences. Four answer choices are given below each sentence.
-              Then, mark the letter A, B, C or D on your answer sheet.
-            </p>
-          </div>
-
-          <form id="reading-quiz">
-            <!-- Soal dibuat di script nya -->
-
-            <div class="navigation-buttons">
-              <button type="button" id="prevBtn" disabled>Previous</button>
-              <button type="button" id="nextBtn">Next</button>
-              <button type="button" id="submitPageBtn" style="display: none">
+            <div class="p-3 bg-light rounded">
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn">
                 Submit Answers
               </button>
             </div>
-          </form>
+          </div>
+        </div>
+
+        <!-- Right column - questions -->
+        <div class="col-md-9">
+          <div class="reading-content">
+            <div class="reading-section p-4 mb-4">
+              <div class="passage mb-4">
+                <h2>Section II: Reading</h2>
+                <p>
+                  In the reading test, you will read a variety of texts and answer
+                  several different types of reading comprehension questions. The
+                  entire reading test will last 75 minutes. There are three parts
+                  and directions are given for each part. You are encouraged to
+                  answer as many questions as possible within the time allowed. You
+                  must mark your answers on the separate answer sheet. Do not write
+                  your answers in your test book.
+                </p>
+              </div>
+
+              <div class="passage mb-4">
+                <h3>Part 5: Incomplete Sentences</h3>
+                <p>
+                  Directions: A word or phrase is missing in each of the following
+                  sentences. Four answer choices are given below each sentence.
+                  Then, mark the letter A, B, C or D on your answer sheet.
+                </p>
+              </div>
+
+              <form id="reading-quiz">
+                <!-- Questions will be dynamically created by script -->
+
+                <div class="navigation-buttons d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
+                  <button type="button" class="btn btn-success" id="nextBtn">Next</button>
+                  <button type="button" class="btn btn-primary" id="submitPageBtn" style="display: none">
+                    Submit Answers
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -312,15 +201,15 @@
       <div class="modal-content">
         <h3>Are you sure it's finished?</h3>
         <p>You won't be able to change your answers after submitting.</p>
-        <div class="modal-buttons">
-          <button id="confirmYes">Yes, Submit</button>
-          <button id="confirmNo">No, Continue</button>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button id="confirmYes" class="btn btn-success">Yes, Submit</button>
+          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
         </div>
       </div>
     </div>
 
-    <footer>
-      <p>© 2023 TOEFL Tester | Practice Reading Skills</p>
+    <footer class="container text-center py-3 text-muted">
+      <p class="small">© 2023 TOEFL Tester | Practice Reading Skills</p>
     </footer>
 
     <script>
