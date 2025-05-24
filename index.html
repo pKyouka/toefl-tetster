@@ -130,20 +130,107 @@
   </head>
   <body>
     <!-- More circles with increased opacity and visibility -->
-    <div class="circle" style="width: 150px; height: 150px; top: 10%; left: 5%; background: rgba(245, 127, 32, 0.2); animation: moveCircle1 18s infinite alternate-reverse ease-in-out;"></div>
-    <div class="circle" style="width: 100px; height: 100px; top: 70%; left: 80%; background: rgba(245, 127, 32, 0.25); animation: moveCircle2 12s infinite alternate ease-in-out; animation-delay: 1s;"></div>
-    <div class="circle" style="width: 200px; height: 200px; top: 30%; left: 60%; background: rgba(245, 127, 32, 0.18); animation: moveCircle3 15s infinite alternate-reverse ease-in-out; animation-delay: 2s;"></div>
-    <div class="circle" style="width: 80px; height: 80px; top: 80%; left: 10%; background: rgba(245, 127, 32, 0.22); animation: moveCircle4 20s infinite alternate ease-in-out; animation-delay: 0.5s;"></div>
+    <div
+      class="circle"
+      style="
+        width: 150px;
+        height: 150px;
+        top: 10%;
+        left: 5%;
+        background: rgba(245, 127, 32, 0.2);
+        animation: moveCircle1 18s infinite alternate-reverse ease-in-out;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 100px;
+        height: 100px;
+        top: 70%;
+        left: 80%;
+        background: rgba(245, 127, 32, 0.25);
+        animation: moveCircle2 12s infinite alternate ease-in-out;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 200px;
+        height: 200px;
+        top: 30%;
+        left: 60%;
+        background: rgba(245, 127, 32, 0.18);
+        animation: moveCircle3 15s infinite alternate-reverse ease-in-out;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 80%;
+        left: 10%;
+        background: rgba(245, 127, 32, 0.22);
+        animation: moveCircle4 20s infinite alternate ease-in-out;
+        animation-delay: 0.5s;
+      "
+    ></div>
     <!-- Added additional circles -->
-    <div class="circle" style="width: 120px; height: 120px; top: 15%; left: 75%; background: rgba(245, 127, 32, 0.2); animation: moveCircle2 16s infinite alternate ease-in-out; animation-delay: 1.5s;"></div>
-    <div class="circle" style="width: 180px; height: 180px; top: 50%; left: 30%; background: rgba(245, 127, 32, 0.15); animation: moveCircle3 17s infinite alternate-reverse ease-in-out; animation-delay: 0.8s;"></div>
-    <div class="circle" style="width: 90px; height: 90px; top: 65%; left: 45%; background: rgba(245, 127, 32, 0.25); animation: moveCircle1 14s infinite alternate ease-in-out; animation-delay: 2.5s;"></div>
-    <div class="circle" style="width: 130px; height: 130px; top: 25%; left: 25%; background: rgba(245, 127, 32, 0.18); animation: moveCircle4 19s infinite alternate-reverse ease-in-out; animation-delay: 1.2s;"></div>
+    <div
+      class="circle"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 15%;
+        left: 75%;
+        background: rgba(245, 127, 32, 0.2);
+        animation: moveCircle2 16s infinite alternate ease-in-out;
+        animation-delay: 1.5s;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 180px;
+        height: 180px;
+        top: 50%;
+        left: 30%;
+        background: rgba(245, 127, 32, 0.15);
+        animation: moveCircle3 17s infinite alternate-reverse ease-in-out;
+        animation-delay: 0.8s;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 65%;
+        left: 45%;
+        background: rgba(245, 127, 32, 0.25);
+        animation: moveCircle1 14s infinite alternate ease-in-out;
+        animation-delay: 2.5s;
+      "
+    ></div>
+    <div
+      class="circle"
+      style="
+        width: 130px;
+        height: 130px;
+        top: 25%;
+        left: 25%;
+        background: rgba(245, 127, 32, 0.18);
+        animation: moveCircle4 19s infinite alternate-reverse ease-in-out;
+        animation-delay: 1.2s;
+      "
+    ></div>
 
     <header class="header">
       <div class="d-flex align-items-center justify-content-center">
         <img
-          src="/src-tauri/icons/logo1.png"
+          src="/src/assets/logo1.png"
           alt="Andaliman ID Logo"
           style="height: 100px"
         />
@@ -199,7 +286,9 @@
             />
           </svg>
           <h2 class="heading2">Writing</h2>
-          <button class="section-button btn btn-primary">Start</button>
+          <button class="section-button btn btn-primary" id="ielts-writing-btn">
+            Start
+          </button>
         </div>
 
         <div class="test-section">
@@ -228,32 +317,34 @@
     <script src="/src/main.ts" type="module" defer></script>
     <script>
       // Prevent text selection
-      document.addEventListener('selectstart', function(e) {
+      document.addEventListener("selectstart", function (e) {
         e.preventDefault();
         return false;
       });
 
       // Additional selection prevention for different browsers
-      document.onselectstart = function() { return false; };
-      document.body.style.webkitUserSelect = 'none';
-      document.body.style.msUserSelect = 'none';
-      document.body.style.mozUserSelect = 'none';
-      document.body.style.userSelect = 'none';
+      document.onselectstart = function () {
+        return false;
+      };
+      document.body.style.webkitUserSelect = "none";
+      document.body.style.msUserSelect = "none";
+      document.body.style.mozUserSelect = "none";
+      document.body.style.userSelect = "none";
 
       // Prevent copy
-      document.addEventListener('copy', function(e) {
+      document.addEventListener("copy", function (e) {
         e.preventDefault();
         return false;
       });
 
       // Prevent cut
-      document.addEventListener('cut', function(e) {
+      document.addEventListener("cut", function (e) {
         e.preventDefault();
         return false;
       });
 
       // Prevent drag operations
-      document.addEventListener('dragstart', function(e) {
+      document.addEventListener("dragstart", function (e) {
         e.preventDefault();
         return false;
       });
@@ -272,7 +363,9 @@
       });
 
       // Add these animation keyframes to your style section
-      document.head.insertAdjacentHTML('beforeend', `
+      document.head.insertAdjacentHTML(
+        "beforeend",
+        `
         <style>
           @keyframes moveCircle1 {
             0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
@@ -305,7 +398,8 @@
             100% { transform: translate(0, 0) scale(1.1) rotate(360deg); opacity: 0.4; }
           }
         </style>
-      `);
+      `
+      );
     </script>
   </body>
 </html>

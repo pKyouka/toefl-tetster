@@ -46,6 +46,13 @@ window.addEventListener("DOMContentLoaded", () => {
     ieltsReadingBtn.addEventListener("click", goToReading);
   }
 
+  const ieltsWritingBtn = document.getElementById("ielts-writing-btn");
+  if (ieltsWritingBtn) {
+    ieltsWritingBtn.addEventListener("click", () => {
+      window.location.href = "writing.html";
+    });
+  }
+
   const ieltsSpeakingBtn = document.getElementById("ielts-speaking-btn");
   if (ieltsSpeakingBtn) {
     ieltsSpeakingBtn.addEventListener("click", () => {
