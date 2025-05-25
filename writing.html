@@ -142,7 +142,6 @@
 
     <div class="container mb-4">
       <div class="row">
-        <!-- Left column -->
         <div class="col-md-3">
           <div class="question-nav-container">
             <div class="question-nav p-3 mb-3">
@@ -166,7 +165,6 @@
           </div>
         </div>
 
-        <!-- Right column - questions -->
         <div class="col-md-9">
           <div class="writing-content">
             <div class="writing-section p-4 mb-4">
@@ -181,8 +179,6 @@
               </div>
 
               <form id="writing-quiz">
-                <!-- Questions will be dynamically created by script -->
-
                 <div
                   class="navigation-buttons d-flex justify-content-between mt-4"
                 >
@@ -231,7 +227,6 @@
     </footer>
 
     <script>
-      // Data pertanyaan
       const questionsPerPage = 5;
       const questions = [
         {
@@ -241,7 +236,7 @@
           words: "friend/camp",
           imageUrl: "src/assets/q1.png",
           response: "",
-          timeLimit: 60, // 1 minute per question
+          timeLimit: 60,
         },
         {
           type: "picture",
@@ -291,7 +286,7 @@
             body: "We are thrilled to have you as a valued customer of IDN Computer Jakarta Pusat! Thank you for your recent purchase of the HP 27inch All-in-One Desktop PC. We hope you are enjoying the cutting-edge features and performance of our product. Should you encounter any difficulties or have any questions, please feel free to reach out to us at idncomp.jakpusservice@gmail.com.",
           },
           response: "",
-          timeLimit: 300, // 5 minutes
+          timeLimit: 300,
         },
         {
           type: "email",
@@ -313,7 +308,7 @@
             "8. Some individuals claim that technology leads to increased isolation and reduced social interaction, whereas others believe that it improves communication and fosters connections. What is your perspective on this matter? Please clarify your opinion and provide supporting reasons.",
           minWords: 300,
           response: "",
-          timeLimit: 1200, // 20 minutes
+          timeLimit: 1200,
         },
       ];
 
@@ -322,6 +317,7 @@
       let timeLeft = 0;
       let timerInterval;
       const timerDisplay = document.getElementById("timer");
+      let lockedQuestions = new Set();
 
       function startTimer(duration) {
         timeLeft = duration;
@@ -334,6 +330,9 @@
 
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
+            // Kunci jawaban untuk pertanyaan saat ini
+            lockCurrentQuestion();
+
             if (currentQuestionIndex < questions.length - 1) {
               moveToNextQuestion();
             } else {
@@ -341,6 +340,35 @@
             }
           }
         }, 1000);
+      }
+
+      // Fungsi untuk mengunci pertanyaan saat ini
+      function lockCurrentQuestion() {
+        const questionNum = currentQuestionIndex + 1;
+        lockedQuestions.add(questionNum);
+
+        const textarea = document.querySelector(`#q${questionNum}-response`);
+        if (textarea) {
+          textarea.readOnly = true;
+          textarea.style.backgroundColor = "#f5f5f5";
+          textarea.style.cursor = "not-allowed";
+          textarea.placeholder = "Time's up! This response is locked";
+        }
+
+        // Update tampilan nomor pertanyaan
+        const questionNumberEl = document.querySelector(
+          `.question-number[data-question="${questionNum}"]`
+        );
+        if (questionNumberEl) {
+          questionNumberEl.style.backgroundColor = "#ffebee";
+          questionNumberEl.style.color = "#c62828";
+          questionNumberEl.textContent = `${questionNum} 🔒`;
+        }
+      }
+
+      // Fungsi untuk memeriksa apakah pertanyaan terkunci
+      function isQuestionLocked(questionNum) {
+        return lockedQuestions.has(questionNum);
       }
 
       function updateTimerDisplay() {
@@ -410,7 +438,6 @@
               <div id="q${questionNum}-wordcount" class="text-muted">Word count: 0</div>
             `;
 
-            // Add word count functionality for essays
             const textarea = questionDiv.querySelector(
               `#q${questionNum}-response`
             );
@@ -432,11 +459,9 @@
           quizForm.insertBefore(questionContainer, navigationButtons);
         });
 
-        // Tampilkan halaman pertama
         showPage(1);
       }
 
-      // Initialize question numbers
       const questionNumbersContainer =
         document.getElementById("questionNumbers");
       const totalQuestions = questions.length;
@@ -452,7 +477,6 @@
           numberBtn.addEventListener("click", () => {
             const pageNum = Math.ceil(i / questionsPerPage);
             showPage(pageNum);
-            // Scroll to the specific question
             const questionElement = document.querySelector(
               `.question-container[data-question="${i}"]`
             );
@@ -467,24 +491,30 @@
         }
       }
 
-      // Track answered questions
       const answeredQuestions = new Set();
 
-      // Add event listeners to all textareas
       function setupTextareaListeners() {
         document.querySelectorAll("textarea").forEach((textarea) => {
+          const questionNum = parseInt(textarea.id.split("-")[0].substring(1));
+
+          if (isQuestionLocked(questionNum)) {
+            textarea.readOnly = true;
+            textarea.style.backgroundColor = "#f5f5f5";
+            textarea.style.cursor = "not-allowed";
+            textarea.placeholder = "Time's up! This response is locked";
+            return;
+          }
+
           textarea.addEventListener("input", function () {
-            const questionNum = this.id.split("-")[0].substring(1);
+            if (isQuestionLocked(questionNum)) return;
 
             if (this.value.trim().length > 0) {
-              answeredQuestions.add(parseInt(questionNum));
+              answeredQuestions.add(questionNum);
             } else {
-              answeredQuestions.delete(parseInt(questionNum));
+              answeredQuestions.delete(questionNum);
             }
 
             updateQuestionNumbers();
-
-            // Save response
             questions[questionNum - 1].response = this.value;
             localStorage.setItem("writingResponses", JSON.stringify(questions));
           });
@@ -495,7 +525,6 @@
         document.querySelectorAll(".question-number").forEach((el) => {
           const questionNum = parseInt(el.dataset.question);
           el.classList.toggle("answered", answeredQuestions.has(questionNum));
-          // Highlight current page questions
           const currentPageQuestions = Array.from(
             { length: questionsPerPage },
             (_, i) => (currentPage - 1) * questionsPerPage + i + 1
@@ -507,7 +536,6 @@
         });
       }
 
-      // Pagination logic
       let currentPage = 1;
       const totalPages = Math.ceil(totalQuestions / questionsPerPage);
 
@@ -516,28 +544,31 @@
         const allQuestions = document.querySelectorAll(".question-container");
         allQuestions.forEach((q) => (q.style.display = "none"));
 
-        // Show all questions for current page
         document
           .querySelectorAll(`.question-container[data-page="${pageNumber}"]`)
-          .forEach((q) => (q.style.display = "block"));
+          .forEach((q) => {
+            const questionNum = parseInt(q.dataset.question);
+            if (isQuestionLocked(questionNum)) {
+              const textarea = q.querySelector("textarea");
+              if (textarea) {
+                textarea.readOnly = true;
+                textarea.style.backgroundColor = "#f5f5f5";
+                textarea.style.cursor = "not-allowed";
+                textarea.placeholder = "Time's up! This response is locked";
+              }
+            }
+            q.style.display = "block";
+          });
 
         updateQuestionNumbers();
         updateNavigationButtons();
-
-        // Scroll to top of questions
-        const firstQuestion = document.querySelector(
-          `.question-container[data-page="${pageNumber}"][data-question="${
-            (pageNumber - 1) * questionsPerPage + 1
-          }"]`
-        );
-        if (firstQuestion) {
-          firstQuestion.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        // Start timer for the first question on this page
         const firstQuestionIndex = (pageNumber - 1) * questionsPerPage;
         currentQuestionIndex = firstQuestionIndex;
-        startTimer(questions[firstQuestionIndex].timeLimit);
+
+        // Jangan mulai timer jika pertanyaan sudah terkunci
+        if (!isQuestionLocked(currentQuestionIndex + 1)) {
+          startTimer(questions[firstQuestionIndex].timeLimit);
+        }
       }
 
       function updateNavigationButtons() {
@@ -545,10 +576,8 @@
         const nextBtn = document.getElementById("nextBtn");
         const submitPageBtn = document.getElementById("submitPageBtn");
 
-        // Update Previous button
         prevBtn.disabled = currentPage === 1;
 
-        // Update Next/Submit buttons
         if (currentPage === totalPages) {
           nextBtn.style.display = "none";
           submitPageBtn.style.display = "inline-block";
@@ -590,11 +619,13 @@
       setupTextareaListeners();
       updateNavigationButtons();
 
-      // Load saved responses
       window.addEventListener("DOMContentLoaded", () => {
         const savedResponses =
           JSON.parse(localStorage.getItem("writingResponses")) || questions;
 
+        const savedLocked =
+          JSON.parse(localStorage.getItem("lockedQuestions")) || [];
+        savedLocked.forEach((qNum) => lockedQuestions.add(qNum));
         savedResponses.forEach((response, index) => {
           if (index < questions.length) {
             questions[index].response = response.response || "";
@@ -611,7 +642,6 @@
 
         updateQuestionNumbers();
 
-        // Update word counts for essays
         questions.forEach((q, index) => {
           if (q.type === "essay" && q.response) {
             const wordCountDisplay = document.querySelector(
@@ -652,12 +682,75 @@
       function submitTest() {
         document.getElementById("confirmModal").style.display = "none";
         clearInterval(timerInterval);
-
+        // Set flag bahwa test sudah disubmit
+        localStorage.setItem("writingTestSubmitted", "true");
         // Save all responses
         localStorage.setItem("writingResponses", JSON.stringify(questions));
-        alert("Your writing test has been submitted!");
-        // Here you would typically redirect to a results page or similar
+        // Simpan state terkunci ke localStorage
+        localStorage.setItem(
+          "lockedQuestions",
+          JSON.stringify(Array.from(lockedQuestions))
+        );
+        // Redirect to results page
+        window.location.href = "result_writing.html";
       }
+
+      // Fungsi untuk mereset semua jawaban
+      function resetTest() {
+        questions.forEach((q) => (q.response = ""));
+        localStorage.removeItem("writingResponses");
+        localStorage.removeItem("writingTestSubmitted");
+        localStorage.removeItem("lockedQuestions");
+        answeredQuestions.clear();
+        lockedQuestions.clear();
+        createQuestionElements();
+        updateQuestionNumbers();
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        // Cek apakah test sudah disubmit sebelumnya
+        const testSubmitted =
+          localStorage.getItem("writingTestSubmitted") === "true";
+
+        if (testSubmitted) {
+          resetTest();
+          return;
+        }
+
+        // Jika belum disubmit, load saved responses
+        const savedResponses =
+          JSON.parse(localStorage.getItem("writingResponses")) || questions;
+
+        savedResponses.forEach((response, index) => {
+          if (index < questions.length) {
+            questions[index].response = response.response || "";
+            const textarea = document.querySelector(`#q${index + 1}-response`);
+            if (textarea) {
+              textarea.value = questions[index].response;
+
+              if (questions[index].response.trim().length > 0) {
+                answeredQuestions.add(index + 1);
+              }
+            }
+          }
+        });
+
+        updateQuestionNumbers();
+        questions.forEach((q, index) => {
+          if (q.type === "essay" && q.response) {
+            const wordCountDisplay = document.querySelector(
+              `#q${index + 1}-wordcount`
+            );
+            if (wordCountDisplay) {
+              const wordCount =
+                q.response.trim() === ""
+                  ? 0
+                  : q.response.trim().split(/\s+/).length;
+              wordCountDisplay.textContent = `Word count: ${wordCount}`;
+            }
+          }
+        });
+      });
 
       document
         .getElementById("writing-quiz")
@@ -665,8 +758,6 @@
           event.preventDefault();
           submitTest();
         });
-
-      // Disable right-click and other protections
       document.addEventListener("contextmenu", (e) => e.preventDefault());
       document.addEventListener("selectstart", (e) => e.preventDefault());
       document.addEventListener("copy", (e) => e.preventDefault());
