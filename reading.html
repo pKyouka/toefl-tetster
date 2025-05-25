@@ -4,19 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Reading Practice</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-      /* Custom styles that can't be handled by Bootstrap */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .question-nav-container {
+        width: 220px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+      }
+
+      .question-nav {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .question-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+
       .question-number {
         width: 30px;
         height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
         cursor: pointer;
       }
 
@@ -29,76 +55,99 @@
         font-weight: bold;
       }
 
+      #timer-container {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
       .reading-content {
-        max-height: calc(100vh - 160px);
+        flex: 1;
         overflow-y: auto;
+        max-height: calc(100vh - 160px);
+      }
+
+      .reading-section {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       .passage {
         text-align: justify;
+        line-height: 1.7;
+      }
+
+      .passage h2 {
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+      }
+
+      .passage h3 {
+        color: #2c3e50;
       }
 
       .question-container {
+        margin-bottom: 25px;
         display: none;
       }
 
-      .question-container.active {
-        display: block;
-      }
-
       .options label {
+        display: block;
+        margin: 8px 0;
         cursor: pointer;
       }
 
       .modal {
         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
       }
 
-      /* Disable right-click */
-      body {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      #timer {
-        font-size: 17px;
-        color: #dc3545;
-        font-weight: bold;
+      .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 8px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
     </style>
   </head>
-  <body class="d-flex flex-column min-vh-100 p-4">
-    <header class="text-center mb-4">
+  <body>
+    <header class="container text-center py-4">
       <h1>TOEFL Reading Practice Test</h1>
       <p>Read the passage and answer the questions below.</p>
     </header>
 
-    <div class="container-fluid flex-grow-1">
+    <div class="container mb-4">
       <div class="row">
-        <!-- Left column - question navigation -->
-        <div class="col-md-2">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h3 class="card-title text-center">Questions</h3>
-              <div class="d-flex flex-wrap gap-2" id="questionNumbers"></div>
+        <!-- Left column -->
+        <div class="col-md-3">
+          <div class="question-nav-container">
+            <div class="question-nav p-3 mb-3">
+              <h3 class="text-center m-0 mb-3">Questions</h3>
+              <div class="question-numbers" id="questionNumbers"></div>
             </div>
-          </div>
 
-          <div class="card mb-3">
-            <div class="card-body text-center fw-bold">
-              <div id="timer">Time Remaining: --:--</div>
+            <div id="timer-container" class="p-3 mb-3">
+              <div id="timer">Time Remaining: 20:00</div>
             </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body text-center">
-              <button
-                type="submit"
-                class="btn btn-primary w-100"
-                id="submitBtn"
-              >
+            <div class="p-3 bg-light rounded">
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn">
                 Submit Answers
               </button>
             </div>
@@ -106,53 +155,38 @@
         </div>
 
         <!-- Right column - questions -->
-        <div class="col-md-10">
-          <div class="card">
-            <div class="card-body reading-content">
-              <div class="mb-4">
+        <div class="col-md-9">
+          <div class="reading-content">
+            <div class="reading-section p-4 mb-4">
+              <div class="passage mb-4">
                 <h2>Section II: Reading</h2>
                 <p>
-                  In the reading test, you will read a variety of texts and
-                  answer several different types of reading comprehension
-                  questions. The entire reading test will last 75 minutes. There
-                  are three parts and directions are given for each part. You
-                  are encouraged to answer as many questions as possible within
-                  the time allowed. You must mark your answers on the separate
-                  answer sheet. Do not write your answers in your test book.
+                  In the reading test, you will read a variety of texts and answer
+                  several different types of reading comprehension questions. The
+                  entire reading test will last 75 minutes. There are three parts
+                  and directions are given for each part. You are encouraged to
+                  answer as many questions as possible within the time allowed. You
+                  must mark your answers on the separate answer sheet. Do not write
+                  your answers in your test book.
                 </p>
               </div>
 
-                <div class="mb-4"></div>
+              <div class="passage mb-4">
                 <h3>Part 5: Incomplete Sentences</h3>
                 <p>
-                  Directions: A word or phrase is missing in each of the
-                  following sentences. Four answer choices are given below each
-                  sentence. Then, mark the letter A, B, C or D on your answer
-                  sheet.
+                  Directions: A word or phrase is missing in each of the following
+                  sentences. Four answer choices are given below each sentence.
+                  Then, mark the letter A, B, C or D on your answer sheet.
                 </p>
               </div>
 
-              <form id="reading-quiz" class="px-4 pb-4">
-                <!-- Questions will be created in script -->
+              <form id="reading-quiz">
+                <!-- Questions will be dynamically created by script -->
 
-                <div class="d-flex justify-content-between mt-4">
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    id="prevBtn"
-                    disabled
-                  >
-                    Previous
-                  </button>
-                  <button type="button" class="btn btn-success" id="nextBtn">
-                    Next
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    id="submitPageBtn"
-                    style="display: none"
-                  >
+                <div class="navigation-buttons d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
+                  <button type="button" class="btn btn-success" id="nextBtn">Next</button>
+                  <button type="button" class="btn btn-primary" id="submitPageBtn" style="display: none">
                     Submit Answers
                   </button>
                 </div>
@@ -163,35 +197,23 @@
       </div>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h3 class="modal-title">Are you sure it's finished?</h3>
-            <p>You won't be able to change your answers after submitting.</p>
-            <div class="d-flex justify-content-center gap-3 mt-3">
-              <button class="btn btn-success" id="confirmYes">
-                Yes, Submit
-              </button>
-              <button class="btn btn-danger" id="confirmNo">
-                No, Continue
-              </button>
-            </div>
-          </div>
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h3>Are you sure it's finished?</h3>
+        <p>You won't be able to change your answers after submitting.</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button id="confirmYes" class="btn btn-success">Yes, Submit</button>
+          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
         </div>
       </div>
     </div>
 
-    <footer class="text-center text-muted mt-4">
-      <p>© 2025 IELTS Tester | Practice Reading Skills | Andaliman Books</p>
+    <footer class="container text-center py-3 text-muted">
+      <p class="small">© 2023 TOEFL Tester | Practice Reading Skills</p>
     </footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
-      // Data pertanyaan
+       // Data pertanyaan
       const questionsPerPage = 5;
       const questions = [
         {
@@ -1425,7 +1447,7 @@
         timerDisplay.textContent = `Time Remaining: ${minutes}:${
           seconds < 10 ? "0" : ""
         }${seconds}`;
-
+        
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           alert("Time's up!");
@@ -1434,35 +1456,8 @@
         timeLeft--;
       }
 
-      // Load saved time if exists
-      if (localStorage.getItem("readingTimeLeft")) {
-        timeLeft = parseInt(localStorage.getItem("readingTimeLeft"));
-      }
-
-      // Immediately update timer
-      updateTimer();
-
-      // Disable text selection and right-click context menu
-      document.addEventListener('contextmenu', event => event.preventDefault());
-      document.addEventListener('selectstart', event => event.preventDefault());
-      document.addEventListener('copy', event => event.preventDefault());
-      document.addEventListener('cut', event => event.preventDefault());
-      document.addEventListener('dragstart', event => event.preventDefault());
-
-      // Disable keyboard shortcuts
-      document.addEventListener('keydown', function(event) {
-        // Disable Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+A, F12
-        if (
-          (event.ctrlKey && (event.key === 'c' || event.key === 'v' || event.key === 'x' || event.key === 'a')) || 
-          event.key === 'F12' || 
-          event.key === 'PrintScreen'
-        ) {
-          event.preventDefault();
-        }
-      });
-
       // Check if coming from another page
-      window.addEventListener("beforeunload", function () {
+      window.addEventListener("beforeunload", function() {
         localStorage.setItem("readingTimeLeft", timeLeft);
       });
 
@@ -1471,9 +1466,7 @@
       // Fungsi untuk membuat elemen pertanyaan
       function createQuestionElements() {
         const quizForm = document.getElementById("reading-quiz");
-        const navigationButtons = quizForm.querySelector(
-          ".d-flex.justify-content-between"
-        );
+        const navigationButtons = quizForm.querySelector(".navigation-buttons");
 
         // Hapus semua pertanyaan yang ada (jika ada)
         const existingQuestions = quizForm.querySelectorAll(
@@ -1486,14 +1479,14 @@
           const pageNum = Math.ceil(questionNum / questionsPerPage);
 
           const questionContainer = document.createElement("div");
-          questionContainer.className = "question-container mb-4";
+          questionContainer.className = "question-container";
           questionContainer.dataset.page = pageNum;
           questionContainer.dataset.question = questionNum;
           questionContainer.style.display = "none";
 
           const questionDiv = document.createElement("div");
           questionDiv.className = "question";
-          questionDiv.innerHTML = q.question;
+          questionDiv.innerHTML = q.question; 
           // Changed from textContent to innerHTML to render HTML tags
 
           const optionsDiv = document.createElement("div");
@@ -1501,24 +1494,15 @@
 
           q.options.forEach((option, optIndex) => {
             const optionLetter = String.fromCharCode(97 + optIndex); // a, b, c, d
-            const div = document.createElement("div");
-            div.className = "form-check";
-
+            const label = document.createElement("label");
             const input = document.createElement("input");
-            input.className = "form-check-input";
             input.type = "radio";
             input.name = `q${questionNum}`;
-            input.id = `q${questionNum}_${optionLetter}`;
             input.value = optionLetter;
 
-            const label = document.createElement("label");
-            label.className = "form-check-label";
-            label.htmlFor = `q${questionNum}_${optionLetter}`;
-            label.textContent = option;
-
-            div.appendChild(input);
-            div.appendChild(label);
-            optionsDiv.appendChild(div);
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(` ${option}`));
+            optionsDiv.appendChild(label);
           });
 
           questionContainer.appendChild(questionDiv);
@@ -1540,7 +1524,7 @@
 
         for (let i = 1; i <= totalQuestions; i++) {
           const numberBtn = document.createElement("div");
-          numberBtn.className = "question-number border rounded";
+          numberBtn.className = "question-number";
           numberBtn.textContent = i;
           numberBtn.dataset.question = i;
           numberBtn.addEventListener("click", () => {
@@ -1659,10 +1643,7 @@
       });
 
       document.getElementById("submitPageBtn").addEventListener("click", () => {
-        const modal = new bootstrap.Modal(
-          document.getElementById("confirmModal")
-        );
-        modal.show();
+        document.getElementById("confirmModal").style.display = "flex";
       });
 
       // Initialize
@@ -1676,10 +1657,7 @@
         .getElementById("submitBtn")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const modal = new bootstrap.Modal(
-            document.getElementById("confirmModal")
-          );
-          modal.show();
+          document.getElementById("confirmModal").style.display = "flex";
         });
 
       document
@@ -1691,18 +1669,12 @@
       document
         .getElementById("confirmNo")
         .addEventListener("click", function () {
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById("confirmModal")
-          );
-          modal.hide();
+          document.getElementById("confirmModal").style.display = "none";
         });
 
       // Submit Logic
       function submitQuiz() {
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("confirmModal")
-        );
-        modal.hide();
+        document.getElementById("confirmModal").style.display = "none";
         clearInterval(timerInterval);
 
         let score = 0;
@@ -1789,6 +1761,11 @@
           event.preventDefault();
           submitQuiz();
         });
+
+      // Disable right-click
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
 
       // Load saved answers
       // window.addEventListener("DOMContentLoaded", () => {
