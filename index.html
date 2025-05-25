@@ -17,6 +17,7 @@
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
         min-height: 100vh;
+        overflow-x: hidden;
       }
 
       @keyframes gradientBG {
@@ -112,24 +113,98 @@
         position: absolute;
         border-radius: 50%;
         background: rgba(245, 127, 32, 0.1);
-        animation: float 15s infinite linear;
+        filter: blur(2px);
+        z-index: 0;
       }
 
+      /* New floating animation */
       @keyframes float {
-        0% {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(10px, 10px) rotate(5deg);
+        }
+        50% {
+          transform: translate(20px, 5px) rotate(0deg);
+        }
+        75% {
+          transform: translate(10px, 15px) rotate(-5deg);
+        }
+      }
+
+      /* New pulse animation */
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.3;
+        }
+      }
+
+      /* New wave animation */
+      @keyframes wave {
+        0%,
+        100% {
           transform: translateY(0) rotate(0deg);
         }
         50% {
-          transform: translateY(-20px) rotate(180deg);
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      /* New complex movement animation */
+      @keyframes complexMove {
+        0% {
+          transform: translate(0, 0) rotate(0deg) scale(1);
+        }
+        25% {
+          transform: translate(50px, 30px) rotate(90deg) scale(1.1);
+        }
+        50% {
+          transform: translate(100px, 0) rotate(180deg) scale(1);
+        }
+        75% {
+          transform: translate(50px, -30px) rotate(270deg) scale(0.9);
         }
         100% {
-          transform: translateY(0) rotate(360deg);
+          transform: translate(0, 0) rotate(360deg) scale(1);
+        }
+      }
+
+      /* New bubble animation */
+      @keyframes bubble {
+        0% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.3;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+      }
+
+      /* New orbit animation */
+      @keyframes orbit {
+        0% {
+          transform: rotate(0deg) translateX(100px) rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg) translateX(100px) rotate(-360deg);
         }
       }
     </style>
   </head>
   <body>
-    <!-- More circles with increased opacity and visibility -->
     <div
       class="circle"
       style="
@@ -137,8 +212,8 @@
         height: 150px;
         top: 10%;
         left: 5%;
-        background: rgba(245, 127, 32, 0.2);
-        animation: moveCircle1 18s infinite alternate-reverse ease-in-out;
+        background: rgba(245, 127, 32, 0.15);
+        animation: float 8s ease-in-out infinite;
       "
     ></div>
     <div
@@ -148,8 +223,8 @@
         height: 100px;
         top: 70%;
         left: 80%;
-        background: rgba(245, 127, 32, 0.25);
-        animation: moveCircle2 12s infinite alternate ease-in-out;
+        background: rgba(245, 127, 32, 0.2);
+        animation: pulse 20s ease infinite;
         animation-delay: 1s;
       "
     ></div>
@@ -160,8 +235,8 @@
         height: 200px;
         top: 30%;
         left: 60%;
-        background: rgba(245, 127, 32, 0.18);
-        animation: moveCircle3 15s infinite alternate-reverse ease-in-out;
+        background: rgba(245, 127, 32, 0.1);
+        animation: wave 10s ease infinite;
         animation-delay: 2s;
       "
     ></div>
@@ -172,12 +247,11 @@
         height: 80px;
         top: 80%;
         left: 10%;
-        background: rgba(245, 127, 32, 0.22);
-        animation: moveCircle4 20s infinite alternate ease-in-out;
+        background: rgba(245, 127, 32, 0.25);
+        animation: complexMove 15s linear infinite;
         animation-delay: 0.5s;
       "
     ></div>
-    <!-- Added additional circles -->
     <div
       class="circle"
       style="
@@ -185,8 +259,8 @@
         height: 120px;
         top: 15%;
         left: 75%;
-        background: rgba(245, 127, 32, 0.2);
-        animation: moveCircle2 16s infinite alternate ease-in-out;
+        background: rgba(245, 127, 32, 0.18);
+        animation: bubble 7s ease infinite;
         animation-delay: 1.5s;
       "
     ></div>
@@ -197,9 +271,8 @@
         height: 180px;
         top: 50%;
         left: 30%;
-        background: rgba(245, 127, 32, 0.15);
-        animation: moveCircle3 17s infinite alternate-reverse ease-in-out;
-        animation-delay: 0.8s;
+        background: rgba(245, 127, 32, 0.12);
+        animation: orbit 20s linear infinite;
       "
     ></div>
     <div
@@ -209,8 +282,8 @@
         height: 90px;
         top: 65%;
         left: 45%;
-        background: rgba(245, 127, 32, 0.25);
-        animation: moveCircle1 14s infinite alternate ease-in-out;
+        background: rgba(245, 127, 32, 0.22);
+        animation: float 9s ease-in-out infinite reverse;
         animation-delay: 2.5s;
       "
     ></div>
@@ -221,8 +294,8 @@
         height: 130px;
         top: 25%;
         left: 25%;
-        background: rgba(245, 127, 32, 0.18);
-        animation: moveCircle4 19s infinite alternate-reverse ease-in-out;
+        background: rgba(245, 127, 32, 0.15);
+        animation: pulse 8s ease infinite;
         animation-delay: 1.2s;
       "
     ></div>
@@ -361,45 +434,6 @@
           return false;
         }
       });
-
-      // Add these animation keyframes to your style section
-      document.head.insertAdjacentHTML(
-        "beforeend",
-        `
-        <style>
-          @keyframes moveCircle1 {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
-            25% { transform: translate(50px, 100px) scale(1.2) rotate(90deg); opacity: 0.5; }
-            50% { transform: translate(150px, 50px) scale(0.8) rotate(180deg); opacity: 0.7; }
-            75% { transform: translate(100px, 200px) scale(1.1) rotate(270deg); opacity: 0.5; }
-            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
-          }
-          
-          @keyframes moveCircle2 {
-            0% { transform: translate(0, 0) scale(0.9) rotate(0deg); opacity: 0.4; }
-            33% { transform: translate(-80px, -100px) scale(1.3) rotate(120deg); opacity: 0.6; }
-            66% { transform: translate(-150px, -50px) scale(1) rotate(240deg); opacity: 0.4; }
-            100% { transform: translate(0, 0) scale(0.9) rotate(360deg); opacity: 0.4; }
-          }
-          
-          @keyframes moveCircle3 {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.3; }
-            40% { transform: translate(-120px, 80px) scale(0.7) rotate(144deg); opacity: 0.5; }
-            80% { transform: translate(80px, -120px) scale(1.1) rotate(288deg); opacity: 0.3; }
-            100% { transform: translate(0, 0) scale(1) rotate(360deg); opacity: 0.3; }
-          }
-          
-          @keyframes moveCircle4 {
-            0% { transform: translate(0, 0) scale(1.1) rotate(0deg); opacity: 0.4; }
-            20% { transform: translate(100px, -50px) scale(0.9) rotate(72deg); opacity: 0.6; }
-            40% { transform: translate(50px, -100px) scale(1.2) rotate(144deg); opacity: 0.5; }
-            60% { transform: translate(-50px, -80px) scale(0.8) rotate(216deg); opacity: 0.4; }
-            80% { transform: translate(-100px, 50px) scale(1.1) rotate(288deg); opacity: 0.5; }
-            100% { transform: translate(0, 0) scale(1.1) rotate(360deg); opacity: 0.4; }
-          }
-        </style>
-      `
-      );
     </script>
   </body>
 </html>

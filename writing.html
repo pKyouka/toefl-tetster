@@ -4,18 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEFL Writing Practice</title>
-    <!-- Bootstrap CSS -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
     />
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .question-nav-container {
+        width: 220px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+      }
+
+      .question-nav {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .question-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+
       .question-number {
         width: 30px;
         height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
         cursor: pointer;
       }
 
@@ -28,39 +60,30 @@
         font-weight: bold;
       }
 
+      #timer-container {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
       .writing-content {
-        max-height: calc(100vh - 160px);
+        flex: 1;
         overflow-y: auto;
+        max-height: calc(100vh - 160px);
+      }
+
+      .writing-section {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       .question-container {
+        margin-bottom: 25px;
         display: none;
-      }
-
-      .question-container.active {
-        display: block;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 150px;
-        margin-bottom: 15px;
-      }
-
-      .modal {
-        display: none;
-      }
-      body {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      #timer {
-        font-size: 17px;
-        color: #dc3545;
-        font-weight: bold;
       }
 
       .picture-prompt {
@@ -81,32 +104,57 @@
         font-weight: bold;
         margin-bottom: 10px;
       }
+
+      textarea {
+        width: 100%;
+        min-height: 150px;
+        margin-bottom: 15px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 8px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
     </style>
   </head>
-  <body class="d-flex flex-column min-vh-100 p-4">
-    <header class="text-center mb-4">
+  <body>
+    <header class="container text-center py-4">
       <h1>TOEFL Writing Practice Test</h1>
       <p>Complete the writing tasks below.</p>
     </header>
 
-    <div class="container-fluid flex-grow-1">
+    <div class="container mb-4">
       <div class="row">
-        <div class="col-md-2">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h3 class="card-title text-center">Questions</h3>
-              <div class="d-flex flex-wrap gap-2" id="questionNumbers"></div>
+        <!-- Left column -->
+        <div class="col-md-3">
+          <div class="question-nav-container">
+            <div class="question-nav p-3 mb-3">
+              <h3 class="text-center m-0 mb-3">Questions</h3>
+              <div class="question-numbers" id="questionNumbers"></div>
             </div>
-          </div>
 
-          <div class="card mb-3">
-            <div class="card-body text-center fw-bold">
+            <div id="timer-container" class="p-3 mb-3">
               <div id="timer">Time Remaining: --:--</div>
             </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body text-center">
+            <div class="p-3 bg-light rounded">
               <button
                 type="submit"
                 class="btn btn-primary w-100"
@@ -118,9 +166,10 @@
           </div>
         </div>
 
-        <div class="col-md-10">
-          <div class="card">
-            <div class="card-body writing-content">
+        <!-- Right column - questions -->
+        <div class="col-md-9">
+          <div class="writing-content">
+            <div class="writing-section p-4 mb-4">
               <div class="mb-4">
                 <h2>Section II: Writing</h2>
                 <p>
@@ -131,11 +180,15 @@
                 </p>
               </div>
 
-              <form id="writing-quiz" class="px-4 pb-4">
-                <div class="d-flex justify-content-between mt-4">
+              <form id="writing-quiz">
+                <!-- Questions will be dynamically created by script -->
+
+                <div
+                  class="navigation-buttons d-flex justify-content-between mt-4"
+                >
                   <button
                     type="button"
-                    class="btn btn-light"
+                    class="btn btn-secondary"
                     id="prevBtn"
                     disabled
                   >
@@ -160,33 +213,25 @@
       </div>
     </div>
 
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body text-center">
-            <h3 class="modal-title">Are you sure it's finished?</h3>
-            <p>You won't be able to change your answers after submitting.</p>
-            <div class="d-flex justify-content-center gap-3 mt-3">
-              <button class="btn btn-success" id="confirmYes">
-                Yes, Submit
-              </button>
-              <button class="btn btn-danger" id="confirmNo">
-                No, Continue
-              </button>
-            </div>
-          </div>
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h3>Are you sure it's finished?</h3>
+        <p>You won't be able to change your answers after submitting.</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button id="confirmYes" class="btn btn-success">Yes, Submit</button>
+          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
         </div>
       </div>
     </div>
 
-    <footer class="text-center text-muted mt-4">
-      <p>© 2025 IELTS Tester | Practice Writing Skills | Andaliman Books</p>
+    <footer class="container text-center py-3 text-muted">
+      <p class="small">
+        © 2025 IELTS Tester | Practice Writing Skills | Andaliman Books
+      </p>
     </footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
+      // Data pertanyaan
       const questionsPerPage = 5;
       const questions = [
         {
@@ -194,40 +239,45 @@
           question:
             "1. Write a sentence based on the picture below using the two words provided.",
           words: "friend/camp",
-          imageUrl: "https://bit.ly/tryout1q1_writing",
+          imageUrl: "src/assets/q1.png",
           response: "",
+          timeLimit: 60, // 1 minute per question
         },
         {
           type: "picture",
           question:
             "2. Write a sentence based on the picture below using the two words provided.",
           words: "cashier/pay",
-          imageUrl: "",
+          imageUrl: "src/assets/q2.png",
           response: "",
+          timeLimit: 60,
         },
         {
           type: "picture",
           question:
             "3. Write a sentence based on the picture below using the two words provided.",
           words: "grandfather/garden",
-          imageUrl: "https://bit.ly/tryout1q3_writing",
+          imageUrl: "src/assets/q3.png",
           response: "",
+          timeLimit: 60,
         },
         {
           type: "picture",
           question:
             "4. Write a sentence based on the picture below using the two words provided.",
           words: "clean/before",
-          imageUrl: "https://bit.ly/tryout1q4_writing",
+          imageUrl: "src/assets/q4.png",
           response: "",
+          timeLimit: 60,
         },
         {
           type: "picture",
           question:
             "5. Write a sentence based on the picture below using the two words provided.",
           words: "circus/perform",
-          imageUrl: "https://bit.ly/tryout1q5_writing",
+          imageUrl: "src/assets/q5.png",
           response: "",
+          timeLimit: 60,
         },
         {
           type: "email",
@@ -241,6 +291,7 @@
             body: "We are thrilled to have you as a valued customer of IDN Computer Jakarta Pusat! Thank you for your recent purchase of the HP 27inch All-in-One Desktop PC. We hope you are enjoying the cutting-edge features and performance of our product. Should you encounter any difficulties or have any questions, please feel free to reach out to us at idncomp.jakpusservice@gmail.com.",
           },
           response: "",
+          timeLimit: 300, // 5 minutes
         },
         {
           type: "email",
@@ -254,6 +305,7 @@
             body: "Could you please send me the updated sales report for the third quarter by tomorrow afternoon? I need it for an important presentation. Let me know if you need any additional information.",
           },
           response: "",
+          timeLimit: 300,
         },
         {
           type: "essay",
@@ -261,83 +313,50 @@
             "8. Some individuals claim that technology leads to increased isolation and reduced social interaction, whereas others believe that it improves communication and fosters connections. What is your perspective on this matter? Please clarify your opinion and provide supporting reasons.",
           minWords: 300,
           response: "",
+          timeLimit: 1200, // 20 minutes
         },
       ];
 
-      // Timer
-      let timeLeft = 50 * 60;
+      // Timer variables
+      let currentQuestionIndex = 0;
+      let timeLeft = 0;
+      let timerInterval;
       const timerDisplay = document.getElementById("timer");
 
-      function updateTimer() {
+      function startTimer(duration) {
+        timeLeft = duration;
+        updateTimerDisplay();
+
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            if (currentQuestionIndex < questions.length - 1) {
+              moveToNextQuestion();
+            } else {
+              submitTest();
+            }
+          }
+        }, 1000);
+      }
+
+      function updateTimerDisplay() {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `Time Remaining: ${minutes}:${
           seconds < 10 ? "0" : ""
         }${seconds}`;
-
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          alert("Time's up!");
-          submitTest();
-        }
-        timeLeft--;
       }
 
-      // Load saved time if exists
-      if (localStorage.getItem("writingTimeLeft")) {
-        timeLeft = parseInt(localStorage.getItem("writingTimeLeft"));
-      }
-
-      // Immediately update timer
-      updateTimer();
-
-      document.addEventListener("contextmenu", (event) =>
-        event.preventDefault()
-      );
-      document.addEventListener("selectstart", (event) =>
-        event.preventDefault()
-      );
-      document.addEventListener("copy", (event) => event.preventDefault());
-      document.addEventListener("cut", (event) => event.preventDefault());
-      document.addEventListener("dragstart", (event) => event.preventDefault());
-
-      document.addEventListener("keydown", function (event) {
-        if (
-          (event.ctrlKey &&
-            (event.key === "c" ||
-              event.key === "v" ||
-              event.key === "x" ||
-              event.key === "a")) ||
-          event.key === "F12" ||
-          event.key === "PrintScreen"
-        ) {
-          event.preventDefault();
-        }
-      });
-
-      window.addEventListener("beforeunload", function () {
-        localStorage.setItem("writingTimeLeft", timeLeft);
-        // Save responses
-        const responses = {};
-        questions.forEach((q, index) => {
-          const textarea = document.querySelector(`#q${index + 1}-response`);
-          if (textarea) {
-            responses[`q${index + 1}`] = textarea.value;
-          }
-        });
-        localStorage.setItem("writingResponses", JSON.stringify(responses));
-      });
-
-      const timerInterval = setInterval(updateTimer, 1000);
-
-      // Function to create question elements
+      // Fungsi untuk membuat elemen pertanyaan
       function createQuestionElements() {
         const quizForm = document.getElementById("writing-quiz");
-        const navigationButtons = quizForm.querySelector(
-          ".d-flex.justify-content-between"
-        );
+        const navigationButtons = quizForm.querySelector(".navigation-buttons");
 
-        // Remove existing questions
+        // Hapus semua pertanyaan yang ada (jika ada)
         const existingQuestions = quizForm.querySelectorAll(
           ".question-container"
         );
@@ -348,7 +367,7 @@
           const pageNum = Math.ceil(questionNum / questionsPerPage);
 
           const questionContainer = document.createElement("div");
-          questionContainer.className = "question-container mb-4";
+          questionContainer.className = "question-container";
           questionContainer.dataset.page = pageNum;
           questionContainer.dataset.question = questionNum;
           questionContainer.style.display = "none";
@@ -405,8 +424,6 @@
                   ? 0
                   : this.value.trim().split(/\s+/).length;
               wordCountDisplay.textContent = `Word count: ${wordCount}`;
-
-              // Save response as user types
               q.response = this.value;
             });
           }
@@ -414,6 +431,8 @@
           questionContainer.appendChild(questionDiv);
           quizForm.insertBefore(questionContainer, navigationButtons);
         });
+
+        // Tampilkan halaman pertama
         showPage(1);
       }
 
@@ -427,13 +446,13 @@
 
         for (let i = 1; i <= totalQuestions; i++) {
           const numberBtn = document.createElement("div");
-          numberBtn.className = "question-number border rounded";
+          numberBtn.className = "question-number";
           numberBtn.textContent = i;
           numberBtn.dataset.question = i;
           numberBtn.addEventListener("click", () => {
             const pageNum = Math.ceil(i / questionsPerPage);
             showPage(pageNum);
-            // Scroll to the question
+            // Scroll to the specific question
             const questionElement = document.querySelector(
               `.question-container[data-question="${i}"]`
             );
@@ -448,8 +467,10 @@
         }
       }
 
+      // Track answered questions
       const answeredQuestions = new Set();
 
+      // Add event listeners to all textareas
       function setupTextareaListeners() {
         document.querySelectorAll("textarea").forEach((textarea) => {
           textarea.addEventListener("input", function () {
@@ -463,7 +484,9 @@
 
             updateQuestionNumbers();
 
+            // Save response
             questions[questionNum - 1].response = this.value;
+            localStorage.setItem("writingResponses", JSON.stringify(questions));
           });
         });
       }
@@ -472,6 +495,7 @@
         document.querySelectorAll(".question-number").forEach((el) => {
           const questionNum = parseInt(el.dataset.question);
           el.classList.toggle("answered", answeredQuestions.has(questionNum));
+          // Highlight current page questions
           const currentPageQuestions = Array.from(
             { length: questionsPerPage },
             (_, i) => (currentPage - 1) * questionsPerPage + i + 1
@@ -483,6 +507,7 @@
         });
       }
 
+      // Pagination logic
       let currentPage = 1;
       const totalPages = Math.ceil(totalQuestions / questionsPerPage);
 
@@ -490,6 +515,8 @@
         currentPage = pageNumber;
         const allQuestions = document.querySelectorAll(".question-container");
         allQuestions.forEach((q) => (q.style.display = "none"));
+
+        // Show all questions for current page
         document
           .querySelectorAll(`.question-container[data-page="${pageNumber}"]`)
           .forEach((q) => (q.style.display = "block"));
@@ -497,17 +524,20 @@
         updateQuestionNumbers();
         updateNavigationButtons();
 
+        // Scroll to top of questions
         const firstQuestion = document.querySelector(
           `.question-container[data-page="${pageNumber}"][data-question="${
             (pageNumber - 1) * questionsPerPage + 1
           }"]`
         );
         if (firstQuestion) {
-          firstQuestion.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
+          firstQuestion.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+
+        // Start timer for the first question on this page
+        const firstQuestionIndex = (pageNumber - 1) * questionsPerPage;
+        currentQuestionIndex = firstQuestionIndex;
+        startTimer(questions[firstQuestionIndex].timeLimit);
       }
 
       function updateNavigationButtons() {
@@ -528,6 +558,16 @@
         }
       }
 
+      function moveToNextQuestion() {
+        if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex++;
+          const pageNum = Math.ceil(
+            (currentQuestionIndex + 1) / questionsPerPage
+          );
+          showPage(pageNum);
+        }
+      }
+
       document.getElementById("prevBtn").addEventListener("click", () => {
         if (currentPage > 1) {
           showPage(currentPage - 1);
@@ -541,10 +581,7 @@
       });
 
       document.getElementById("submitPageBtn").addEventListener("click", () => {
-        const modal = new bootstrap.Modal(
-          document.getElementById("confirmModal")
-        );
-        modal.show();
+        document.getElementById("confirmModal").style.display = "flex";
       });
 
       // Initialize
@@ -556,22 +593,23 @@
       // Load saved responses
       window.addEventListener("DOMContentLoaded", () => {
         const savedResponses =
-          JSON.parse(localStorage.getItem("writingResponses")) || {};
+          JSON.parse(localStorage.getItem("writingResponses")) || questions;
 
-        Object.entries(savedResponses).forEach(([questionName, response]) => {
-          const textarea = document.getElementById(`${questionName}-response`);
-          if (textarea) {
-            textarea.value = response;
-            questions[parseInt(questionName.substring(1)) - 1].response =
-              response;
+        savedResponses.forEach((response, index) => {
+          if (index < questions.length) {
+            questions[index].response = response.response || "";
+            const textarea = document.querySelector(`#q${index + 1}-response`);
+            if (textarea) {
+              textarea.value = questions[index].response;
 
-            // Mark as answered if there's content
-            if (response.trim().length > 0) {
-              answeredQuestions.add(parseInt(questionName.substring(1)));
-              updateQuestionNumbers();
+              if (questions[index].response.trim().length > 0) {
+                answeredQuestions.add(index + 1);
+              }
             }
           }
         });
+
+        updateQuestionNumbers();
 
         // Update word counts for essays
         questions.forEach((q, index) => {
@@ -595,10 +633,7 @@
         .getElementById("submitBtn")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const modal = new bootstrap.Modal(
-            document.getElementById("confirmModal")
-          );
-          modal.show();
+          document.getElementById("confirmModal").style.display = "flex";
         });
 
       document
@@ -610,29 +645,18 @@
       document
         .getElementById("confirmNo")
         .addEventListener("click", function () {
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById("confirmModal")
-          );
-          modal.hide();
+          document.getElementById("confirmModal").style.display = "none";
         });
 
       // Submit Logic
       function submitTest() {
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("confirmModal")
-        );
-        modal.hide();
+        document.getElementById("confirmModal").style.display = "none";
         clearInterval(timerInterval);
 
         // Save all responses
-        const responses = {};
-        questions.forEach((q, index) => {
-          responses[`q${index + 1}`] = q.response;
-        });
-
-        localStorage.setItem("writingResponses", JSON.stringify(responses));
-        localStorage.setItem("writingQuestions", JSON.stringify(questions));
+        localStorage.setItem("writingResponses", JSON.stringify(questions));
         alert("Your writing test has been submitted!");
+        // Here you would typically redirect to a results page or similar
       }
 
       document
@@ -641,6 +665,27 @@
           event.preventDefault();
           submitTest();
         });
+
+      // Disable right-click and other protections
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+      document.addEventListener("selectstart", (e) => e.preventDefault());
+      document.addEventListener("copy", (e) => e.preventDefault());
+      document.addEventListener("cut", (e) => e.preventDefault());
+      document.addEventListener("dragstart", (e) => e.preventDefault());
+
+      document.addEventListener("keydown", function (event) {
+        if (
+          (event.ctrlKey &&
+            (event.key === "c" ||
+              event.key === "v" ||
+              event.key === "x" ||
+              event.key === "a")) ||
+          event.key === "F12" ||
+          event.key === "PrintScreen"
+        ) {
+          event.preventDefault();
+        }
+      });
     </script>
   </body>
 </html>
