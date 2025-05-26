@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TOEFL Listening Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .question-nav-container {
+        width: 220px;
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        align-self: flex-start;
+      }
+
+      .question-nav {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .question-numbers {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+
+      .question-number {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .question-number.answered {
+        background-color: #e0e0e0;
+      }
+
+      .question-number.current {
+        border: 2px solid #4424b9;
+        font-weight: bold;
+      }
+
+      #timer-container {
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .listening-content {
+        flex: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 160px);
+      }
+
+      .listening-section {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-audio-player {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        position: relative;
+      }
+      
+      .audio-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      
+      .play-btn {
+        background: #ec2f0e;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      
+      .play-btn:hover {
+        background: #bb4415;
+        transform: scale(1.05);
+      }
+      
+      .play-btn:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+      
+      .audio-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 15px;
+      }
+      
+      .audio-title {
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+      
+      .audio-status {
+        font-size: 0.9rem;
+        color: #666;
+      }
+      
+      .progress-container {
+        width: 100%;
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 10px;
+      }
+      
+      .progress-bar {
+        height: 100%;
+        background: #4424b9;
+        width: 0;
+        border-radius: 4px;
+        transition: width 0.1s linear;
+      }
+      
+      .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 5px;
+      }
+      
+      .playback-limit-notice {
+        color: #dc3545;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+      }
+      
+      .audio-played {
+        position: relative;
+      }
+      
+      .audio-played::after {
+        content: "✓";
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        background: #198754;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .question-container {
+        margin-bottom: 25px;
+        display: none;
+      }
+
+      .options label {
+        display: block;
+        margin: 8px 0;
+        cursor: pointer;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 8px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container text-center py-4">
+      <h1>TOEFL Listening Practice Test</h1>
+      <p>Listen to the audio and answer the questions below.</p>
+    </header>
+
+    <div class="container mb-4">
+      <div class="row">
+        <!-- Left column -->
+        <div class="col-md-3">
+          <div class="question-nav-container">
+            <div class="question-nav p-3 mb-3">
+              <h3 class="text-center m-0 mb-3">Questions</h3>
+              <div class="question-numbers" id="questionNumbers"></div>
+            </div>
+
+            <div id="timer-container" class="p-3 mb-3">
+              <div id="timer">Time Remaining: 30:00</div>
+            </div>
+
+            <div class="p-3 bg-light rounded">
+              <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+                Submit Answers
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column - questions -->
+        <div class="col-md-9">
+          <div class="listening-content">
+            <div class="listening-section p-4 mb-4">
+              <div class="passage mb-4">
+                <h2>Section I: Listening</h2>
+                <p>
+                  In the listening test, you will hear conversations and lectures. You will answer questions about them. The entire listening test will last approximately 30 minutes.
+                  <strong>Important: Each audio can only be played once.</strong> Listen carefully before answering the questions.
+                </p>
+              </div>
+
+              <div class="custom-audio-player" id="customAudioPlayer">
+                <div class="audio-controls">
+                  <button class="play-btn" id="playBtn">
+                    <i class="fas fa-play" id="playIcon"></i>
+                  </button>
+                  <div class="audio-info">
+                    <p class="audio-title" id="currentAudioTitle">Conversation 1</p>
+                    <span class="audio-status" id="audioStatus">Ready to play</span>
+                  </div>
+                </div>
+                
+                <div class="progress-container">
+                  <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
+                <div class="time-display">
+                  <span id="currentTime">0:00</span>
+                  <span id="durationTime">0:00</span>
+                </div>
+                
+                <div class="playback-limit-notice">
+                  Note: Each audio recording can only be played once to simulate exam conditions.
+                </div>
+                
+                <!-- Hidden native audio element -->
+                <audio id="mainAudio" style="display:none">
+                  <source src="src/assets/sound/q1.wav" type="audio/wav">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+
+              <form id="listening-quiz">
+                <!-- Questions will be dynamically created by script -->
+                <div class="navigation-buttons d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
+                  <button type="button" class="btn btn-warning" id="nextBtn">Next</button>
+                  <button type="button" class="btn btn-warning" id="submitPageBtn" style="display: none">
+                    Submit Answers
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <h3>Are you sure you want to finish?</h3>
+        <p>You won't be able to change your answers after submitting.</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button id="confirmYes" class="btn btn-success">Yes, Submit</button>
+          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="container text-center py-3 text-muted">
+      <p class="small">© 2023 TOEFL Tester | Practice Listening Skills</p>
+    </footer>
+
+    <script>
+      // Data pertanyaan
+      const questionsPerPage = 5;
+      const questions = [
+        {
+          audio: "src/assets/sound/q1.wav",
+          title: "Conversation 1",
+          question: "1. What is the main topic of the conversation?",
+          options: [
+            "A) A class assignment",
+            "B) A student organization",
+            "C) A campus event",
+            "D) A research project"
+          ],
+          correctAnswer: "c"
+        },
+        {
+          audio: "src/assets/sound/q1.wav", // Sama dengan soal pertama
+          title: "Conversation 1",
+          question: "2. What problem does the woman mention?",
+          options: [
+            "A) Lack of funding",
+            "B) Not enough volunteers",
+            "C) Scheduling conflicts",
+            "D) Limited space"
+          ],
+          correctAnswer: "b"
+        },
+        {
+          audio: "src/assets/sound/q1.wav", // Sama dengan soal pertama
+          title: "Conversation 1",
+          question: "3. What does the man suggest doing?",
+          options: [
+            "A) Postponing the event",
+            "B) Finding additional sponsors",
+            "C) Recruiting more volunteers",
+            "D) Changing the venue"
+          ],
+          correctAnswer: "c"
+        },
+        {
+          audio: "src/assets/sound/q2.wav", // Ganti dengan file audio kedua jika ada
+          title: "Lecture: Biology",
+          question: "4. What is the main topic of the lecture?",
+          options: [
+            "A) Animal adaptations",
+            "B) Environmental change",
+            "C) Evolution theory",
+            "D) Marine ecosystems"
+          ],
+          correctAnswer: "a"
+        },
+        {
+          audio: "src/assets/sound/q2.wav",
+          title: "Lecture: Biology",
+          question: "5. According to the professor, why do animals develop adaptations?",
+          options: [
+            "A) To compete with other species",
+            "B) To survive in their environment",
+            "C) To attract mates",
+            "D) To improve their hunting abilities"
+          ],
+          correctAnswer: "b"
+        },
+        {
+          audio: "src/assets/sound/q2.wav",
+          title: "Lecture: Biology",
+          question: "6. What example does the professor give of a physical adaptation?",
+          options: [
+            "A) Migration patterns",
+            "B) Hibernation",
+            "C) Camouflage",
+            "D) Hunting strategies"
+          ],
+          correctAnswer: "c"
+        },
+        {
+          audio: "src/assets/sound/q3.wav",
+          title: "Conversation: Academic Advising",
+          question: "7. Why does the student visit the advisor?",
+          options: [
+            "A) To discuss course selection",
+            "B) To request a letter of recommendation",
+            "C) To inquire about graduation requirements",
+            "D) To change majors"
+          ],
+          correctAnswer: "a"
+        },
+        {
+          audio: "src/assets/sound/q3.wav",
+          title: "Conversation: Academic Advising",
+          question: "8. What concern does the advisor express about the student's schedule?",
+          options: [
+            "A) Too many advanced courses",
+            "B) Scheduling conflicts",
+            "C) Prerequisites not completed",
+            "D) Too many credit hours"
+          ],
+          correctAnswer: "d"
+        },
+        {
+          audio: "src/assets/sound/q3.wav",
+          title: "Conversation: Academic Advising",
+          question: "9. What solution does the advisor suggest?",
+          options: [
+            "A) Taking summer classes",
+            "B) Dropping a course",
+            "C) Getting permission from the department",
+            "D) Postponing graduation"
+          ],
+          correctAnswer: "b"
+        },
+        {
+          audio: "src/assets/sound/q4.wav",
+          title: "Lecture: American History",
+          question: "10. What period of history does the lecture primarily focus on?",
+          options: [
+            "A) The Colonial Era",
+            "B) The Civil War",
+            "C) The Industrial Revolution",
+            "D) World War II"
+          ],
+          correctAnswer: "c"
+        }
+      ];
+
+      // Audio playback tracking
+      const playedAudios = new Set();
+
+      // Timer
+      let timeLeft = 30 * 60; // 30 minutes in seconds
+      const timerDisplay = document.getElementById("timer");
+
+      function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `Time Remaining: ${minutes}:${
+          seconds < 10 ? "0" : ""
+        }${seconds}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("Time's up!");
+          submitQuiz();
+        }
+        timeLeft--;
+      }
+
+      // Check if coming from another page
+      window.addEventListener("beforeunload", function() {
+        localStorage.setItem("listeningTimeLeft", timeLeft);
+        // Also store which audios have been played
+        localStorage.setItem("playedAudios", JSON.stringify(Array.from(playedAudios)));
+      });
+
+      const timerInterval = setInterval(updateTimer, 1000);
+
+      // Enhanced Audio management
+      let currentAudioGroup = "";
+      const mainAudio = document.getElementById("mainAudio");
+      const playBtn = document.getElementById("playBtn");
+      const playIcon = document.getElementById("playIcon");
+      const progressBar = document.getElementById("progressBar");
+      const currentTime = document.getElementById("currentTime");
+      const durationTime = document.getElementById("durationTime");
+      const audioStatus = document.getElementById("audioStatus");
+      const audioTitle = document.getElementById("currentAudioTitle");
+
+      // Load played audios from localStorage if available
+      try {
+        const storedPlayedAudios = JSON.parse(localStorage.getItem("playedAudios"));
+        if (Array.isArray(storedPlayedAudios)) {
+          storedPlayedAudios.forEach(audio => playedAudios.add(audio));
+        }
+      } catch (e) {
+        console.error("Error loading played audios:", e);
+      }
+
+      // Format time from seconds to MM:SS
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        seconds = Math.floor(seconds % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+
+      // Audio event listeners
+      mainAudio.addEventListener('timeupdate', () => {
+        const duration = mainAudio.duration;
+        const currentTimeValue = mainAudio.currentTime;
+        const percentage = (currentTimeValue / duration) * 100;
+        
+        progressBar.style.width = `${percentage}%`;
+        currentTime.textContent = formatTime(currentTimeValue);
+        
+        // Update status text based on progress
+        if (percentage > 0 && percentage < 100) {
+          audioStatus.textContent = "Playing...";
+        }
+      });
+
+      mainAudio.addEventListener('loadedmetadata', () => {
+        durationTime.textContent = formatTime(mainAudio.duration);
+        audioStatus.textContent = "Ready to play";
+      });
+
+      mainAudio.addEventListener('ended', () => {
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+        progressBar.style.width = '100%';
+        audioStatus.textContent = "Playback complete";
+        
+        // Mark this audio as played and disable the button
+        playedAudios.add(currentAudioGroup);
+        playBtn.disabled = true;
+        playBtn.classList.add('audio-played');
+      });
+
+      playBtn.addEventListener('click', () => {
+        // If the audio has already been played, don't allow playback
+        if (playedAudios.has(currentAudioGroup)) {
+          audioStatus.textContent = "Already played (limited to once)";
+          return;
+        }
+        
+        if (mainAudio.paused) {
+          mainAudio.play();
+          playIcon.classList.remove('fa-play');
+          playIcon.classList.add('fa-pause');
+          audioStatus.textContent = "Playing...";
+        } else {
+          mainAudio.pause();
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          audioStatus.textContent = "Paused";
+        }
+      });
+
+      function updateAudioSource(audioFile, title) {
+        if (currentAudioGroup !== audioFile) {
+          mainAudio.src = audioFile;
+          mainAudio.load();
+          audioTitle.textContent = title;
+          currentAudioGroup = audioFile;
+          
+          // Reset progress bar and status
+          progressBar.style.width = '0%';
+          currentTime.textContent = '0:00';
+          durationTime.textContent = '0:00';
+          
+          // Check if this audio has already been played
+          if (playedAudios.has(audioFile)) {
+            playBtn.disabled = true;
+            playBtn.classList.add('audio-played');
+            audioStatus.textContent = "Already played (limited to once)";
+          } else {
+            playBtn.disabled = false;
+            playBtn.classList.remove('audio-played');
+            playIcon.classList.remove('fa-pause');
+            playIcon.classList.add('fa-play');
+            audioStatus.textContent = "Ready to play";
+          }
+        }
+      }
+
+      // Fungsi untuk membuat elemen pertanyaan
+      function createQuestionElements() {
+        const quizForm = document.getElementById("listening-quiz");
+        const navigationButtons = quizForm.querySelector(".navigation-buttons");
+
+        // Hapus semua pertanyaan yang ada (jika ada)
+        const existingQuestions = quizForm.querySelectorAll(
+          ".question-container"
+        );
+        existingQuestions.forEach((q) => q.remove());
+
+        questions.forEach((q, index) => {
+          const questionNum = index + 1;
+          const pageNum = Math.ceil(questionNum / questionsPerPage);
+
+          const questionContainer = document.createElement("div");
+          questionContainer.className = "question-container";
+          questionContainer.dataset.page = pageNum;
+          questionContainer.dataset.question = questionNum;
+          questionContainer.dataset.audio = q.audio;
+          questionContainer.dataset.title = q.title;
+          questionContainer.style.display = "none";
+
+          const questionDiv = document.createElement("div");
+          questionDiv.className = "question";
+          questionDiv.innerHTML = q.question;
+
+          const optionsDiv = document.createElement("div");
+          optionsDiv.className = "options";
+
+          q.options.forEach((option, optIndex) => {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = `q${questionNum}`;
+            input.value = String.fromCharCode(97 + optIndex); // a, b, c, d
+
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(` ${option}`));
+            optionsDiv.appendChild(label);
+          });
+
+          questionContainer.appendChild(questionDiv);
+          questionContainer.appendChild(optionsDiv);
+          quizForm.insertBefore(questionContainer, navigationButtons);
+        });
+
+        // Tampilkan halaman pertama
+        showPage(1);
+      }
+
+      // Initialize question numbers
+      const questionNumbersContainer =
+        document.getElementById("questionNumbers");
+      const totalQuestions = questions.length;
+
+      function initializeQuestionNumbers() {
+        questionNumbersContainer.innerHTML = "";
+
+        for (let i = 1; i <= totalQuestions; i++) {
+          const numberBtn = document.createElement("div");
+          numberBtn.className = "question-number";
+          numberBtn.textContent = i;
+          numberBtn.dataset.question = i;
+          numberBtn.addEventListener("click", () => {
+            const pageNum = Math.ceil(i / questionsPerPage);
+            showPage(pageNum);
+            // Scroll to the specific question
+            const questionElement = document.querySelector(
+              `.question-container[data-question="${i}"]`
+            );
+            if (questionElement) {
+              questionElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+              
+              // Update audio source if needed
+              updateAudioSource(
+                questionElement.dataset.audio,
+                questionElement.dataset.title
+              );
+            }
+          });
+          questionNumbersContainer.appendChild(numberBtn);
+        }
+      }
+
+      // Track answered questions
+      const answeredQuestions = new Set();
+
+      // Add event listeners to all radio buttons
+      function setupRadioButtonListeners() {
+        document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+          radio.addEventListener("change", function () {
+            const questionNum = this.name.substring(1);
+            answeredQuestions.add(parseInt(questionNum));
+            updateQuestionNumbers();
+
+            // Simpan jawaban ke localStorage
+            const userAnswers =
+              JSON.parse(localStorage.getItem("listeningAnswers")) || {};
+            userAnswers[`q${questionNum}`] = this.value;
+            localStorage.setItem("listeningAnswers", JSON.stringify(userAnswers));
+          });
+        });
+      }
+
+      function updateQuestionNumbers() {
+        document.querySelectorAll(".question-number").forEach((el) => {
+          const questionNum = parseInt(el.dataset.question);
+          el.classList.toggle("answered", answeredQuestions.has(questionNum));
+          // Highlight current page questions
+          const currentPageQuestions = Array.from(
+            { length: questionsPerPage },
+            (_, i) => (currentPage - 1) * questionsPerPage + i + 1
+          );
+          el.classList.toggle(
+            "current",
+            currentPageQuestions.includes(questionNum)
+          );
+        });
+      }
+
+      // Pagination logic
+      let currentPage = 1;
+      const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+
+      function showPage(pageNumber) {
+        currentPage = pageNumber;
+        const allQuestions = document.querySelectorAll(".question-container");
+        allQuestions.forEach((q) => (q.style.display = "none"));
+
+        // Show all questions for current page
+        const pageQuestions = document.querySelectorAll(
+          `.question-container[data-page="${pageNumber}"]`
+        );
+        pageQuestions.forEach((q) => (q.style.display = "block"));
+        
+        // Update audio source based on first question of the page
+        if (pageQuestions.length > 0) {
+          const firstQuestion = pageQuestions[0];
+          updateAudioSource(
+            firstQuestion.dataset.audio,
+            firstQuestion.dataset.title
+          );
+        }
+
+        updateQuestionNumbers();
+        updateNavigationButtons();
+
+        // Scroll to top of questions
+        const firstQuestion = document.querySelector(
+          `.question-container[data-page="${pageNumber}"][data-question="${
+            (pageNumber - 1) * questionsPerPage + 1
+          }"]`
+        );
+        if (firstQuestion) {
+          firstQuestion.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      function updateNavigationButtons() {
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitPageBtn = document.getElementById("submitPageBtn");
+
+        // Update Previous button
+        prevBtn.disabled = currentPage === 1;
+
+        // Update Next/Submit buttons
+        if (currentPage === totalPages) {
+          nextBtn.style.display = "none";
+          submitPageBtn.style.display = "inline-block";
+        } else {
+          nextBtn.style.display = "inline-block";
+          submitPageBtn.style.display = "none";
+        }
+      }
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          showPage(currentPage - 1);
+        }
+      });
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          showPage(currentPage + 1);
+        }
+      });
+
+      document.getElementById("submitPageBtn").addEventListener("click", () => {
+        document.getElementById("confirmModal").style.display = "flex";
+      });
+
+      // Initialize
+      createQuestionElements();
+      initializeQuestionNumbers();
+      setupRadioButtonListeners();
+      updateNavigationButtons();
+
+      // Modal Confirmation
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          document.getElementById("confirmModal").style.display = "flex";
+        });
+
+      document
+        .getElementById("confirmYes")
+        .addEventListener("click", function () {
+          submitQuiz();
+        });
+
+      document
+        .getElementById("confirmNo")
+        .addEventListener("click", function () {
+          document.getElementById("confirmModal").style.display = "none";
+        });
+
+      // Submit Logic
+      function submitQuiz() {
+        document.getElementById("confirmModal").style.display = "none";
+        clearInterval(timerInterval);
+
+        let score = 0;
+        const feedback = [];
+        const questionDetails = {};
+        const userAnswers = {};
+        const categories = {
+          conversation: { correct: 0, total: 6 },
+          lecture: { correct: 0, total: 4 }
+        };
+
+        // Definisi kategori soal
+        const questionCategories = {
+          q1: "conversation",
+          q2: "conversation",
+          q3: "conversation",
+          q4: "lecture",
+          q5: "lecture",
+          q6: "lecture",
+          q7: "conversation",
+          q8: "conversation",
+          q9: "conversation",
+          q10: "lecture"
+        };
+
+        questions.forEach((q, index) => {
+          const questionNum = index + 1;
+          const questionKey = `q${questionNum}`;
+          const selected = document.querySelector(
+            `input[name="q${questionNum}"]:checked`
+          );
+          const userAnswer = selected ? selected.value : null;
+
+          userAnswers[questionKey] = userAnswer;
+          const isCorrect = selected && selected.value === q.correctAnswer;
+
+          if (isCorrect) {
+            score++;
+            feedback.push({ question: questionNum, result: "✓" });
+          } else {
+            feedback.push({
+              question: questionNum,
+              result: "✗",
+              correct: q.correctAnswer.toUpperCase(),
+            });
+          }
+
+          // Update kategori
+          const category = questionCategories[questionKey];
+          if (category) {
+            if (isCorrect) categories[category].correct += 1;
+          }
+
+          questionDetails[questionKey] = {
+            yourAnswer: userAnswer ? userAnswer.toUpperCase() : "-",
+            correctAnswer: q.correctAnswer.toUpperCase(),
+            result: isCorrect ? "✓" : "✗",
+          };
+        });
+
+        localStorage.setItem("listeningScore", score);
+        localStorage.setItem("listeningTotalQuestions", questions.length);
+        localStorage.setItem("listeningAnswers", JSON.stringify(userAnswers));
+        localStorage.setItem(
+          "listeningQuestionDetails",
+          JSON.stringify(questionDetails)
+        );
+        localStorage.setItem("listeningCategories", JSON.stringify(categories));
+
+        window.location.href = "listening-result.html";
+      }
+
+      document
+        .getElementById("listening-quiz")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          submitQuiz();
+        });
+
+      // Disable right-click
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
