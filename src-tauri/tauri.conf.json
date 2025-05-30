@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "toefl-test",
+  "productName": "TOEIC Test Andaliman Books",
   "version": "0.1.0",
   "identifier": "com.toefl-test.andalimanbooks",
   "build": {
@@ -15,7 +15,7 @@
       {
         "fullscreen": false,
         "resizable": false,
-        "title": "toefl-test",
+        "title": "TOEIC Test Andaliman Books",
         "width": 1280,
         "height": 720
       }
