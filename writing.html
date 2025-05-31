@@ -488,6 +488,10 @@
                 : 0;
               wc.textContent = `Word count: ${wordCount}`;
               q.response = ta.value;
+              localStorage.setItem(
+                "writingResponses",
+                JSON.stringify(questions)
+              );
             });
           }
 
@@ -593,7 +597,7 @@
       function submitTest() {
         clearInterval(timerInterval);
         localStorage.removeItem("remainingTime");
-        localStorage.removeItem("writingResponses");
+        // localStorage.removeItem("writingResponses");
         localStorage.removeItem("answeredQuestions");
         window.location.href = "result_speakingwriting.html";
       }

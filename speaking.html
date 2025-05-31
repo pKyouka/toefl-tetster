@@ -590,6 +590,25 @@
           document.getElementById(`stop-btn${taskId}`).disabled = true;
           document.getElementById(`recorder-status${taskId}`).textContent =
             "Recording stopped and saved.";
+
+          // Simpan Blob audio sebagai base64
+          const blob = window.audioBlobs[taskId];
+          const reader = new FileReader();
+          reader.onload = function () {
+            const base64Audio = reader.result; // Data base64
+            let savedAudios =
+              JSON.parse(localStorage.getItem("savedAudios")) || {};
+            savedAudios[taskId] = base64Audio;
+            localStorage.setItem("savedAudios", JSON.stringify(savedAudios));
+          };
+          reader.readAsDataURL(blob);
+
+          completedTasks.add(taskId);
+          localStorage.setItem(
+            "completedTasks",
+            JSON.stringify([...completedTasks])
+          );
+          updateTaskNumbers();
         }
       }
 
