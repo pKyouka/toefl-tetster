@@ -3,18 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TOEIC Speaking Test</title>
+    <title>TOEIC Speaking Practice Test</title>
+
+    <!-- Bootstrap -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
+      :root {
+        --orange-primary: #f57f20;
+        --orange-dark: #d16a1a;
+        --orange-light: #fff5ee;
+        --dark-text: #2a2a2a;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
+        font-family: "Poppins", sans-serif;
+        background-color: var(--orange-light);
+        color: var(--dark-text);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--orange-primary),
+          var(--orange-dark)
+        );
+        color: white;
+        padding: 60px 0 50px;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: var(--orange-light);
+        transform: skewY(-2deg);
+        z-index: -1;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        overflow: hidden;
       }
 
       .task-nav-container {
@@ -26,64 +83,92 @@
       }
 
       .task-nav {
-        background-color: #f5f5f5;
-        border-radius: 5px;
+        background-color: var(--orange-light);
+        border-radius: 16px;
         margin-bottom: 10px;
+        padding: 15px;
+        backdrop-filter: blur(5px);
       }
 
       .task-numbers {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(5, 1fr); /* 5 kolom */
+        gap: 10px;
       }
 
       .task-number {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: white;
         border: 1px solid #ddd;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
+        transition: all 0.3s ease;
       }
 
-      .task-number.completed {
-        background-color: #e0e0e0;
+      .task-number.answered {
+        background-color: var(--orange-light);
+        color: var(--orange-dark);
+        font-weight: bold;
       }
 
       .task-number.current {
-        border: 2px solid #4caf50;
+        border: 2px solid var(--orange-primary);
         font-weight: bold;
       }
 
       #timer-container {
-        background-color: #f5f5f5;
-        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 16px;
         text-align: center;
         font-weight: bold;
         margin-bottom: 10px;
+        padding: 15px;
       }
 
-      .speaking-content {
-        flex: 1;
-        overflow-y: auto;
-        max-height: calc(100vh - 160px);
+      #main-timer {
+        font-size: 1.1rem;
+        color: var(--orange-dark);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        width: 400px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
 
       .speaking-section {
-        border: 1px solid #ddd;
-        border-radius: 5px;
         background-color: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
       }
 
       .task {
         padding: 20px;
         margin-bottom: 15px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 8px;
+        background-color: var(--orange-light);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         display: none;
       }
 
@@ -94,25 +179,18 @@
       .task-title {
         font-weight: bold;
         margin-bottom: 15px;
-        color: #3498db;
+        color: var(--orange-dark);
       }
 
       .task-description {
         margin-bottom: 15px;
       }
 
-      .timer {
-        font-size: 24px;
-        text-align: center;
-        margin: 20px 0;
-        color: #e74c3c;
-      }
-
       .recorder-status {
         text-align: center;
         font-style: italic;
         margin: 10px 0;
-        color: #7f8c8d;
+        color: var(--dark-text);
       }
 
       .controls {
@@ -121,545 +199,329 @@
       }
 
       button {
-        background-color: #3498db;
+        background-color: var(--orange-primary);
         color: white;
         border: none;
         padding: 8px 15px;
-        border-radius: 5px;
+        border-radius: 8px;
         cursor: pointer;
         margin: 5px;
+        transition: all 0.3s ease;
       }
 
       button:hover {
-        background-color: #2980b9;
+        background-color: var(--orange-dark);
       }
 
       button:disabled {
-        background-color: #bdc3c7;
+        background-color: #e0e0e0;
         cursor: not-allowed;
       }
 
-      .navigation-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
+      footer {
+        margin-top: auto;
+        background: linear-gradient(135deg, var(--orange-dark), #b85c18);
+        color: white;
+        padding: 25px 0;
+        position: relative;
+      }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: var(--orange-light);
+        transform: skewY(1.5deg);
+        z-index: -1;
       }
     </style>
   </head>
   <body>
-    <header class="container text-center py-4">
-      <h1>TOEIC Speaking Practice Test</h1>
-      <p>
-        Complete the following speaking tasks to practice your English speaking
-        skills.
-      </p>
+    <!-- Header -->
+    <header class="container-fluid text-center py-4">
+      <div class="container">
+        <h1>TOEIC Speaking Practice Test</h1>
+        <p class="lead">
+          Complete the following speaking tasks to practice your English
+          speaking skills.
+        </p>
+      </div>
     </header>
 
-    <div class="container mb-4">
+    <!-- Main Content -->
+    <div class="container my-5">
       <div class="row">
-        <!-- Left column -->
+        <!-- Sidebar Navigasi Soal -->
         <div class="col-md-3">
           <div class="task-nav-container">
-            <div class="task-nav p-3 mb-3">
-              <h3 class="text-center m-0 mb-3">Tasks</h3>
+            <div class="task-nav glass-card p-3 mb-3">
+              <h3 class="text-center m-0 mb-3">
+                <i class="fas fa-list me-2"></i> Tasks
+              </h3>
               <div class="task-numbers" id="taskNumbers"></div>
             </div>
-
-            <div id="timer-container" class="p-3 mb-3">
-              <div id="main-timer">Total Time: 30:00</div>
+            <div id="timer-container" class="glass-card p-3 mb-3">
+              <div id="main-timer">
+                <i class="fas fa-clock me-2"></i> Time Remaining: 20:00
+              </div>
             </div>
-
-            <div class="p-3 bg-light rounded">
+            <div class="glass-card p-3">
               <button
                 type="button"
                 class="btn btn-primary w-100"
                 id="finishBtn"
+              >
+                <i class="fas fa-flag-checkered me-2"></i> Finish Test
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Konten Utama -->
+        <div class="col-md-9">
+          <div class="speaking-section glass-card">
+            <h3>
+              <i class="fas fa-microphone me-2"></i> Section III: Speaking
+            </h3>
+            <p>
+              In this section, you will complete several speaking tasks. You'll
+              have time to prepare your response and then speak into a
+              microphone. There are 11 tasks in total.
+            </p>
+
+            <!-- Task Container -->
+            <div id="task-container"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons d-flex justify-content-between mt-4">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="prevBtn"
+                disabled
+              >
+                Previous
+              </button>
+              <button type="button" class="btn btn-success" id="nextBtn">
+                Next
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="submitPageBtn"
+                style="display: none"
               >
                 Finish Test
               </button>
             </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Right column - tasks -->
-        <div class="col-md-9">
-          <div class="speaking-content">
-            <div class="speaking-section p-4 mb-4">
-              <div class="intro mb-4">
-                <h2>Section III: Speaking</h2>
-                <p>
-                  In the TOEIC Speaking section, you'll be asked to speak on a
-                  variety of topics. You'll have time to prepare your response
-                  and then speak into a microphone. There are four tasks in the
-                  actual TOEIC test, including both independent and integrated
-                  speaking tasks.
-                </p>
-              </div>
-
-              <div id="task-container">
-                <!-- Tasks will be shown here -->
-                <div id="task1" class="task active" data-task="1">
-                  <div class="task-title">
-                    Task 1: Independent Speaking Task
-                  </div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will read a text aloud. You will have 45
-                      seconds to prepare and 45 seconds to read the text aloud.
-                    </p>
-                    <p>
-                      <strong>Directions:</strong> Read the following text
-                      aloud.
-                    </p>
-                    <p>
-                      "Welcome to our annual conference. This year's event
-                      focuses on the latest trends in technology and innovation.
-                      We have several keynote speakers, workshops, and
-                      networking opportunities planned for you."
-                    </p>
-                  </div>
-                  <div class="timer" id="timer1">00:00</div>
-                  <div class="recorder-status" id="recorder-status1">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(1)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(1)"
-                      disabled
-                      id="record-btn1"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(1)" disabled id="stop-btn1">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(1)" disabled id="play-btn1">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div id="task2" class="task" data-task="2">
-                  <div class="task-title">
-                    Task 2: Integrated Speaking Task (Reading, Listening,
-                    Speaking)
-                  </div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will read a short passage, listen to a
-                      conversation on the same topic, and then speak in response
-                      to a question. You will have 30 seconds to prepare and 60
-                      seconds to speak.
-                    </p>
-
-                    <p><strong>Reading Passage:</strong></p>
-                    <p>
-                      The university has announced plans to renovate the student
-                      center. The renovation will include expanding the dining
-                      area, adding more study spaces, and upgrading the
-                      technology throughout the building. The project is
-                      scheduled to begin next semester and will take
-                      approximately six months to complete. During this time,
-                      temporary facilities will be set up in the gymnasium.
-                    </p>
-
-                    <p>
-                      <strong
-                        >After reading and listening, you will answer the
-                        following question:</strong
-                      >
-                    </p>
-                    <p>
-                      The man expresses his opinion about the university's plan
-                      for renovating the student center. State his opinion and
-                      explain the reasons he gives for holding that opinion.
-                    </p>
-                  </div>
-                  <div class="timer" id="timer2">00:00</div>
-                  <div class="recorder-status" id="recorder-status2">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(2)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(2)"
-                      disabled
-                      id="record-btn2"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(2)" disabled id="stop-btn2">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(2)" disabled id="play-btn2">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div id="task3" class="task" data-task="3">
-                  <div class="task-title">
-                    Task 3: Integrated Speaking Task (Listening, Speaking)
-                  </div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will listen to part of an academic
-                      lecture and then speak in response to a question about it.
-                      You will have 30 seconds to prepare and 60 seconds to
-                      speak.
-                    </p>
-                    <p>
-                      <strong
-                        >After listening to the lecture, you will answer the
-                        following question:</strong
-                      >
-                    </p>
-                    <p>
-                      Using examples from the lecture, explain the concept of
-                      confirmation bias and its effects on decision making.
-                    </p>
-                  </div>
-                  <div class="timer" id="timer3">00:00</div>
-                  <div class="recorder-status" id="recorder-status3">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(3)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(3)"
-                      disabled
-                      id="record-btn3"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(3)" disabled id="stop-btn3">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(3)" disabled id="play-btn3">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div id="task4" class="task" data-task="4">
-                  <div class="task-title">
-                    Task 4: Integrated Speaking Task (Listening, Speaking)
-                  </div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will listen to part of a conversation
-                      and then speak in response to a question about it. You
-                      will have 30 seconds to prepare and 60 seconds to speak.
-                    </p>
-                    <p>
-                      <strong
-                        >After listening to the conversation, you will answer
-                        the following question:</strong
-                      >
-                    </p>
-                    <p>
-                      The students discuss two possible solutions to the woman's
-                      problem. Describe the problem and explain which solution
-                      you think is better and why.
-                    </p>
-                  </div>
-                  <div class="timer" id="timer4">00:00</div>
-                  <div class="recorder-status" id="recorder-status4">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(4)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(4)"
-                      disabled
-                      id="record-btn4"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(4)" disabled id="stop-btn4">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(4)" disabled id="play-btn4">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div id="task5" class="task" data-task="5">
-                  <div class="task-title">
-                    Task 5: Independent Speaking Task
-                  </div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will express your opinion on a familiar
-                      topic. You will have 15 seconds to prepare and 45 seconds
-                      to speak.
-                    </p>
-                    <p>
-                      <strong>Question:</strong> What is the most important
-                      quality a leader should have? Explain why you think this
-                      quality is essential.
-                    </p>
-                  </div>
-                  <div class="timer" id="timer5">00:00</div>
-                  <div class="recorder-status" id="recorder-status5">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(5)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(5)"
-                      disabled
-                      id="record-btn5"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(5)" disabled id="stop-btn5">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(5)" disabled id="play-btn5">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div id="task6" class="task" data-task="6">
-                  <div class="task-title">Task 6: Integrated Speaking Task</div>
-                  <div class="task-description">
-                    <p>
-                      In this task, you will read a short passage, listen to a
-                      conversation on the same topic, and then speak in response
-                      to a question. You will have 30 seconds to prepare and 60
-                      seconds to speak.
-                    </p>
-                    <p><strong>Reading Passage:</strong></p>
-                    <p>
-                      The university library has announced new extended hours.
-                      Starting next month, the library will remain open 24 hours
-                      during weekdays and close at midnight on weekends. This
-                      change is intended to accommodate students who need study
-                      spaces during late hours.
-                    </p>
-                    <p>
-                      <strong
-                        >After reading and listening, you will answer the
-                        following question:</strong
-                      >
-                    </p>
-                    <p>
-                      Summarize the woman's opinion about the library's new
-                      hours and explain the reasons she gives for her opinion.
-                    </p>
-                  </div>
-                  <div class="timer" id="timer6">00:00</div>
-                  <div class="recorder-status" id="recorder-status6">
-                    Ready to record
-                  </div>
-                  <div class="controls">
-                    <button onclick="startPreparation(6)">
-                      Start Preparation
-                    </button>
-                    <button
-                      onclick="startRecording(6)"
-                      disabled
-                      id="record-btn6"
-                    >
-                      Start Speaking
-                    </button>
-                    <button onclick="stopRecording(6)" disabled id="stop-btn6">
-                      Stop
-                    </button>
-                    <button onclick="playRecording(6)" disabled id="play-btn6">
-                      Play Recording
-                    </button>
-                  </div>
-                </div>
-
-                <div
-                  class="navigation-buttons d-flex justify-content-between mt-4"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    id="prevBtn"
-                    disabled
-                  >
-                    Previous
-                  </button>
-                  <button type="button" class="btn btn-success" id="nextBtn">
-                    Next
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    id="finishPageBtn"
-                    style="display: none"
-                  >
-                    Finish Test
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- Modal Konfirmasi Submit -->
+    <div id="confirmModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h4>
+          <i class="fas fa-exclamation-triangle me-2 text-orange"></i> Confirm
+          Submission
+        </h4>
+        <p>You won't be able to change your answers after submitting.</p>
+        <div class="d-flex justify-content-center mt-3">
+          <button id="confirmYes" class="btn btn-success me-2">
+            Yes, Submit
+          </button>
+          <button id="confirmNo" class="btn btn-danger">Cancel</button>
         </div>
       </div>
     </div>
 
-    <div
-      id="confirmModal"
-      class="modal"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <div
-        class="modal-content"
-        style="
-          background-color: white;
-          padding: 25px;
-          border-radius: 8px;
-          width: 350px;
-          text-align: center;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        "
-      >
-        <h3>Are you sure you want to finish?</h3>
-        <p>You won't be able to change your responses after finishing.</p>
-        <div class="d-flex justify-content-center gap-3 mt-4">
-          <button id="confirmYes" class="btn btn-success">Yes, Finish</button>
-          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
-        </div>
+    <!-- Footer -->
+    <footer class="container-fluid text-center py-3">
+      <div class="container">
+        <p class="small mb-0">© 2025 TOEIC Tester | Practice Language Skills</p>
       </div>
-    </div>
-
-    <footer class="container text-center py-3 text-muted">
-      <p class="small">
-        © 2025 TOEIC Tester Andaliman Books | Practice Speaking Skills
-      </p>
     </footer>
 
+    <!-- Script -->
     <script>
-      // Total tasks
-      const totalTasks = 6;
-      const tasksPerPage = 2;
+      const totalTasks = 11;
+      const tasksPerPage = 5;
       const totalPages = Math.ceil(totalTasks / tasksPerPage);
       let currentPage = 1;
-      let currentTask = 1;
 
-      // Track completed tasks
       const completedTasks = new Set();
+      const lockedTasks = new Set();
 
-      // Timer setup
-      let mainTimeLeft = 30 * 60; // 30 minutes in seconds
-      const mainTimerDisplay = document.getElementById("main-timer");
-      let mainTimerInterval;
+      // Data Pertanyaan
+      const questions = [
+        {
+          task: 1,
+          prompt: "Independent Speaking Task",
+          question:
+            "Welcome to our annual conference. This year's event focuses on the latest trends in technology and innovation.",
+        },
+        {
+          task: 2,
+          prompt: "Integrated Speaking Task (Reading, Listening, Speaking)",
+          question:
+            "Read passage about university renovations, listen to conversation, and answer question.",
+        },
+        {
+          task: 3,
+          prompt: "Integrated Speaking Task (Listening, Speaking)",
+          question:
+            "Listen to part of an academic lecture and explain the concept of confirmation bias.",
+        },
+        {
+          task: 4,
+          prompt: "Integrated Speaking Task (Listening, Speaking)",
+          question:
+            "The students discuss two possible solutions to the woman's problem. Describe the problem and explain which solution is better.",
+        },
+        {
+          task: 5,
+          prompt: "Independent Speaking Task",
+          question:
+            "What is the most important quality a leader should have? Explain why you think this quality is essential.",
+        },
+        {
+          task: 6,
+          prompt: "Integrated Speaking Task",
+          question:
+            "Summarize the woman's opinion about the library's new hours and explain the reasons she gives for her opinion.",
+        },
+        {
+          task: 7,
+          prompt: "Describe what you would do if...",
+          question:
+            "You need to give a speech at work tomorrow. What would you do tonight?",
+        },
+        {
+          task: 8,
+          prompt: "Compare two people’s opinions",
+          question:
+            "Two people talk about whether working from home is more effective than office work.",
+        },
+        {
+          task: 9,
+          prompt: "Explain advantages and disadvantages",
+          question: "What are the pros and cons of online education?",
+        },
+        {
+          task: 10,
+          prompt: "Give your opinion",
+          question: "Do you prefer working in teams or alone? Why?",
+        },
+        {
+          task: 11,
+          prompt: "Suggest a solution",
+          question:
+            "Your friend is struggling with time management. Suggest a way to help them.",
+        },
+      ];
 
-      // Task timers and recording
-      let timers = {};
-      let audioRecorder = null;
-      let audioChunks = {};
-      let audioBlobs = {};
-
-      // Initialize task numbers
       function initializeTaskNumbers() {
-        const taskNumbersContainer = document.getElementById("taskNumbers");
-        taskNumbersContainer.innerHTML = "";
-
+        const container = document.getElementById("taskNumbers");
+        container.innerHTML = "";
         for (let i = 1; i <= totalTasks; i++) {
-          const numberBtn = document.createElement("div");
-          numberBtn.className = "task-number";
-          numberBtn.textContent = i;
-          numberBtn.dataset.task = i;
-          numberBtn.addEventListener("click", () => {
-            goToTask(i);
-          });
-          taskNumbersContainer.appendChild(numberBtn);
+          const div = document.createElement("div");
+          div.className = "task-number";
+          div.textContent = i;
+          div.dataset.task = i;
+          div.addEventListener("click", () => goToTask(i));
+          container.appendChild(div);
         }
         updateTaskNumbers();
       }
 
-      // Update task number indicators
       function updateTaskNumbers() {
         document.querySelectorAll(".task-number").forEach((el) => {
-          const taskNum = parseInt(el.dataset.task);
-          el.classList.toggle("completed", completedTasks.has(taskNum));
-          el.classList.toggle("current", taskNum === currentTask);
+          const num = parseInt(el.dataset.task);
+          el.classList.toggle("answered", completedTasks.has(num));
+          const currentPageTasks = Array.from(
+            { length: tasksPerPage },
+            (_, i) => (currentPage - 1) * tasksPerPage + i + 1
+          );
+          el.classList.toggle("current", currentPageTasks.includes(num));
         });
       }
 
-      // Show task by number
-      function goToTask(taskNum) {
-        if (taskNum < 1 || taskNum > totalTasks) return;
+      function createQuestionElements() {
+        const container = document.getElementById("task-container");
+        container.innerHTML = "";
 
-        // Hide all tasks
+        questions.forEach((q, index) => {
+          const qNum = index + 1;
+          const page = Math.ceil(qNum / tasksPerPage);
+
+          const taskDiv = document.createElement("div");
+          taskDiv.id = `task${qNum}`;
+          taskDiv.className = "task";
+          taskDiv.style.display = page === 1 ? "block" : "none";
+          taskDiv.dataset.task = qNum;
+          taskDiv.dataset.page = page;
+
+          taskDiv.innerHTML = `
+        <div class="task-title">Task ${qNum}: ${q.prompt}</div>
+        <div class="task-description">${q.question}</div>
+        <div class="recorder-status" id="recorder-status${qNum}">Ready to record</div>
+        <div class="controls">
+          <button id="startPreparation${qNum}" onclick="startPreparation(${qNum})">Start Preparation</button>
+          <button id="record-btn${qNum}" disabled onclick="startRecording(${qNum})">Start Speaking</button>
+          <button id="stop-btn${qNum}" disabled onclick="stopRecording(${qNum})">Stop</button>
+          <button id="play-btn${qNum}" disabled onclick="playRecording(${qNum})">Play Recording</button>
+        </div>
+      `;
+          container.appendChild(taskDiv);
+        });
+      }
+
+      function showPage(pageNumber) {
+        currentPage = pageNumber;
         document.querySelectorAll(".task").forEach((task) => {
-          task.classList.remove("active");
+          const page = parseInt(task.dataset.page);
+          task.style.display = page === currentPage ? "block" : "none";
         });
-
-        // Show selected task
-        const taskElement = document.getElementById(`task${taskNum}`);
-        if (taskElement) {
-          taskElement.classList.add("active");
-          currentTask = taskNum;
-          updateTaskNumbers();
-
-          // Update navigation buttons
-          updateNavigationButtons();
-
-          // Update the page if needed
-          const taskPage = Math.ceil(taskNum / tasksPerPage);
-          if (taskPage !== currentPage) {
-            currentPage = taskPage;
-          }
-        }
+        updateNavigationButtons();
+        updateTaskNumbers();
       }
 
-      // Update navigation buttons
       function updateNavigationButtons() {
         const prevBtn = document.getElementById("prevBtn");
         const nextBtn = document.getElementById("nextBtn");
-        const finishPageBtn = document.getElementById("finishPageBtn");
+        const finishBtn = document.getElementById("submitPageBtn");
 
-        prevBtn.disabled = currentTask === 1;
-
-        if (currentTask === totalTasks) {
-          nextBtn.style.display = "none";
-          finishPageBtn.style.display = "inline-block";
-        } else {
-          nextBtn.style.display = "inline-block";
-          finishPageBtn.style.display = "none";
-        }
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.style.display =
+          currentPage < totalPages ? "inline-block" : "none";
+        finishBtn.style.display =
+          currentPage === totalPages ? "inline-block" : "none";
       }
 
-      // Main timer function
+      function goToTask(taskNum) {
+        const pageNum = Math.ceil(taskNum / tasksPerPage);
+        showPage(pageNum);
+        const el = document.querySelector(`[data-task='${taskNum}']`);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Timer utama untuk keseluruhan tes
+      let mainTimeLeft = 20 * 60; // 20 menit
+      const mainTimerDisplay = document.getElementById("main-timer");
+      let mainTimerInterval;
+
       function startMainTimer() {
+        clearInterval(mainTimerInterval);
         mainTimerInterval = setInterval(() => {
           const minutes = Math.floor(mainTimeLeft / 60);
           const seconds = mainTimeLeft % 60;
-
-          mainTimerDisplay.textContent = `Total Time: ${minutes
+          mainTimerDisplay.textContent = `Time Remaining: ${minutes}:${seconds
             .toString()
-            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            .padStart(2, "0")}`;
 
           if (mainTimeLeft <= 0) {
             clearInterval(mainTimerInterval);
@@ -671,65 +533,29 @@
         }, 1000);
       }
 
-      // Task specific timer functions
-      function startTimer(taskId, seconds) {
-        const timerElement = document.getElementById(`timer${taskId}`);
-        let remainingSeconds = seconds;
-
-        clearInterval(timers[taskId]);
-
-        timers[taskId] = setInterval(() => {
-          const minutes = Math.floor(remainingSeconds / 60);
-          const seconds = remainingSeconds % 60;
-
-          timerElement.textContent = `${minutes
-            .toString()
-            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-
-          if (remainingSeconds <= 0) {
-            clearInterval(timers[taskId]);
-            if (
-              document.getElementById(`record-btn${taskId}`).disabled &&
-              !document.getElementById(`stop-btn${taskId}`).disabled
-            ) {
-              stopRecording(taskId);
-            }
-          }
-
-          remainingSeconds--;
-        }, 1000);
-      }
+      let currentAudio = null;
+      window.audioBlobs = {};
+      window.audioChunks = {};
 
       function startPreparation(taskId) {
-        const preparationTime = taskId === 1 || taskId === 5 ? 15 : 30;
+        const prepTime = taskId === 1 || taskId === 5 ? 15 : 30;
         document.getElementById(`recorder-status${taskId}`).textContent =
-          "Preparation time...";
+          "Preparing...";
         document.getElementById(`record-btn${taskId}`).disabled = false;
-
-        startTimer(taskId, preparationTime);
-
-        // After preparation time, enable recording
-        setTimeout(() => {
-          document.getElementById(`recorder-status${taskId}`).textContent =
-            "Preparation time over. Ready to speak.";
-        }, preparationTime * 1000);
       }
 
-      // Recording functions
       async function startRecording(taskId) {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
             audio: true,
           });
-          audioRecorder = new MediaRecorder(stream);
-          audioChunks[taskId] = [];
+          window.recorder = new MediaRecorder(stream);
+          window.audioChunks[taskId] = [];
 
-          audioRecorder.addEventListener("dataavailable", (event) => {
-            audioChunks[taskId].push(event.data);
-          });
-
-          audioRecorder.addEventListener("stop", () => {
-            audioBlobs[taskId] = new Blob(audioChunks[taskId], {
+          window.recorder.ondataavailable = (e) =>
+            window.audioChunks[taskId].push(e.data);
+          window.recorder.onstop = () => {
+            window.audioBlobs[taskId] = new Blob(window.audioChunks[taskId], {
               type: "audio/webm",
             });
             document.getElementById(`play-btn${taskId}`).disabled = false;
@@ -738,112 +564,127 @@
 
             // Mark task as completed
             completedTasks.add(taskId);
-            updateTaskNumbers();
-          });
+            localStorage.setItem(
+              "completedTasks",
+              JSON.stringify([...completedTasks])
+            );
+            updateTaskNumbers(); // Update task numbers display
+          };
 
-          audioRecorder.start();
-          document.getElementById(`recorder-status${taskId}`).textContent =
-            "Recording...";
+          window.recorder.start();
           document.getElementById(`record-btn${taskId}`).disabled = true;
           document.getElementById(`stop-btn${taskId}`).disabled = false;
-
-          // Start speaking timer
-          const speakingTime = taskId === 1 || taskId === 5 ? 45 : 60;
-          startTimer(taskId, speakingTime);
-        } catch (error) {
-          console.error("Error accessing microphone:", error);
           document.getElementById(`recorder-status${taskId}`).textContent =
-            "Error accessing microphone. Please check permissions.";
+            "Recording...";
+        } catch (err) {
+          console.error("Microphone access denied:", err);
+          document.getElementById(`recorder-status${taskId}`).textContent =
+            "Microphone access denied.";
         }
       }
 
       function stopRecording(taskId) {
-        if (audioRecorder && audioRecorder.state !== "inactive") {
-          audioRecorder.stop();
-          audioRecorder.stream.getTracks().forEach((track) => track.stop());
+        if (window.recorder && window.recorder.state !== "inactive") {
+          window.recorder.stop();
+          window.recorder.stream.getTracks().forEach((track) => track.stop());
           document.getElementById(`stop-btn${taskId}`).disabled = true;
-          clearInterval(timers[taskId]);
+          document.getElementById(`recorder-status${taskId}`).textContent =
+            "Recording stopped and saved.";
         }
       }
 
       function playRecording(taskId) {
-        if (audioBlobs[taskId]) {
-          const audioURL = URL.createObjectURL(audioBlobs[taskId]);
-          const audio = new Audio(audioURL);
-          audio.play();
+        if (!window.audioBlobs || !window.audioBlobs[taskId]) {
+          document.getElementById(`recorder-status${taskId}`).textContent =
+            "No recording available to play.";
+          return;
         }
+
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        }
+
+        const blob = window.audioBlobs[taskId];
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        currentAudio = audio;
+
+        audio
+          .play()
+          .then(() => {
+            document.getElementById(`recorder-status${taskId}`).textContent =
+              "Playing recording...";
+          })
+          .catch((err) => {
+            console.error("Error playing audio:", err);
+            document.getElementById(`recorder-status${taskId}`).textContent =
+              "Error playing audio.";
+          });
+
+        audio.onended = () => {
+          document.getElementById(`recorder-status${taskId}`).textContent =
+            "Playback finished.";
+          currentAudio = null;
+        };
       }
 
-      // Navigation button event listeners
-      document.getElementById("prevBtn").addEventListener("click", () => {
-        if (currentTask > 1) {
-          goToTask(currentTask - 1);
-        }
-      });
+      function moveToNextPage() {
+        if (currentPage < totalPages) showPage(currentPage + 1);
+      }
 
-      document.getElementById("nextBtn").addEventListener("click", () => {
-        if (currentTask < totalTasks) {
-          goToTask(currentTask + 1);
-        }
-      });
+      function moveToPrevPage() {
+        if (currentPage > 1) showPage(currentPage - 1);
+      }
 
-      // Finish test logic
+      // Event Listeners
+      document
+        .getElementById("prevBtn")
+        .addEventListener("click", moveToPrevPage);
+      document
+        .getElementById("nextBtn")
+        .addEventListener("click", moveToNextPage);
       document.getElementById("finishBtn").addEventListener("click", () => {
         document.getElementById("confirmModal").style.display = "flex";
       });
 
-      document.getElementById("finishPageBtn").addEventListener("click", () => {
+      document.getElementById("submitPageBtn").addEventListener("click", () => {
         document.getElementById("confirmModal").style.display = "flex";
       });
 
-      document.getElementById("confirmYes").addEventListener("click", () => {
-        finishTest();
-      });
-
+      document
+        .getElementById("confirmYes")
+        .addEventListener("click", finishTest);
       document.getElementById("confirmNo").addEventListener("click", () => {
         document.getElementById("confirmModal").style.display = "none";
       });
 
       function finishTest() {
         clearInterval(mainTimerInterval);
-
-        // Save completion data
-        const completionData = {
-          completedTasks: Array.from(completedTasks),
-          totalTasks: totalTasks,
-          timeSpent: 30 * 60 - mainTimeLeft,
-        };
-
-        localStorage.setItem(
-          "speakingCompletion",
-          JSON.stringify(completionData)
-        );
-
-        // Redirect to results or home
-        window.location.href = "writing.html";
+        localStorage.setItem("speakingTestCompleted", "true");
+        window.location.href = "writing.html"; // Redirect ke writing.html
       }
 
-      // Initialize on page load
-      window.onload = function () {
+      // Inisialisasi
+      window.onload = () => {
+        createQuestionElements();
         initializeTaskNumbers();
-        updateNavigationButtons();
+        showPage(1);
         startMainTimer();
 
-        // Check if there's a saved state
-        const savedCompletion = JSON.parse(
-          localStorage.getItem("speakingCompletion")
-        ) || { completedTasks: [] };
-        if (savedCompletion.completedTasks) {
-          savedCompletion.completedTasks.forEach((taskId) => {
-            completedTasks.add(parseInt(taskId));
-          });
-          updateTaskNumbers();
-        }
+        // Load completed tasks from localStorage
+        const savedCompletedTasks =
+          JSON.parse(localStorage.getItem("completedTasks")) || [];
+        savedCompletedTasks.forEach((taskId) => completedTasks.add(taskId));
+        updateTaskNumbers();
       };
 
       // Disable right-click
-      document.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+      // Optional: Disable keyboard shortcuts
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey || e.altKey) e.preventDefault();
       });
     </script>
   </body>

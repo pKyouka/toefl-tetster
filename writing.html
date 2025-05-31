@@ -20,13 +20,13 @@
       rel="stylesheet"
     />
     <style>
+      /* Gaya CSS sama seperti sebelumnya */
       :root {
         --orange-primary: #f57f20;
         --orange-dark: #d16a1a;
         --orange-light: #fff5ee;
         --dark-text: #2a2a2a;
       }
-
       body {
         font-family: "Poppins", sans-serif;
         background-color: var(--orange-light);
@@ -35,7 +35,6 @@
         display: flex;
         flex-direction: column;
       }
-
       header {
         background: linear-gradient(
           135deg,
@@ -49,7 +48,6 @@
         overflow: hidden;
         z-index: 1;
       }
-
       header:before {
         content: "";
         position: absolute;
@@ -61,7 +59,6 @@
         transform: skewY(-2deg);
         z-index: -1;
       }
-
       .glass-card {
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(10px);
@@ -71,7 +68,6 @@
         border: 1px solid rgba(255, 255, 255, 0.3);
         overflow: hidden;
       }
-
       .question-nav-container {
         width: 220px;
         position: sticky;
@@ -79,7 +75,6 @@
         height: fit-content;
         align-self: flex-start;
       }
-
       .question-nav {
         background-color: rgba(255, 255, 255, 0.8);
         border-radius: 16px;
@@ -87,13 +82,11 @@
         padding: 15px;
         backdrop-filter: blur(5px);
       }
-
       .question-numbers {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 10px;
       }
-
       .question-number {
         width: 30px;
         height: 30px;
@@ -106,26 +99,22 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
-
       .question-number.answered {
         background-color: var(--orange-primary);
         color: white;
       }
-
       .question-number.current {
         border: 2px solid var(--orange-dark);
         font-weight: bold;
         background-color: var(--orange-light);
         color: var(--orange-dark);
       }
-
       .question-number.locked {
         background-color: #ffebee;
         color: #c62828;
         font-weight: bold;
         cursor: not-allowed;
       }
-
       #timer-container {
         background-color: rgba(255, 255, 255, 0.8);
         border-radius: 16px;
@@ -135,12 +124,10 @@
         margin-bottom: 10px;
         backdrop-filter: blur(5px);
       }
-
       #timer {
         font-size: 1.1rem;
         color: var(--orange-dark);
       }
-
       .writing-section {
         background-color: white;
         border-radius: 16px;
@@ -148,14 +135,12 @@
         padding: 30px;
         margin-top: 20px;
       }
-
       .picture-prompt {
         max-width: 100%;
         border-radius: 12px;
         margin-bottom: 15px;
         border: 2px solid var(--orange-primary);
       }
-
       .email-preview {
         background-color: #f8f9fa;
         padding: 15px;
@@ -163,7 +148,6 @@
         border-radius: 8px;
         margin-bottom: 15px;
       }
-
       textarea {
         width: 100%;
         min-height: 150px;
@@ -173,13 +157,11 @@
         resize: vertical;
         transition: border-color 0.3s ease;
       }
-
       textarea:focus {
         border-color: var(--orange-primary);
         outline: none;
         box-shadow: 0 0 5px rgba(245, 127, 32, 0.4);
       }
-
       .btn-primary {
         background: linear-gradient(
           135deg,
@@ -194,12 +176,10 @@
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
       }
-
       .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 15px rgba(245, 127, 32, 0.4);
       }
-
       .modal {
         display: none;
         position: fixed;
@@ -212,7 +192,6 @@
         justify-content: center;
         align-items: center;
       }
-
       .modal-content {
         background: white;
         padding: 30px;
@@ -221,7 +200,6 @@
         text-align: center;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
-
       footer {
         margin-top: auto;
         background: linear-gradient(135deg, var(--orange-dark), #b85c18);
@@ -230,7 +208,6 @@
         position: relative;
         text-align: center;
       }
-
       footer:before {
         content: "";
         position: absolute;
@@ -244,8 +221,8 @@
       }
     </style>
   </head>
-
   <body>
+    <!-- Header -->
     <header class="container-fluid text-center py-4">
       <div class="container">
         <h1 class="mb-3">TOEFL Writing Practice Test</h1>
@@ -286,9 +263,8 @@
               <h3><i class="fas fa-edit me-2"></i> Section II: Writing</h3>
               <p>
                 In this section, you will complete several writing tasks. The
-                total time is approximately 50 minutes.
+                total time is 60 minutes.
               </p>
-
               <div
                 class="navigation-buttons d-flex justify-content-between mt-4"
               >
@@ -318,6 +294,7 @@
       </div>
     </div>
 
+    <!-- Modal Confirmation -->
     <div id="confirmModal" class="modal">
       <div class="modal-content">
         <h4>
@@ -332,6 +309,7 @@
       </div>
     </div>
 
+    <!-- Footer -->
     <footer class="container-fluid py-3">
       <div class="container">
         <p class="small mb-0">© 2025 TOEIC Tester | Practice Language Skills</p>
@@ -340,7 +318,12 @@
 
     <script>
       const questionsPerPage = 5;
+      const totalTime = 60 * 60; // 60 menit dalam detik
+      let timeLeft =
+        parseInt(localStorage.getItem("remainingTime")) || totalTime;
+
       const questions = [
+        // Data pertanyaan tetap sama seperti sebelumnya
         {
           type: "picture",
           question:
@@ -348,7 +331,6 @@
           words: "friend/camp",
           imageUrl: "src/assets/q1.png",
           response: "",
-          timeLimit: 60,
         },
         {
           type: "picture",
@@ -357,7 +339,6 @@
           words: "cashier/pay",
           imageUrl: "src/assets/q2.png",
           response: "",
-          timeLimit: 60,
         },
         {
           type: "picture",
@@ -366,7 +347,6 @@
           words: "grandfather/garden",
           imageUrl: "src/assets/q3.png",
           response: "",
-          timeLimit: 60,
         },
         {
           type: "picture",
@@ -375,7 +355,6 @@
           words: "clean/before",
           imageUrl: "src/assets/q4.png",
           response: "",
-          timeLimit: 60,
         },
         {
           type: "picture",
@@ -384,7 +363,6 @@
           words: "circus/perform",
           imageUrl: "src/assets/q5.png",
           response: "",
-          timeLimit: 60,
         },
         {
           type: "email",
@@ -398,7 +376,6 @@
             body: "We are thrilled to have you as a valued customer of IDN Computer Jakarta Pusat! Thank you for your recent purchase of the HP 27inch All-in-One Desktop PC. We hope you are enjoying the cutting-edge features and performance of our product. Should you encounter any difficulties or have any questions, please feel free to reach out to us at idncomp.jakpusservice@gmail.com.",
           },
           response: "",
-          timeLimit: 300,
         },
         {
           type: "email",
@@ -412,7 +389,6 @@
             body: "Could you please send me the updated sales report for the third quarter by tomorrow afternoon? I need it for an important presentation. Let me know if you need any additional information.",
           },
           response: "",
-          timeLimit: 300,
         },
         {
           type: "essay",
@@ -420,69 +396,14 @@
             "8. Some individuals claim that technology leads to increased isolation and reduced social interaction, whereas others believe that it improves communication and fosters connections. What is your perspective on this matter? Please clarify your opinion and provide supporting reasons.",
           minWords: 300,
           response: "",
-          timeLimit: 1200,
         },
       ];
 
-      // Timer variables
-      let currentQuestionIndex = 0;
-      let timeLeft = 0;
       let timerInterval;
       const timerDisplay = document.getElementById("timer");
-      let lockedQuestions = new Set();
-
-      function startTimer(duration) {
-        timeLeft = duration;
-        updateTimerDisplay();
-
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-          timeLeft--;
-          updateTimerDisplay();
-
-          if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            // Kunci jawaban untuk pertanyaan saat ini
-            lockCurrentQuestion();
-
-            if (currentQuestionIndex < questions.length - 1) {
-              moveToNextQuestion();
-            } else {
-              submitTest();
-            }
-          }
-        }, 1000);
-      }
-
-      // Fungsi untuk mengunci pertanyaan saat ini
-      function lockCurrentQuestion() {
-        const questionNum = currentQuestionIndex + 1;
-        lockedQuestions.add(questionNum);
-
-        // Kunci textarea
-        const textarea = document.querySelector(`#q${questionNum}-response`);
-        if (textarea) {
-          textarea.readOnly = true;
-          textarea.style.backgroundColor = "#f5f5f5";
-          textarea.style.cursor = "not-allowed";
-          textarea.placeholder = "Time's up! This response is locked";
-        }
-
-        // Update tampilan nomor soal
-        const questionNumberEl = document.querySelector(
-          `.question-number[data-question="${questionNum}"]`
-        );
-        if (questionNumberEl) {
-          questionNumberEl.classList.remove("answered");
-          questionNumberEl.classList.add("locked");
-          questionNumberEl.textContent = `${questionNum} 🔒`;
-        }
-      }
-
-      // Fungsi untuk memeriksa apakah pertanyaan terkunci
-      function isQuestionLocked(questionNum) {
-        return lockedQuestions.has(questionNum);
-      }
+      const answeredQuestions = new Set();
+      let currentPage = 1;
+      const totalPages = Math.ceil(questions.length / questionsPerPage);
 
       function updateTimerDisplay() {
         const minutes = Math.floor(timeLeft / 60);
@@ -492,405 +413,214 @@
         }${seconds}`;
       }
 
-      // Fungsi untuk membuat elemen pertanyaan
+      function startGlobalTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          localStorage.setItem("remainingTime", timeLeft);
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            lockAllResponses();
+          }
+        }, 1000);
+      }
+
+      function lockAllResponses() {
+        document.querySelectorAll("textarea").forEach((ta) => {
+          ta.readOnly = true;
+          ta.style.backgroundColor = "#f5f5f5";
+          ta.placeholder = "Time's up! This response is locked";
+        });
+        document.querySelectorAll(".question-number").forEach((el) => {
+          el.classList.add("locked");
+          el.textContent += " 🔒";
+        });
+      }
+
       function createQuestionElements() {
         const quizForm = document.getElementById("writing-quiz");
         const navigationButtons = quizForm.querySelector(".navigation-buttons");
 
-        // Hapus semua pertanyaan yang ada (jika ada)
-        const existingQuestions = quizForm.querySelectorAll(
-          ".question-container"
-        );
-        existingQuestions.forEach((q) => q.remove());
+        const existing = quizForm.querySelectorAll(".question-container");
+        existing.forEach((q) => q.remove());
 
         questions.forEach((q, index) => {
           const questionNum = index + 1;
           const pageNum = Math.ceil(questionNum / questionsPerPage);
+          const container = document.createElement("div");
+          container.className = "question-container";
+          container.dataset.page = pageNum;
+          container.dataset.question = questionNum;
+          container.style.display = "none";
 
-          const questionContainer = document.createElement("div");
-          questionContainer.className = "question-container";
-          questionContainer.dataset.page = pageNum;
-          questionContainer.dataset.question = questionNum;
-          questionContainer.style.display = "none";
-
-          const questionDiv = document.createElement("div");
-          questionDiv.className = "question mb-3";
+          const div = document.createElement("div");
+          div.className = "question mb-3";
 
           if (q.type === "picture") {
-            questionDiv.innerHTML = `
-              <h4>${q.question}</h4>
-              <p><strong>Use these words:</strong> ${q.words}</p>
-              ${
-                q.imageUrl
-                  ? `<img src="${q.imageUrl}" alt="Writing prompt" class="picture-prompt">`
-                  : "<p>[Image placeholder]</p>"
-              }
-              <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your sentence here...">${
-              q.response
-            }</textarea>
-            `;
+            div.innerHTML = `
+          <h4>${q.question}</h4>
+          <p><strong>Use these words:</strong> ${q.words}</p>
+          <img src="${q.imageUrl}" alt="Writing prompt" class="picture-prompt">
+          <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your sentence here...">${q.response}</textarea>`;
           } else if (q.type === "email") {
-            questionDiv.innerHTML = `
-              <h4>${q.question}</h4>
-              <div class="email-preview">
-                <div class="email-header">
-                  <p><strong>From:</strong> ${q.email.from}</p>
-                  <p><strong>To:</strong> ${q.email.to}</p>
-                  <p><strong>Subject:</strong> ${q.email.subject}</p>
-                  <p><strong>Sent:</strong> ${q.email.date}</p>
-                </div>
-                <p>${q.email.body}</p>
-              </div>
-              <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your email response here...">${q.response}</textarea>
-            `;
+            div.innerHTML = `
+          <h4>${q.question}</h4>
+          <div class="email-preview">
+            <p><strong>From:</strong> ${q.email.from}</p>
+            <p><strong>To:</strong> ${q.email.to}</p>
+            <p><strong>Subject:</strong> ${q.email.subject}</p>
+            <p><strong>Sent:</strong> ${q.email.date}</p>
+            <p>${q.email.body}</p>
+          </div>
+          <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your email response here...">${q.response}</textarea>`;
           } else if (q.type === "essay") {
-            questionDiv.innerHTML = `
-              <h4>${q.question}</h4>
-              <p><strong>Minimum words:</strong> ${q.minWords}</p>
-              <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your essay here..." style="min-height: 300px;">${q.response}</textarea>
-              <div id="q${questionNum}-wordcount" class="text-muted">Word count: 0</div>
-            `;
-
-            const textarea = questionDiv.querySelector(
-              `#q${questionNum}-response`
-            );
-            const wordCountDisplay = questionDiv.querySelector(
-              `#q${questionNum}-wordcount`
-            );
-
-            textarea.addEventListener("input", function () {
-              const wordCount =
-                this.value.trim() === ""
-                  ? 0
-                  : this.value.trim().split(/\s+/).length;
-              wordCountDisplay.textContent = `Word count: ${wordCount}`;
-              q.response = this.value;
+            div.innerHTML = `
+          <h4>${q.question}</h4>
+          <p><strong>Minimum words:</strong> ${q.minWords}</p>
+          <textarea id="q${questionNum}-response" class="form-control" placeholder="Write your essay here..." style="min-height: 300px;">${q.response}</textarea>
+          <div id="q${questionNum}-wordcount" class="text-muted">Word count: 0</div>`;
+            const ta = div.querySelector(`#q${questionNum}-response`);
+            const wc = div.querySelector(`#q${questionNum}-wordcount`);
+            ta.addEventListener("input", () => {
+              const wordCount = ta.value.trim()
+                ? ta.value.trim().split(/\s+/).length
+                : 0;
+              wc.textContent = `Word count: ${wordCount}`;
+              q.response = ta.value;
             });
           }
 
-          questionContainer.appendChild(questionDiv);
-          quizForm.insertBefore(questionContainer, navigationButtons);
+          container.appendChild(div);
+          quizForm.insertBefore(container, navigationButtons);
         });
 
         showPage(1);
       }
 
-      const questionNumbersContainer =
-        document.getElementById("questionNumbers");
-      const totalQuestions = questions.length;
-
-      function initializeQuestionNumbers() {
-        questionNumbersContainer.innerHTML = "";
-
-        for (let i = 1; i <= totalQuestions; i++) {
-          const numberBtn = document.createElement("div");
-          numberBtn.className = "question-number";
-          numberBtn.textContent = i;
-          numberBtn.dataset.question = i;
-          numberBtn.addEventListener("click", () => {
-            const pageNum = Math.ceil(i / questionsPerPage);
-            showPage(pageNum);
-            const questionElement = document.querySelector(
-              `.question-container[data-question="${i}"]`
-            );
-            if (questionElement) {
-              questionElement.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }
-          });
-          questionNumbersContainer.appendChild(numberBtn);
-        }
-      }
-
-      const answeredQuestions = new Set();
-
       function setupTextareaListeners() {
-        document.querySelectorAll("textarea").forEach((textarea) => {
-          const questionNum = parseInt(textarea.id.split("-")[0].substring(1));
-
-          if (isQuestionLocked(questionNum)) {
-            textarea.readOnly = true;
-            textarea.style.backgroundColor = "#f5f5f5";
-            textarea.style.cursor = "not-allowed";
-            textarea.placeholder = "Time's up! This response is locked";
-            return;
-          }
-
-          textarea.addEventListener("input", function () {
-            if (isQuestionLocked(questionNum)) return;
-            if (this.value.trim().length > 0) {
-              answeredQuestions.add(questionNum);
-            } else {
-              answeredQuestions.delete(questionNum);
-            }
+        document.querySelectorAll("textarea").forEach((ta) => {
+          const questionNum = parseInt(ta.id.split("-")[0].substring(1));
+          ta.addEventListener("input", () => {
+            if (timeLeft <= 0) return;
+            questions[questionNum - 1].response = ta.value;
+            if (ta.value.trim().length > 0) answeredQuestions.add(questionNum);
+            else answeredQuestions.delete(questionNum);
             updateQuestionNumbers();
-            questions[questionNum - 1].response = this.value;
             localStorage.setItem("writingResponses", JSON.stringify(questions));
           });
         });
       }
 
+      function initializeQuestionNumbers() {
+        const container = document.getElementById("questionNumbers");
+        container.innerHTML = "";
+        questions.forEach((_, i) => {
+          const num = i + 1;
+          const el = document.createElement("div");
+          el.className = "question-number";
+          el.dataset.question = num;
+          el.textContent = num;
+          el.addEventListener("click", () => {
+            const page = Math.ceil(num / questionsPerPage);
+            showPage(page);
+            setTimeout(() => {
+              const target = document.querySelector(
+                `.question-container[data-question="${num}"]`
+              );
+              target?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+          });
+          container.appendChild(el);
+        });
+        updateQuestionNumbers();
+      }
+
       function updateQuestionNumbers() {
         document.querySelectorAll(".question-number").forEach((el) => {
-          const questionNum = parseInt(el.dataset.question);
-          el.classList.toggle("answered", answeredQuestions.has(questionNum));
-          const currentPageQuestions = Array.from(
-            { length: questionsPerPage },
-            (_, i) => (currentPage - 1) * questionsPerPage + i + 1
-          );
-          el.classList.toggle(
-            "current",
-            currentPageQuestions.includes(questionNum)
-          );
+          const num = parseInt(el.dataset.question);
+          el.classList.toggle("answered", answeredQuestions.has(num));
         });
       }
 
-      let currentPage = 1;
-      const totalPages = Math.ceil(totalQuestions / questionsPerPage);
-
       function showPage(pageNumber) {
         currentPage = pageNumber;
-        const allQuestions = document.querySelectorAll(".question-container");
-        allQuestions.forEach((q) => (q.style.display = "none"));
-
+        document
+          .querySelectorAll(".question-container")
+          .forEach((q) => (q.style.display = "none"));
         document
           .querySelectorAll(`.question-container[data-page="${pageNumber}"]`)
-          .forEach((q) => {
-            const questionNum = parseInt(q.dataset.question);
-            if (isQuestionLocked(questionNum)) {
-              const textarea = q.querySelector("textarea");
-              if (textarea) {
-                textarea.readOnly = true;
-                textarea.style.backgroundColor = "#f5f5f5";
-                textarea.style.cursor = "not-allowed";
-                textarea.placeholder = "Time's up! This response is locked";
-              }
-            }
-            q.style.display = "block";
-          });
-
+          .forEach((q) => (q.style.display = "block"));
         updateQuestionNumbers();
         updateNavigationButtons();
-        const firstQuestionIndex = (pageNumber - 1) * questionsPerPage;
-        currentQuestionIndex = firstQuestionIndex;
-
-        // Jangan mulai timer jika pertanyaan sudah terkunci
-        if (!isQuestionLocked(currentQuestionIndex + 1)) {
-          startTimer(questions[firstQuestionIndex].timeLimit);
-        }
       }
 
       function updateNavigationButtons() {
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        const submitPageBtn = document.getElementById("submitPageBtn");
-
-        prevBtn.disabled = currentPage === 1;
-
+        document.getElementById("prevBtn").disabled = currentPage === 1;
         if (currentPage === totalPages) {
-          nextBtn.style.display = "none";
-          submitPageBtn.style.display = "inline-block";
+          document.getElementById("nextBtn").style.display = "none";
+          document.getElementById("submitPageBtn").style.display =
+            "inline-block";
         } else {
-          nextBtn.style.display = "inline-block";
-          submitPageBtn.style.display = "none";
-        }
-      }
-
-      function moveToNextQuestion() {
-        if (currentQuestionIndex < questions.length - 1) {
-          currentQuestionIndex++;
-          const pageNum = Math.ceil(
-            (currentQuestionIndex + 1) / questionsPerPage
-          );
-          showPage(pageNum);
+          document.getElementById("nextBtn").style.display = "inline-block";
+          document.getElementById("submitPageBtn").style.display = "none";
         }
       }
 
       document.getElementById("prevBtn").addEventListener("click", () => {
-        if (currentPage > 1) {
-          showPage(currentPage - 1);
-        }
+        if (currentPage > 1) showPage(currentPage - 1);
       });
 
       document.getElementById("nextBtn").addEventListener("click", () => {
-        if (currentPage < totalPages) {
-          showPage(currentPage + 1);
-        }
+        if (currentPage < totalPages) showPage(currentPage + 1);
       });
 
       document.getElementById("submitPageBtn").addEventListener("click", () => {
         document.getElementById("confirmModal").style.display = "flex";
       });
 
-      // Initialize
-      createQuestionElements();
-      initializeQuestionNumbers();
-      setupTextareaListeners();
-      updateNavigationButtons();
-
-      window.addEventListener("DOMContentLoaded", () => {
-        const savedResponses =
-          JSON.parse(localStorage.getItem("writingResponses")) || questions;
-
-        const savedLocked =
-          JSON.parse(localStorage.getItem("lockedQuestions")) || [];
-        savedLocked.forEach((qNum) => lockedQuestions.add(qNum));
-        savedResponses.forEach((response, index) => {
-          if (index < questions.length) {
-            questions[index].response = response.response || "";
-            const textarea = document.querySelector(`#q${index + 1}-response`);
-            if (textarea) {
-              textarea.value = questions[index].response;
-
-              if (questions[index].response.trim().length > 0) {
-                answeredQuestions.add(index + 1);
-              }
-            }
-          }
-        });
-
-        updateQuestionNumbers();
-
-        questions.forEach((q, index) => {
-          if (q.type === "essay" && q.response) {
-            const wordCountDisplay = document.querySelector(
-              `#q${index + 1}-wordcount`
-            );
-            if (wordCountDisplay) {
-              const wordCount =
-                q.response.trim() === ""
-                  ? 0
-                  : q.response.trim().split(/\s+/).length;
-              wordCountDisplay.textContent = `Word count: ${wordCount}`;
-            }
-          }
-        });
+      document.getElementById("submitBtn").addEventListener("click", () => {
+        document.getElementById("confirmModal").style.display = "flex";
       });
-
-      // Modal Confirmation
-      document
-        .getElementById("submitBtn")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          document.getElementById("confirmModal").style.display = "flex";
-        });
 
       document
         .getElementById("confirmYes")
-        .addEventListener("click", function () {
-          submitTest();
-        });
-
-      document
-        .getElementById("confirmNo")
-        .addEventListener("click", function () {
-          document.getElementById("confirmModal").style.display = "none";
-        });
-
-      // Submit Logic
-      function submitTest() {
+        .addEventListener("click", submitTest);
+      document.getElementById("confirmNo").addEventListener("click", () => {
         document.getElementById("confirmModal").style.display = "none";
+      });
+
+      function submitTest() {
         clearInterval(timerInterval);
-        // Set flag bahwa test sudah disubmit
-        localStorage.setItem("writingTestSubmitted", "true");
-        // Save all responses
-        localStorage.setItem("writingResponses", JSON.stringify(questions));
-        // Simpan state terkunci ke localStorage
-        localStorage.setItem(
-          "lockedQuestions",
-          JSON.stringify(Array.from(lockedQuestions))
-        );
-        // Redirect to results page
+        localStorage.removeItem("remainingTime");
+        localStorage.removeItem("writingResponses");
+        localStorage.removeItem("answeredQuestions");
         window.location.href = "result_writing.html";
       }
 
-      // Fungsi untuk mereset semua jawaban
-      function resetTest() {
-        questions.forEach((q) => (q.response = ""));
-        localStorage.removeItem("writingResponses");
-        localStorage.removeItem("writingTestSubmitted");
-        localStorage.removeItem("lockedQuestions");
-        answeredQuestions.clear();
-        lockedQuestions.clear();
-        createQuestionElements();
-        updateQuestionNumbers();
-      }
-
       window.addEventListener("DOMContentLoaded", () => {
-        const testSubmitted =
-          localStorage.getItem("writingTestSubmitted") === "true";
-        if (testSubmitted) {
-          resetTest();
-          return;
+        const submitted = localStorage.getItem("submittedOnce");
+        if (!submitted) {
+          const savedResponses =
+            JSON.parse(localStorage.getItem("writingResponses")) || [];
+          savedResponses.forEach((res, i) => {
+            if (res?.response) {
+              questions[i].response = res.response;
+              answeredQuestions.add(i + 1);
+            }
+          });
+        } else {
+          // Jika sudah submit, reset semua jawaban
+          questions.forEach((q) => (q.response = ""));
+          answeredQuestions.clear();
         }
 
-        const savedResponses =
-          JSON.parse(localStorage.getItem("writingResponses")) || questions;
-        const savedLocked =
-          JSON.parse(localStorage.getItem("lockedQuestions")) || [];
-
-        savedLocked.forEach((qNum) => lockedQuestions.add(qNum));
-
-        savedResponses.forEach((response, index) => {
-          if (index < questions.length) {
-            questions[index].response = response.response || "";
-            const textarea = document.querySelector(`#q${index + 1}-response`);
-            if (textarea) {
-              textarea.value = questions[index].response;
-              if (
-                questions[index].response.trim().length > 0 &&
-                !lockedQuestions.has(index + 1)
-              ) {
-                answeredQuestions.add(index + 1);
-              }
-            }
-          }
-        });
-
-        updateQuestionNumbers();
-
-        questions.forEach((q, index) => {
-          if (q.type === "essay" && q.response) {
-            const wordCountDisplay = document.querySelector(
-              `#q${index + 1}-wordcount`
-            );
-            if (wordCountDisplay) {
-              const wordCount =
-                q.response.trim() === ""
-                  ? 0
-                  : q.response.trim().split(/\s+/).length;
-              wordCountDisplay.textContent = `Word count: ${wordCount}`;
-            }
-          }
-        });
-      });
-
-      document
-        .getElementById("writing-quiz")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          submitTest();
-        });
-      document.addEventListener("contextmenu", (e) => e.preventDefault());
-      document.addEventListener("selectstart", (e) => e.preventDefault());
-      document.addEventListener("copy", (e) => e.preventDefault());
-      document.addEventListener("cut", (e) => e.preventDefault());
-      document.addEventListener("dragstart", (e) => e.preventDefault());
-
-      document.addEventListener("keydown", function (event) {
-        if (
-          (event.ctrlKey &&
-            (event.key === "c" ||
-              event.key === "v" ||
-              event.key === "x" ||
-              event.key === "a")) ||
-          event.key === "F12" ||
-          event.key === "PrintScreen"
-        ) {
-          event.preventDefault();
-        }
+        createQuestionElements();
+        initializeQuestionNumbers();
+        setupTextareaListeners();
+        updateNavigationButtons();
+        updateTimerDisplay();
+        startGlobalTimer();
       });
     </script>
   </body>
