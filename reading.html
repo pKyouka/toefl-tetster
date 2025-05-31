@@ -3,24 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TOEIC Reading Practice</title>
+    <title>TOEFL Reading Practice</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        --primary: #ff9800;
+        --primary-dark: #e67e00;
+        --primary-light: #fff8e1;
+        --dark-text: #2a2a2a;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        background-color: #f9f9f9;
+        font-family: "Poppins", sans-serif;
+        background-color: var(--primary-light);
+        color: var(--dark-text);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
       }
 
       header {
-        background-color: #4a69bd;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
         color: white;
-        padding: 1rem 0;
-        margin-bottom: 2rem;
+        padding: 60px 0 50px;
+        margin-bottom: -30px;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      header:before {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: var(--primary-light);
+        transform: skewY(-2deg);
+        z-index: -1;
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        overflow: hidden;
       }
 
       .question-nav-container {
@@ -32,18 +69,17 @@
       }
 
       .question-nav {
-        background-color: white;
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 16px;
+        margin-bottom: 10px;
         padding: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 15px;
+        backdrop-filter: blur(5px);
       }
 
       .question-numbers {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        padding: 10px 0;
+        gap: 10px;
       }
 
       .question-number {
@@ -52,37 +88,38 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f0f0f0;
+        background-color: white;
         border: 1px solid #ddd;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 14px;
-        transition: all 0.2s;
-      }
-
-      .question-number:hover {
-        background-color: #e0e0e0;
+        transition: all 0.3s ease;
       }
 
       .question-number.answered {
-        background-color: #4a69bd;
+        background-color: var(--primary);
         color: white;
-        border-color: #4a69bd;
       }
 
       .question-number.current {
-        border: 2px solid #1e3799;
+        border: 2px solid var(--primary-dark);
         font-weight: bold;
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
       }
 
       #timer-container {
-        background-color: white;
-        border-radius: 8px;
-        padding: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 16px;
         text-align: center;
         font-weight: bold;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-bottom: 10px;
+        backdrop-filter: blur(5px);
+      }
+
+      #timer {
+        font-size: 1.1rem;
+        color: var(--primary-dark);
       }
 
       .reading-content {
@@ -93,9 +130,10 @@
 
       .reading-section {
         background-color: white;
-        border-radius: 8px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 20px;
       }
 
       .passage {
@@ -105,47 +143,49 @@
       }
 
       .passage h2 {
-        color: #1e3799;
-        border-bottom: 2px solid #eee;
-        padding-bottom: 10px;
+        color: var(--primary);
         margin-bottom: 20px;
+        font-weight: 600;
       }
 
       .passage h3 {
-        color: #1e3799;
+        color: var(--primary-dark);
         margin-bottom: 15px;
+        font-weight: 500;
       }
 
       .question-container {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 20px;
         margin-bottom: 25px;
         display: none;
-        border-left: 4px solid #4a69bd;
+        background-color: #fcfcff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       }
 
       .question {
         font-weight: 500;
         margin-bottom: 15px;
+        color: var(--primary-dark);
       }
 
       .options {
-        padding-left: 10px;
+        margin-left: 10px;
       }
 
       .options label {
         display: block;
-        margin: 12px 0;
+        margin: 10px 0;
         cursor: pointer;
         padding: 10px 15px;
-        background-color: white;
-        border-radius: 5px;
+        border-radius: 8px;
         transition: all 0.2s;
+        background-color: #f7f7ff;
+        border: 1px solid #e8e8ff;
       }
 
       .options label:hover {
-        background-color: #f0f0f0;
+        background-color: #eeeeff;
       }
 
       .options input[type="radio"] {
@@ -153,30 +193,37 @@
       }
 
       .btn {
+        border-radius: 10px;
+        padding: 10px 20px;
         font-weight: 500;
-        padding: 8px 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
       }
 
       .btn-primary {
-        background-color: #4a69bd;
-        border: 1px solid #4a69bd;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        border: none;
       }
 
-      .btn-secondary {
-        background-color: #6c757d;
-        border: 1px solid #6c757d;
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(74, 105, 189, 0.4);
       }
 
-      .btn-success {
-        background-color: #28a745;
-        border: 1px solid #28a745;
+      .btn-warning {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+        color: white;
       }
 
-      .btn:hover {
-        opacity: 0.9;
+      .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        color: white;
       }
 
       .modal {
@@ -184,95 +231,112 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
         z-index: 1000;
         justify-content: center;
         align-items: center;
       }
 
       .modal-content {
-        background-color: white;
+        background: white;
         padding: 30px;
-        border-radius: 10px;
+        border-radius: 16px;
         width: 400px;
         text-align: center;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       }
 
       footer {
-        margin-top: 2rem;
-        background-color: #f1f2f6;
-        padding: 1rem 0;
+        margin-top: auto;
+        background: linear-gradient(135deg, var(--primary-dark), #2c3e7c);
+        color: white;
+        padding: 25px 0;
+        position: relative;
+        text-align: center;
+      }
+
+      footer:before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: var(--primary-light);
+        transform: skewY(1.5deg);
+        z-index: -1;
       }
     </style>
   </head>
   <body>
-    <header class="container text-center py-4">
-      <h1>TOEIC Reading Practice Test</h1>
-      <p>Read the passage and answer the questions below.</p>
+    <header class="container-fluid text-center py-4">
+      <div class="container">
+        <h1 class="mb-3">TOEFL Reading Practice Test</h1>
+        <p class="lead">Read the passages carefully and answer the questions that follow.</p>
+      </div>
     </header>
 
-    <div class="container mb-4">
+    <div class="container my-5">
       <div class="row">
-        <!-- Left column -->
         <div class="col-md-3">
           <div class="question-nav-container">
-            <div class="question-nav p-3 mb-3">
-              <h3 class="text-center m-0 mb-3">Questions</h3>
+            <div class="question-nav glass-card mb-3">
+              <h4 class="text-center mb-3">
+                <i class="fas fa-list-ul me-2"></i> Questions
+              </h4>
               <div class="question-numbers" id="questionNumbers"></div>
             </div>
-
-            <div id="timer-container" class="p-3 mb-3">
-              <div id="timer">Time Remaining: 20:00</div>
+            <div id="timer-container" class="glass-card mb-3">
+              <div id="timer">
+                <i class="fas fa-clock me-2"></i> Time Remaining: 100:00
+              </div>
             </div>
-
-            <div class="p-3 bg-light rounded">
+            <div class="glass-card p-3">
               <button type="submit" class="btn btn-primary w-100" id="submitBtn">
-                Submit Answers
+                <i class="fas fa-paper-plane me-2"></i> Submit Answers
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Right column - questions -->
         <div class="col-md-9">
-          <div class="reading-content">
-            <div class="reading-section p-4 mb-4">
-              <div class="passage mb-4">
-                <h2>Section II: Reading</h2>
-                <p>
-                  In the reading test, you will read a variety of texts and answer
-                  several different types of reading comprehension questions. The
-                  entire reading test will last 75 minutes. There are three parts
-                  and directions are given for each part. You are encouraged to
-                  answer as many questions as possible within the time allowed. You
-                  must mark your answers on the separate answer sheet. Do not write
-                  your answers in your test book.
-                </p>
-              </div>
-
-              <div class="passage mb-4">
-                <h3>Part 5: Incomplete Sentences</h3>
-                <p>
-                  Directions: A word or phrase is missing in each of the following
-                  sentences. Four answer choices are given below each sentence.
-                  Then, mark the letter A, B, C or D on your answer sheet.
-                </p>
-              </div>
-
-              <form id="reading-quiz">
-                <!-- Questions will be dynamically created by script -->
-                <div class="navigation-buttons d-flex justify-content-between mt-4">
-                  <button type="button" class="btn btn-secondary" id="prevBtn" disabled>Previous</button>
-                  <button type="button" class="btn btn-success" id="nextBtn">Next</button>
-                  <button type="button" class="btn btn-primary" id="submitPageBtn" style="display: none">
-                    Submit Answers
-                  </button>
-                </div>
-              </form>
+          <div class="reading-section glass-card">
+            <div class="passage mb-4">
+              <h2><i class="fas fa-book-open me-2"></i> SECTION II: READING COMPREHENSION</h2>
+              <p>
+                In the reading test, you will read a variety of texts and answer
+                several different types of reading comprehension questions. The
+                entire reading test will last 75 minutes. There are three parts
+                and directions are given for each part. You are encouraged to
+                answer as many questions as possible within the time allowed.
+              </p>
             </div>
+
+            <div class="passage mb-4">
+              <h3><i class="fas fa-paragraph me-2"></i> Part 5: Incomplete Sentences</h3>
+              <p>
+                Directions: A word or phrase is missing in each of the following
+                sentences. Four answer choices are given below each sentence.
+                Then, mark the letter A, B, C or D on your answer sheet.
+              </p>
+            </div>
+
+            <form id="reading-quiz">
+              <!-- Questions will be dynamically created by script -->
+              <div class="navigation-buttons d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
+                  <i class="fas fa-arrow-left me-2"></i> Previous
+                </button>
+                <button type="button" class="btn btn-warning" id="nextBtn">
+                  Next <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+                <button type="button" class="btn btn-warning" id="submitPageBtn" style="display: none">
+                  Submit All <i class="fas fa-check ms-2"></i>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -280,293 +344,301 @@
 
     <div id="confirmModal" class="modal">
       <div class="modal-content">
-        <h3>Are you sure it's finished?</h3>
+        <h4>
+          <i class="fas fa-exclamation-triangle text-warning me-2"></i> Confirm Submission
+        </h4>
         <p>You won't be able to change your answers after submitting.</p>
         <div class="d-flex justify-content-center gap-3 mt-4">
           <button id="confirmYes" class="btn btn-success">Yes, Submit</button>
-          <button id="confirmNo" class="btn btn-danger">No, Continue</button>
+          <button id="confirmNo" class="btn btn-danger">Cancel</button>
         </div>
       </div>
     </div>
 
-    <footer class="container text-center py-3 text-muted">
-      <p class="small">© 2025 TOEIC Tester | Practice Reading Skills</p>
+    <footer class="container-fluid py-3">
+      <div class="container">
+        <p class="small mb-0">© 2025 TOEFL Tester | Practice Reading Skills</p>
+      </div>
     </footer>
 
     <script>
-       // Data pertanyaan
+      // Data pertanyaan
       const questionsPerPage = 5;
       const questions = [
         {
           question:
-            "1. The company has experienced … growth over the past year.",
+            "<i class='fas fa-question-circle me-2'></i> 1. The company has experienced … growth over the past year.",
           options: [
-            "a) significant",
-            "b) signification",
-            "c) significance",
-            "d) significantly",
+            "A) significant",
+            "B) signification",
+            "C) significance",
+            "D) significantly",
           ],
           correctAnswer: "a",
         },
         {
           question:
-            "2. The marketing department is planning a … campaign to promote the new product.",
+            "<i class='fas fa-question-circle me-2'></i> 2. The marketing department is planning a … campaign to promote the new product.",
           options: [
-            "a) advertising",
-            "b) advertiser",
-            "c) advertised",
-            "d) advertise",
+            "A) advertising",
+            "B) advertiser",
+            "C) advertised",
+            "D) advertise",
           ],
           correctAnswer: "a",
         },
         {
           question:
-            "3. The passage mentions all of the following as regions where early agriculture developed EXCEPT:",
+            "<i class='fas fa-question-circle me-2'></i> 3. The passage mentions all of the following as regions where early agriculture developed EXCEPT:",
           options: [
-            "a) The Fertile Crescent",
-            "b) Australia",
-            "c) China",
-            "d) Mesoamerica",
+            "A) The Fertile Crescent",
+            "B) Australia",
+            "C) China",
+            "D) Mesoamerica",
           ],
           correctAnswer: "b",
         },
         {
           question:
-            "4. According to the passage, which crop was commonly domesticated in the Fertile Crescent?",
-          options: ["a) Rice", "b) Maize", "c) Wheat", "d) Potatoes"],
+            "<i class='fas fa-question-circle me-2'></i> 4. According to the passage, which crop was commonly domesticated in the Fertile Crescent?",
+          options: ["A) Rice", "B) Maize", "C) Wheat", "D) Potatoes"],
           correctAnswer: "c",
         },
         {
           question:
-            "5. The passage suggests that the development of agriculture led to:",
+            "<i class='fas fa-question-circle me-2'></i> 5. The passage suggests that the development of agriculture led to:",
           options: [
-            "a) A decrease in human population",
-            "b) The development of social hierarchies",
-            "c) A more nomadic lifestyle",
-            "d) The end of human civilization",
+            "A) A decrease in human population",
+            "B) The development of social hierarchies",
+            "C) A more nomadic lifestyle",
+            "D) The end of human civilization",
           ],
           correctAnswer: "b",
         },
         {
           question:
-            "6. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
+            "<i class='fas fa-question-circle me-2'></i> 6. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
           options: [
-            "a) Increased food supply",
-            "b) Development of cities",
-            "c) Improved technology",
-            "d) More leisure time",
+            "A) Increased food supply",
+            "B) Development of cities",
+            "C) Improved technology",
+            "D) More leisure time",
           ],
           correctAnswer: "d",
         },
         {
           question:
-            "7. What does the passage imply about hunter-gatherer societies?",
+            "<i class='fas fa-question-circle me-2'></i> 7. What does the passage imply about hunter-gatherer societies?",
           options: [
-            "a) They were more advanced than agricultural societies",
-            "b) They had larger populations",
-            "c) They moved from place to place",
-            "d) They built permanent homes",
-          ],
-          correctAnswer: "c",
-        },
-        {
-          question:
-            "8. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
-          options: [
-            "a) Planted",
-            "b) Cultivated",
-            "c) Harvested",
-            "d) Gathered",
-          ],
-          correctAnswer: "b",
-        },
-        {
-          question: "9. What is the main idea of the passage?",
-          options: [
-            "a) The history of modern humans",
-            "b) The origins of agriculture",
-            "c) The development of cities",
-            "d) The impact of climate change",
-          ],
-          correctAnswer: "b",
-        },
-        {
-          question:
-            "10. According to the passage, what was one effect of agriculture on human society?",
-          options: [
-            "a) People began to live shorter lives",
-            "b) People started traveling more frequently",
-            "c) People became more dependent on nature",
-            "d) People formed governments",
-          ],
-          correctAnswer: "d",
-        },
-        {
-          question:
-            "11. According to the passage, what was one effect of agriculture on human society?",
-          options: [
-            "a) People began to live shorter lives",
-            "b) People started traveling more frequently",
-            "c) People became more dependent on nature",
-            "d) People formed governments",
-          ],
-          correctAnswer: "d",
-        },
-        {
-          question:
-            "12. According to the passage, what was one effect of agriculture on human society?",
-          options: [
-            "a) People began to live shorter lives",
-            "b) People started traveling more frequently",
-            "c) People became more dependent on nature",
-            "d) People formed governments",
-          ],
-          correctAnswer: "d",
-        },
-        {
-          question:
-            "13. According to the passage, what was one effect of agriculture on human society?",
-          options: [
-            "a) People began to live shorter lives",
-            "b) People started traveling more frequently",
-            "c) People became more dependent on nature",
-            "d) People formed governments",
-          ],
-          correctAnswer: "d",
-        },
-        {
-          question:
-            "14. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
-          options: [
-            "a) Increased food supply",
-            "b) Development of cities",
-            "c) Improved technology",
-            "d) More leisure time",
-          ],
-          correctAnswer: "d",
-        },
-        {
-          question:
-            "15. What does the passage imply about hunter-gatherer societies?",
-          options: [
-            "a) They were more advanced than agricultural societies",
-            "b) They had larger populations",
-            "c) They moved from place to place",
-            "d) They built permanent homes",
+            "A) They were more advanced than agricultural societies",
+            "B) They had larger populations",
+            "C) They moved from place to place",
+            "D) They built permanent homes",
           ],
           correctAnswer: "c",
         },
         {
           question:
-            "16. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
+            "<i class='fas fa-question-circle me-2'></i> 8. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
           options: [
-            "a) Planted",
-            "b) Cultivated",
-            "c) Harvested",
-            "d) Gathered",
+            "A) Planted",
+            "B) Cultivated",
+            "C) Harvested",
+            "D) Gathered",
           ],
           correctAnswer: "b",
         },
         {
-          question: "17. What is the main idea of the passage?",
+          question: "<i class='fas fa-question-circle me-2'></i> 9. What is the main idea of the passage?",
           options: [
-            "a) The history of modern humans",
-            "b) The origins of agriculture",
-            "c) The development of cities",
-            "d) The impact of climate change",
+            "A) The history of modern humans",
+            "B) The origins of agriculture",
+            "C) The development of cities",
+            "D) The impact of climate change",
           ],
           correctAnswer: "b",
         },
         {
-          question: "18. What is the main idea of the passage?",
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 10. According to the passage, what was one effect of agriculture on human society?",
           options: [
-            "a) The history of modern humans",
-            "b) The origins of agriculture",
-            "c) The development of cities",
-            "d) The impact of climate change",
+            "A) People began to live shorter lives",
+            "B) People started traveling more frequently",
+            "C) People became more dependent on nature",
+            "D) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 11. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "A) People began to live shorter lives",
+            "B) People started traveling more frequently",
+            "C) People became more dependent on nature",
+            "D) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 12. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "A) People began to live shorter lives",
+            "B) People started traveling more frequently",
+            "C) People became more dependent on nature",
+            "D) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 13. According to the passage, what was one effect of agriculture on human society?",
+          options: [
+            "A) People began to live shorter lives",
+            "B) People started traveling more frequently",
+            "C) People became more dependent on nature",
+            "D) People formed governments",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 14. Which of the following is NOT mentioned as a benefit of agriculture in the passage?",
+          options: [
+            "A) Increased food supply",
+            "B) Development of cities",
+            "C) Improved technology",
+            "D) More leisure time",
+          ],
+          correctAnswer: "d",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 15. What does the passage imply about hunter-gatherer societies?",
+          options: [
+            "A) They were more advanced than agricultural societies",
+            "B) They had larger populations",
+            "C) They moved from place to place",
+            "D) They built permanent homes",
           ],
           correctAnswer: "c",
         },
         {
-          question: "19. The company will ... a new product line next month.",
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 16. Which of the following words can best replace the word 'domesticated' in paragraph 2?",
           options: [
-            "a) introduce",
-            "b) introduced",
-            "c) introduction",
-            "d) introducing",
+            "A) Planted",
+            "B) Cultivated",
+            "C) Harvested",
+            "D) Gathered",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question: "<i class='fas fa-question-circle me-2'></i> 17. What is the main idea of the passage?",
+          options: [
+            "A) The history of modern humans",
+            "B) The origins of agriculture",
+            "C) The development of cities",
+            "D) The impact of climate change",
+          ],
+          correctAnswer: "b",
+        },
+        {
+          question: "<i class='fas fa-question-circle me-2'></i> 18. What is the main idea of the passage?",
+          options: [
+            "A) The history of modern humans",
+            "B) The origins of agriculture",
+            "C) The development of cities",
+            "D) The impact of climate change",
+          ],
+          correctAnswer: "c",
+        },
+        {
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 19. The company will ... a new product line next month.",
+          options: [
+            "A) introduce",
+            "B) introduced",
+            "C) introduction",
+            "D) introducing",
           ],
           correctAnswer: "a",
         },
         {
-          question: "20. The meeting was postponed ... the CEO's absence.",
-          options: ["a) because", "b) due to", "c) although", "d) unless"],
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 20. The meeting was postponed ... the CEO's absence.",
+          options: ["A) because", "B) due to", "C) although", "D) unless"],
           correctAnswer: "b",
         },
         {
           question:
-            "21. We can take the bus ... the subway to get to the office.",
-          options: ["a) or", "b) but", "c) because", "d) so"],
+            "<i class='fas fa-question-circle me-2'></i> 21. We can take the bus ... the subway to get to the office.",
+          options: ["A) or", "B) but", "C) because", "D) so"],
           correctAnswer: "a",
         },
         {
           question:
-            "22. Mr. John didn't attend the meeting ... he was feeling unwell.",
-          options: ["a) since", "b) but", "c) so", "d) and"],
+            "<i class='fas fa-question-circle me-2'></i> 22. Mr. John didn't attend the meeting ... he was feeling unwell.",
+          options: ["A) since", "B) but", "C) so", "D) and"],
           correctAnswer: "a",
         },
         {
           question:
-            "23. Mrs. Kim can't go to the party ... she has an important appointment.",
-          options: ["a) while", "b) because", "c) unless", "d) so"],
+            "<i class='fas fa-question-circle me-2'></i> 23. Mrs. Kim can't go to the party ... she has an important appointment.",
+          options: ["A) while", "B) because", "C) unless", "D) so"],
           correctAnswer: "b",
         },
         {
           question:
-            "24. The contract must be ... by both parties before the end of the month.",
-          options: ["a) sign", "b) signing", "c) signs", "d) signed"],
+            "<i class='fas fa-question-circle me-2'></i> 24. The contract must be ... by both parties before the end of the month.",
+          options: ["A) sign", "B) signing", "C) signs", "D) signed"],
           correctAnswer: "d",
         },
         {
-          question: "25. The marketing team ... a new campaign every quarter.",
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 25. The marketing team ... a new campaign every quarter.",
           options: [
-            "a) develops",
-            "b) developed",
-            "c) developing",
-            "d) will develop",
+            "A) develops",
+            "B) developed",
+            "C) developing",
+            "D) will develop",
           ],
           correctAnswer: "a",
         },
         {
-          question: "26. The project will be ... before the deadline.",
+          question:
+            "<i class='fas fa-question-circle me-2'></i> 26. The project will be ... before the deadline.",
           options: [
-            "a) completes",
-            "b) completed",
-            "c) completing",
-            "d) complete",
+            "A) completes",
+            "B) completed",
+            "C) completing",
+            "D) complete",
           ],
           correctAnswer: "b",
         },
         {
           question:
-            "27. The new product was launched last month, ... it is already becoming popular among customers.",
-          options: ["a) so", "b) but", "c) for", "d) because"],
+            "<i class='fas fa-question-circle me-2'></i> 27. The new product was launched last month, ... it is already becoming popular among customers.",
+          options: ["A) so", "B) but", "C) for", "D) because"],
           correctAnswer: "a",
         },
         {
           question:
-            "28. The marketing team worked ... to meet the deadline, ensuring the campaign was launched on time.",
-          options: ["a) hardly", "b) harding", "c) harder", "d) hard"],
+            "<i class='fas fa-question-circle me-2'></i> 28. The marketing team worked ... to meet the deadline, ensuring the campaign was launched on time.",
+          options: ["A) hardly", "B) harding", "C) harder", "D) hard"],
           correctAnswer: "d",
         },
         {
           question:
-            "29. The ... design of the new smartphone has attracted a lot of attention from tech enthusiasts.",
+            "<i class='fas fa-question-circle me-2'></i> 29. The ... design of the new smartphone has attracted a lot of attention from tech enthusiasts.",
           options: ["A. elegance", "B. elegantly", "C. elegant", "D. elegancy"],
           correctAnswer: "c",
         },
         {
           question:
-            "30. Please feel free to contact me with any questions about the project I have ... on.",
+            "<i class='fas fa-question-circle me-2'></i> 30. Please feel free to contact me with any questions about the project I have ... on.",
           options: [
             "A. work",
             "B. working",
@@ -577,7 +649,7 @@
         },
         {
           question:
-            "31. The editor apologized for the misprint and ... a correction.",
+            "<i class='fas fa-question-circle me-2'></i> 31. The editor apologized for the misprint and ... a correction.",
           options: [
             "A. publication",
             "B. destruction",
@@ -588,7 +660,7 @@
         },
         {
           question:
-            "32. I will take a lot of what I have learned with me in my career and look back at my time here as a... of my professional life.",
+            "<i class='fas fa-question-circle me-2'></i> 32. I will take a lot of what I have learned with me in my career and look back at my time here as a... of my professional life.",
           options: [
             "A. value period",
             "B. valuably period",
@@ -599,7 +671,7 @@
         },
         {
           question:
-            "33. I have ... another role that will halve my daily commute and allow me to spend more time with my family outside of working hours.",
+            "<i class='fas fa-question-circle me-2'></i> 33. I have ... another role that will halve my daily commute and allow me to spend more time with my family outside of working hours.",
           options: [
             "A. offered",
             "B. been offered",
@@ -610,13 +682,13 @@
         },
         {
           question:
-            "34. This interview is our chance to ... our skills and abilities.",
+            "<i class='fas fa-question-circle me-2'></i> 34. This interview is our chance to ... our skills and abilities.",
           options: ["A. sold", "B. sells", "C. selling", "D. sell"],
           correctAnswer: "d",
         },
         {
           question:
-            "35. During the next two weeks, I will do what I can to make the transition ... and will support in whatever I can to hand over my duties to colleagues or to my replacement.",
+            "<i class='fas fa-question-circle me-2'></i> 35. During the next two weeks, I will do what I can to make the transition ... and will support in whatever I can to hand over my duties to colleagues or to my replacement.",
           options: [
             "A. as smoothly as possibly",
             "B. as smooth as possibly",
@@ -627,7 +699,7 @@
         },
         {
           question:
-            "36. Please make sure that all equipment … before leaving the office.",
+            "<i class='fas fa-question-circle me-2'></i> 36. Please make sure that all equipment … before leaving the office.",
           options: [
             "A. is turned off",
             "B. turning off",
@@ -638,13 +710,13 @@
         },
         {
           question:
-            "37. The new software update will be available for download … two weeks.",
+            "<i class='fas fa-question-circle me-2'></i> 37. The new software update will be available for download … two weeks.",
           options: ["A. within", "B. between", "C. by", "D. for"],
           correctAnswer: "a",
         },
         {
           question:
-            "38. If the shipment arrives early, we … able to meet the client's deadline.",
+            "<i class='fas fa-question-circle me-2'></i> 38. If the shipment arrives early, we … able to meet the client's deadline.",
           options: [
             "A. would be",
             "B. will be",
@@ -654,12 +726,12 @@
           correctAnswer: "b",
         },
         {
-          question: "39. The event will be postponed … the weather improves.",
+          question: "<i class='fas fa-question-circle me-2'></i> 39. The event will be postponed … the weather improves.",
           options: ["A. after", "B. until", "C. while", "D. during"],
           correctAnswer: "b",
         },
         {
-          question: "40. Mr. Jack has ten years of … as a marketing manager.",
+          question: "<i class='fas fa-question-circle me-2'></i> 40. Mr. Jack has ten years of … as a marketing manager.",
           options: [
             "A. extraordinary",
             "B. experience",
@@ -669,7 +741,7 @@
           correctAnswer: "b",
         },
         {
-          question: `41. <p><b>To:</b> Yongky Anderson<br> 
+          question: `<i class='fas fa-question-circle me-2'></i> 41. <p><b>To:</b> Yongky Anderson<br> 
                <b>From:</b> Daisy Rogers Event Coordinator<br> 
                <b>Subject:</b> Invitation to Annual Company Gala<br><br>
                Dear Mr. Anderson,<br><br>
@@ -756,7 +828,7 @@
         },
         {
           question:
-            "50. <p><b>Subject:</b> Important Information Regarding Upcoming Policy Changes<br><br>Dear Employees,<br><br>I am writing to inform you of several important changes to our company policies that will take effect starting January 1, 2029. These changes are part of our ongoing effort to improve operational efficiency and better support our team.<br><br>First, we will be implementing a new timekeeping system that will require employees to clock in and out electronically. This system will allow us to better track attendance and ensure that work hours are accurately recorded. All employees will need to be familiar with the new system before the end of December. Training sessions will be held over the next few weeks, and it is essential that you … one of these sessions.</p>",
+            "50. <p><b>Subject:</b> Important Information Regarding Upcoming Policy Changes<br><br>Dear Employees,<br><br>I am writing to inform you of several important changes to our company policies that will take effect starting January 1, 2029. These changes are part of our ongoing effort to improve operational efficiency and better support our team.<br><br>First, we will be implementing a new timekeeping system that will require employees to clock in and out electronically. This system will allow us to better track attendance and ensure that work hours are accurately recorded. All employees will need to be familiar with the new system before the end of December. Training sessions will be held over the next few weeks, and it is essential that you … one of these sessions.</p>`",
           options: ["A) attend", "B) attends", "C) attended", "D) attending"],
           correctAnswer: "a",
         },
@@ -1022,7 +1094,7 @@
           correctAnswer: "c",
         },
         {
-          question: "69. According to the job vacancy above, the following information is true, except…",
+          question: "69. According to the job vacancy above, the following information is true, except...",
           options: [
             "A) Great organizational skills.",
             "B) Capable of working both independently and collaboratively with a team.",
@@ -1525,7 +1597,7 @@
       function updateTimer() {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-        timerDisplay.textContent = `Time Remaining: ${minutes}:${
+        timerDisplay.innerHTML = `<i class="fas fa-clock me-2"></i> Time Remaining: ${minutes}:${
           seconds < 10 ? "0" : ""
         }${seconds}`;
         
@@ -1567,8 +1639,7 @@
 
           const questionDiv = document.createElement("div");
           questionDiv.className = "question";
-          questionDiv.innerHTML = q.question; 
-          // Changed from textContent to innerHTML to render HTML tags
+          questionDiv.innerHTML = q.question; // Gunakan innerHTML untuk render HTML
 
           const optionsDiv = document.createElement("div");
           optionsDiv.className = "options";
@@ -1639,9 +1710,9 @@
 
             // Simpan jawaban ke localStorage
             const userAnswers =
-              JSON.parse(localStorage.getItem("userAnswers")) || {};
+              JSON.parse(localStorage.getItem("readingAnswers")) || {};
             userAnswers[`q${questionNum}`] = this.value;
-            localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+            localStorage.setItem("readingAnswers", JSON.stringify(userAnswers));
           });
         });
       }
@@ -1837,7 +1908,6 @@
         // Save reading completion status
         localStorage.setItem("readingCompleted", "true");
         
-
         // Check if listening is also completed
         const listeningCompleted = localStorage.getItem("listeningCompleted") === "true";
         
@@ -1880,11 +1950,11 @@
           updateTimer();
         }
       });
-      //       answeredQuestions.add(questionNum);
-      //       updateQuestionNumbers();
-      //     }
-      //   });
-      // });
+
+      // Disable right-click
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
     </script>
   </body>
 </html>
