@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TOEFL Reading Test Results</title>
+    <title>TOEFL Test Results</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -36,42 +36,17 @@
       <div class="card shadow">
         <div class="card-body p-4">
           <h1 class="text-center text-primary mb-4">
-            TOEFL Reading Test Results
+            TOEFL Test Results
           </h1>
 
-          <div class="text-center mb-5">
-            <div class="score" id="score"></div>
-          </div>
-
-          <div class="mb-5">
-            <h2 class="mb-3">Performance Summary</h2>
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead class="table-light">
-                  <tr>
-                    <th>Category</th>
-                    <th>Score</th>
-                    <th>Performance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Comprehension</td>
-                    <td id="comprehension-score"></td>
-                    <td id="comprehension-performance"></td>
-                  </tr>
-                  <tr>
-                    <td>Details</td>
-                    <td id="details-score"></td>
-                    <td id="details-performance"></td>
-                  </tr>
-                  <tr>
-                    <td>Inference</td>
-                    <td id="inference-score"></td>
-                    <td id="inference-performance"></td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="row mb-5">
+            <div class="col-md-6 text-center">
+              <h2>Reading Score</h2>
+              <div class="score" id="reading-score"></div>
+            </div>
+            <div class="col-md-6 text-center">
+              <h2>Listening Score</h2>
+              <div class="score" id="listening-score"></div>
             </div>
           </div>
 
@@ -100,26 +75,55 @@
             >
               Back to Home
             </button>
-            <button class="btn btn-secondary" onclick="window.print()">
-              Print Results
-            </button>
+          </div>
+          <div class="mb-4">
+            <h2 class="mb-3">Reading Section Analysis</h2>
+            <div class="table-responsive">
+              <table class="table table-bordered" id="reading-analysis-table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="reading-analysis-tbody">
+                  <!-- Table will be populated dynamically from JSON -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="mb-3">Listening Section Analysis</h2>
+            <div class="table-responsive">
+              <table class="table table-bordered" id="listening-analysis-table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Question</th>
+                    <th>Your Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="listening-analysis-tbody">
+                  <!-- Table will be populated dynamically from JSON -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Questions data in JSON format -->
-    <script>
-      const questionsData = [
-        {
-          id: 1,
-          text: "1. Kata sifat yang sesuai adalah Significant.",
-          correctAnswer: "A",
-          explanation:
-            "Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth).",
-        },
+        
+        <script>
+          // Questions data
+          const questionsData = [
+            {
+              id: 1,
+              text: "1. Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth).",
+              correctAnswer: "B",
+              explanation: "Kata 'significant' adalah kata sifat (adjective) yang berarti 'penting' atau 'bermakna' yang cocok untuk mendeskripsikan pertumbuhan (growth).",
+            },
         {
           id: 2,
           text: "2. Kalimat tersebut membahas tentang rencana kampanye iklan sehingga jawaban yang tepat adalah Advertising.",
@@ -384,19 +388,14 @@
           correctAnswer: "B",
           explanation:
             "'Until' digunakan untuk menunjukkan waktu berlangsungnya suatu kondisi sampai kondisi lain terpenuhi.",
-        },
-        {
-          id: 40,
-          text: "40. Kata benda yang tepat untuk melengkapi kalimat di atas adalah Experience.",
-          correctAnswer: "B",
-          explanation:
-            "'Experience' adalah kata benda yang tepat dalam konteks kalimat tersebut.",
-        },
+        }
       ];
-
-      // Generate table rows dynamically
-      const tableBody = document.getElementById("question-analysis-tbody");
-      questionsData.forEach((question) => {
+      
+      // Get question details from localStorage
+      const questionDetails = JSON.parse(localStorage.getItem("questionDetails")) || {};
+      // Generate table rows dynamically for reading section
+      const readingTableBody = document.getElementById("reading-analysis-tbody");
+      questionsData.slice(0, 20).forEach((question) => {
         const row = document.createElement("tr");
         row.setAttribute("row-" + question.id, "");
 
@@ -416,86 +415,80 @@
         row.appendChild(yourAnswerCell);
         row.appendChild(correctAnswerCell);
         row.appendChild(resultCell);
-
-        tableBody.appendChild(row);
+        readingTableBody.appendChild(row);
       });
+      // Generate table rows dynamically for listening section
+      const listeningTableBody = document.getElementById("listening-analysis-tbody");
+      questionsData.slice(20, 40).forEach((question) => {
+        const row = document.createElement("tr");
+        row.setAttribute("row-" + question.id, "");
+        
+        const questionCell = document.createElement("td");
+        questionCell.textContent = question.text;
 
-      // Ambil data dari localStorage
-      const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
-      const questionDetails =
-        JSON.parse(localStorage.getItem("questionDetails")) || {};
+        const yourAnswerCell = document.createElement("td");
+        yourAnswerCell.id = "ans" + question.id;
 
-      // Populate question analysis table
+        const correctAnswerCell = document.createElement("td");
+        correctAnswerCell.textContent = question.correctAnswer;
+
+        const resultCell = document.createElement("td");
+        resultCell.id = "res" + question.id;
+
+        row.appendChild(questionCell);
+        row.appendChild(yourAnswerCell);
+        row.appendChild(correctAnswerCell);
+        row.appendChild(resultCell);
+        listeningTableBody.appendChild(row);
+      });
+      // Populate question analysis tables
       for (let i = 1; i <= Object.keys(questionDetails).length; i++) {
-        const key = `q${i}`;
-        const detail = questionDetails[key];
+        const detail = questionDetails[i];
         if (!detail) continue;
+        
+        const ansElement = document.getElementById(`ans${i}`);
+        const resElement = document.getElementById(`res${i}`);
+        
+        if (ansElement && resElement) {
+          ansElement.textContent = detail.yourAnswer || "-";
+          resElement.textContent = detail.result || "-";
 
-        document.getElementById(`ans${i}`).textContent =
-          detail.yourAnswer || "-";
-        document.getElementById(`res${i}`).textContent = detail.result || "-";
-
-        const row = document.querySelector(
-          `#question-analysis-table tbody tr[row-${i}]`
-        );
-        if (row && detail.result === "✗") {
-          row.classList.add("incorrect");
+          // Find the row in either reading or listening table
+          let row;
+          if (i <= 20) {
+            row = document.querySelector(`#reading-analysis-table tbody tr[row-${i}]`);
+          } else {
+            row = document.querySelector(`#listening-analysis-table tbody tr[row-${i}]`);
+          }
+          
+          if (row && detail.result === "✗") {
+            row.classList.add("incorrect");
+          }
         }
       }
 
-      const categories = JSON.parse(localStorage.getItem("categories")) || {
-        comprehension: { correct: 0, total: 0 },
-        details: { correct: 0, total: 0 },
-        inference: { correct: 0, total: 0 },
-      };
-      const score = parseInt(localStorage.getItem("quizScore")) || 0;
-      const totalQuestions =
-        parseInt(localStorage.getItem("totalQuestions")) || 0;
+      // Display scores
+      // Get Reading and Listening scores from localStorage
+      const readingScore = parseInt(localStorage.getItem("readingScore")) || 0;
+      const listeningScore = parseInt(localStorage.getItem("listeningScore")) || 0;
+      const readingTotal = 20; // 20 questions for reading
+      const listeningTotal = 20; // 20 questions for listening
 
-      // Tampilkan skor
-      document.getElementById(
-        "score"
-      ).textContent = `${score}/${totalQuestions}`;
-
-      // Tampilkan performance summary
-      function getPerformanceLabel(correct, total) {
-        const percent = correct / total;
-        if (percent >= 0.8) return "Excellent";
-        else if (percent >= 0.5) return "Good";
-        else return "Needs Improvement";
-      }
-
-      document.getElementById(
-        "comprehension-score"
-      ).textContent = `${categories.comprehension.correct}/${categories.comprehension.total}`;
-      document.getElementById("comprehension-performance").textContent =
-        getPerformanceLabel(
-          categories.comprehension.correct,
-          categories.comprehension.total
-        );
-
-      document.getElementById(
-        "details-score"
-      ).textContent = `${categories.details.correct}/${categories.details.total}`;
-      document.getElementById("details-performance").textContent =
-        getPerformanceLabel(
-          categories.details.correct,
-          categories.details.total
-        );
-
-      document.getElementById(
-        "inference-score"
-      ).textContent = `${categories.inference.correct}/${categories.inference.total}`;
-      document.getElementById("inference-performance").textContent =
-        getPerformanceLabel(
-          categories.inference.correct,
-          categories.inference.total
-        );
-
-      // Blokir klik kanan
+      // Display scores
+      document.getElementById("reading-score").textContent = `${readingScore}/${readingTotal}`;
+      document.getElementById("listening-score").textContent = `${listeningScore}/${listeningTotal}`;
+      // Block right-click
       document.addEventListener("contextmenu", function (e) {
         e.preventDefault();
         return false;
+      });
+
+      // Block inspect element
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+          e.preventDefault();
+          return false;
+        }
       });
 
       // Blokir inspect element
@@ -507,4 +500,7 @@
       });
     </script>
   </body>
+    </script>
+  </body>
+</html>
 </html>
