@@ -884,8 +884,12 @@
           JSON.stringify(questionDetails)
         );
         localStorage.setItem("listeningCategories", JSON.stringify(categories));
-
-        window.location.href = "listening-result.html";
+        
+        // Save that listening test is complete
+        localStorage.setItem("listeningComplete", "true");
+        
+        // Redirect to reading.html instead of listening-result.html
+        window.location.href = "reading.html";
       }
 
       document

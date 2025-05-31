@@ -1436,8 +1436,8 @@
       ];
 
       // Timer
-      // Get stored time or set to default 20 minutes
-      let timeLeft = 30 * 60; // 20 minutes in seconds
+      // Get stored time or set to default 100 minutes
+      let timeLeft = 100 * 60; // 100 minutes in seconds
       const timerDisplay = document.getElementById("timer");
 
       function updateTimer() {
@@ -1755,8 +1755,17 @@
         // Save reading completion status
         localStorage.setItem("readingCompleted", "true");
         
-        // Redirect to listening page instead of results
-        window.location.href = "listening.html";
+
+        // Check if listening is also completed
+        const listeningCompleted = localStorage.getItem("listeningCompleted") === "true";
+        
+        if (listeningCompleted) {
+          // Both tests are completed, redirect to combined results page
+          window.location.href = "result_readinglistening.html";
+        } else {
+          // Only reading is completed, redirect to result page anyway
+          window.location.href = "result_readinglistening.html";
+        }
       }
 
       document
