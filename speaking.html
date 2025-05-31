@@ -4,20 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEIC Speaking Practice Test</title>
-
-    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -92,7 +86,7 @@
 
       .task-numbers {
         display: grid;
-        grid-template-columns: repeat(5, 1fr); /* 5 kolom */
+        grid-template-columns: repeat(5, 1fr);
         gap: 10px;
       }
 
@@ -291,11 +285,7 @@
               have time to prepare your response and then speak into a
               microphone. There are 11 tasks in total.
             </p>
-
-            <!-- Task Container -->
             <div id="task-container"></div>
-
-            <!-- Navigation Buttons -->
             <div class="navigation-buttons d-flex justify-content-between mt-4">
               <button
                 type="button"
@@ -321,8 +311,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal Konfirmasi Submit -->
     <div id="confirmModal" class="modal" style="display: none">
       <div class="modal-content">
         <h4>
@@ -509,8 +497,7 @@
         if (el) el.scrollIntoView({ behavior: "smooth" });
       }
 
-      // Timer utama untuk keseluruhan tes
-      let mainTimeLeft = 20 * 60; // 20 menit
+      let mainTimeLeft = 20 * 60;
       const mainTimerDisplay = document.getElementById("main-timer");
       let mainTimerInterval;
 
@@ -562,13 +549,12 @@
             document.getElementById(`recorder-status${taskId}`).textContent =
               "Recording saved.";
 
-            // Mark task as completed
             completedTasks.add(taskId);
             localStorage.setItem(
               "completedTasks",
               JSON.stringify([...completedTasks])
             );
-            updateTaskNumbers(); // Update task numbers display
+            updateTaskNumbers();
           };
 
           window.recorder.start();
@@ -591,7 +577,6 @@
           document.getElementById(`recorder-status${taskId}`).textContent =
             "Recording stopped and saved.";
 
-          // Simpan Blob audio sebagai base64
           const blob = window.audioBlobs[taskId];
           const reader = new FileReader();
           reader.onload = function () {
@@ -681,27 +666,23 @@
       function finishTest() {
         clearInterval(mainTimerInterval);
         localStorage.setItem("speakingTestCompleted", "true");
-        window.location.href = "writing.html"; // Redirect ke writing.html
+        window.location.href = "writing.html";
       }
 
-      // Inisialisasi
       window.onload = () => {
         createQuestionElements();
         initializeTaskNumbers();
         showPage(1);
         startMainTimer();
 
-        // Load completed tasks from localStorage
         const savedCompletedTasks =
           JSON.parse(localStorage.getItem("completedTasks")) || [];
         savedCompletedTasks.forEach((taskId) => completedTasks.add(taskId));
         updateTaskNumbers();
       };
 
-      // Disable right-click
       document.addEventListener("contextmenu", (e) => e.preventDefault());
 
-      // Optional: Disable keyboard shortcuts
       document.addEventListener("keydown", (e) => {
         if (e.ctrlKey || e.altKey) e.preventDefault();
       });

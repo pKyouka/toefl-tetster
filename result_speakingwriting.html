@@ -4,20 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TOEIC Speaking & Writing Results</title>
-
-    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -162,7 +156,6 @@
         background: #5a6268;
       }
 
-      /* Modal Styles */
       .modal {
         display: none;
         position: fixed;
@@ -326,7 +319,6 @@
         writingResponses.filter((q) => q.response?.trim()).length
       } / 8`;
 
-      // Soal speaking
       const speakingPrompts = [
         "Independent Speaking Task",
         "Integrated Speaking Task (Reading, Listening, Speaking)",
@@ -341,7 +333,6 @@
         "Suggest a solution",
       ];
 
-      // Tampilkan hasil speaking
       const speakingResultsTable = document.getElementById(
         "speakingResultsTable"
       );
@@ -383,7 +374,6 @@
         speakingResultsTable.appendChild(row);
       });
 
-      // Tampilkan hasil writing
       const writingResultsTable = document.getElementById(
         "writingResultsTable"
       );
@@ -412,8 +402,6 @@
         row.appendChild(statusCell);
         writingResultsTable.appendChild(row);
       });
-
-      // Fungsi back to home + reset data
       function goToHome() {
         document.getElementById("confirmHomeModal").style.display = "flex";
       }
@@ -421,14 +409,12 @@
       document
         .getElementById("confirmHomeYes")
         .addEventListener("click", () => {
-          // Hapus semua data dari localStorage
           localStorage.removeItem("completedTasks");
           localStorage.removeItem("writingResponses");
           localStorage.removeItem("speakingTestCompleted");
           localStorage.removeItem("writingTestCompleted");
 
-          // Arahkan ke halaman utama
-          window.location.href = "index.html"; // ganti sesuai nama file beranda Anda
+          window.location.href = "index.html";
         });
 
       document.getElementById("confirmHomeNo").addEventListener("click", () => {
