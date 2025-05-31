@@ -25,4 +25,3 @@ dist-ssr
 
 wav
 src/assets/sound/*.wav
-src/assets/sound/q1.wav
